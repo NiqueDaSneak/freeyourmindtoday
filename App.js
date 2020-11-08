@@ -1,21 +1,27 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useContext } from 'react'
+import { AuthContextProvider } from './src/state/auth.context'
+import { ModalContextProvider } from './src/state/modal.context'
+import { AspectsContextProvider } from './src/state/aspects.context'
+import { ConsiderationsContextProvider } from './src/state/considerations.context'
+import Layout from './src/assets/Layout'
+import Hub from './src/pages/Hub'
+import ModalConductor from './src/components/Modals/ModalConductor'
 
-export default function App() {
+const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    <AuthContextProvider>
+      <ModalContextProvider>
+        <AspectsContextProvider>
+          <ConsiderationsContextProvider>
+            <Layout>
+              <Hub />
+            </Layout>
+            <ModalConductor />
+          </ConsiderationsContextProvider>
+        </AspectsContextProvider>
+      </ModalContextProvider>
+    </AuthContextProvider>
+  )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App
