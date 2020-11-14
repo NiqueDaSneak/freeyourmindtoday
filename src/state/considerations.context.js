@@ -24,16 +24,7 @@ const reducer = (state, action) => {
       }
       
     } 
-  // case 'OPEN_MODAL':
-  //   return {
-  //     modalActive: true,
-  //     modalType: action.modalType,
-  //     modalData: action.modalData
-  //   }
-  // case 'CLOSE_MODAL':
-  //   return {
-  //     modalVisible: false
-  //   }
+    break
   default:
     throw new Error()
   }

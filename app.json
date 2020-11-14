@@ -27,6 +27,18 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "firebase": {
+        "apiKey": "AIzaSyCoW9Je8yMoBu1gwxrJdU9U7rB950h5d-I",
+        "authDomain": "freeyourmindtoday4.firebaseapp.com",
+        "databaseURL": "https://freeyourmindtoday4.firebaseio.com",
+        "projectId": "freeyourmindtoday4",
+        "storageBucket": "freeyourmindtoday4.appspot.com",
+        "messagingSenderId": "255163995599",
+        "appId": "1:255163995599:web:45f91ab804ec54a1282eba",
+        "measurementId": "G-V7JSHD83YL"
+            }
     }
   }
 }

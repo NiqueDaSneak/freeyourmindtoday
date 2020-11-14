@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { AuthContextProvider } from './src/state/auth.context'
 import { ModalContextProvider } from './src/state/modal.context'
 import { AspectsContextProvider } from './src/state/aspects.context'
@@ -9,8 +9,8 @@ import ModalConductor from './src/components/Modals/ModalConductor'
 
 const App = () => {
   return (
-    <AuthContextProvider>
-      <ModalContextProvider>
+    <ModalContextProvider>
+      <AuthContextProvider>
         <AspectsContextProvider>
           <ConsiderationsContextProvider>
             <Layout>
@@ -19,8 +19,8 @@ const App = () => {
             <ModalConductor />
           </ConsiderationsContextProvider>
         </AspectsContextProvider>
-      </ModalContextProvider>
-    </AuthContextProvider>
+      </AuthContextProvider>
+    </ModalContextProvider>
   )
 }
 

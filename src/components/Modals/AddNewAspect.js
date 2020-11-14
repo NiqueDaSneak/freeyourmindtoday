@@ -174,7 +174,6 @@ const styles = StyleSheet.create({
   titleContainer: {
     width: '100%',
     marginTop: 'auto',
-    
     display: 'flex',
     alignItems: 'center',
     position: 'absolute'

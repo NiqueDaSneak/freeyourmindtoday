@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, ScrollView } from 'react-native'
+import { ScrollView } from 'react-native'
 import AspectsContainer from '../components/AspectsContainer'
 import ConsiderationsContainer from '../components/ConsiderationsContainer'
 

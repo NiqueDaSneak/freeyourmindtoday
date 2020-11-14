@@ -5,7 +5,8 @@ export const ModalContext = createContext()
 const initialState = {
   modalVisible: false,
   modalType: '',
-  modalData: {},
+  modalData: {
+  },
 }
 
 const reducer = (state, action) => {

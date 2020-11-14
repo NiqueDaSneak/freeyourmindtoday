@@ -33,7 +33,7 @@ export const theme = {
 
 export const useKeyboard = () => {
   const [keyboardHeight, setKeyboardHeight] = useState(0)
-
+  const [keyboardOpen, setKeyboardOpen] = useState(false)
   function onKeyboardWillShow(e) {
     setKeyboardHeight(e.endCoordinates.height)
   }
@@ -51,5 +51,13 @@ export const useKeyboard = () => {
     }
   }, [])
 
-  return [keyboardHeight]
+  useEffect(() => {
+    if (keyboardHeight > 0) {
+      setKeyboardOpen(true)
+    } else {
+      setKeyboardOpen(false)
+    }
+  })
+
+  return [keyboardHeight, keyboardOpen]
 }
