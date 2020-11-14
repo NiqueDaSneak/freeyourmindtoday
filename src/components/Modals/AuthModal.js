@@ -216,17 +216,19 @@ const AuthModal = ({ visible }) => {
               .auth()
               .signInWithCredential(credential)
               .then((result) => {
-                console.log('result.additionalUserInfo.isNewUser: ', result.additionalUserInfo.isNewUser)
+                // console.log('result.additionalUserInfo.isNewUser: ', result.additionalUserInfo.isNewUser)
                 if (result.additionalUserInfo.isNewUser) {
-                  console.log('user: ', result.user)
+                  // console.log('user: ', result.user)
                   let newUser = {
                     firebaseId: result.user.uid,
                   }
                   db.collection('Users').add(newUser)
                     .then((docRef) => {
+                      // console.log('result.user.uid: ', result.user.uid)
+                      // console.log('docRef.id: ', docRef.id)
                       authDispatch({
                         type: 'LOGIN_USER', 
-                        id: docRef.id
+                        id: result.user.uid
                       })
                     })
                 }

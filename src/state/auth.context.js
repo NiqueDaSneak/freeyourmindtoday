@@ -1,5 +1,5 @@
-import React, { useContext, createContext, useEffect } from 'react'
-import useThunkReducer from 'react-hook-thunk-reducer'
+import React, { useContext, createContext, useReducer, useEffect } from 'react'
+// import useThunkReducer from 'react-hook-thunk-reducer'
 import firebase from '../../firebase'
 import { ModalContext } from '../state/modal.context'
 
@@ -50,7 +50,7 @@ const reducer = (state, action) => {
 }
 
 export const AuthContextProvider = ({ children }) => {
-  const [state, dispatch] = useThunkReducer(reducer, initialState)
+  const [state, dispatch] = useReducer(reducer, initialState)
   const [modalState, modalDispatch] = useContext(ModalContext)
 
   const onAuthStateChange = () => {

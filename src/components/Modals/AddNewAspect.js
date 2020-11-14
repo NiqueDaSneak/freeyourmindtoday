@@ -80,7 +80,6 @@ const AddNewAspect = ({ visible }) => {
     let newAspect = {
       title: aspectTitle,
       importanceStatement: importance,
-      considerations: []
     }
     aspectsDispatch({
       type: 'ADD_NEW_ASPECT',
