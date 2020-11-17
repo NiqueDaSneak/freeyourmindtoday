@@ -136,6 +136,7 @@ const CreateShortTermConsideration = ({ visible }) => {
         Alert.alert('Modal has been closed.')
       }}
     >
+    {/* {console.log('aspects: ', aspects)} */}
       <BlurView tint='dark' intensity={100} style={{
         height: '100%',
         width: '100%' 

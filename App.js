@@ -9,8 +9,8 @@ import ModalConductor from './src/components/Modals/ModalConductor'
 
 const App = () => {
   return (
-    <ModalContextProvider>
-      <AuthContextProvider>
+    <AuthContextProvider>
+      <ModalContextProvider>
         <AspectsContextProvider>
           <ConsiderationsContextProvider>
             <Layout>
@@ -19,8 +19,8 @@ const App = () => {
             <ModalConductor />
           </ConsiderationsContextProvider>
         </AspectsContextProvider>
-      </AuthContextProvider>
-    </ModalContextProvider>
+      </ModalContextProvider>
+    </AuthContextProvider>
   )
 }
 
