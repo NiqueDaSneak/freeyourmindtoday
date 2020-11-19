@@ -47,18 +47,15 @@ export const AspectsContextProvider = ({ children }) => {
   const { activeUser, isAuthenticated } = authState
 
   const getAspectsOnInitialLoad = () => {
-    console.log('inside func')
     dispatch({
       type: 'LOADING_ASPECTS',
       value: true 
     })
     let unloadedAspects = []
-    console.log('activeUser.id: ', activeUser.id)
     let fbAspects =  db.collection('Aspects').where('userId', '==', activeUser.id)
     fbAspects.get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         unloadedAspects.push(doc.data())
-        console.log(doc.id, ' => ', doc.data())
       })
       dispatch({
         type: 'LOADING_ASPECTS',
@@ -73,20 +70,16 @@ export const AspectsContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (!initialLoad && isAuthenticated) {
-      console.log('in use effect')
       getAspectsOnInitialLoad()
-      // console.log(getAspectsOnInitialLoad())
-      // dispatch({
-      //   type: 'LOADED_ASPECTS' 
-      // })
-      
     }
   }, [initialLoad, isAuthenticated])
 
   useEffect(() => {
     if (state.aspects.length > 0 && state.needsSaved !== null) {
+
       let newAspect = {
         userId: authState.activeUser.id,
+        createdAt: Date.now(),
         ...state.needsSaved
       }
       db.collection('Aspects').add(newAspect)
@@ -96,7 +89,7 @@ export const AspectsContextProvider = ({ children }) => {
           })
         })
 
-      console.log(state.newestAspect)
+      // console.log(state.newestAspect)
     }
   }, [state.needsSaved])
 
