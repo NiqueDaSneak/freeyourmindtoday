@@ -15,10 +15,12 @@ import { BlurView } from 'expo-blur'
 import { Picker } from '@react-native-picker/picker'
 
 import { theme, useKeyboard } from '../../assets/utils'
-import { AspectsContext, ModalContext } from '../../state'
+import { AspectsContext, ModalContext, AuthContext } from '../../state'
 import { ConsiderationsContext } from '../../state'
 
 const CreateShortTermConsideration = ({ visible }) => {
+  const [authState, authDispatch] = useContext(AuthContext)
+  const { activeUser } = authState
   const [modalState, modalDispatch] = useContext(ModalContext)
   const [considerationsState, considerationsDispatch] = useContext(ConsiderationsContext)
   const [keyboardHeight] = useKeyboard()
@@ -118,7 +120,8 @@ const CreateShortTermConsideration = ({ visible }) => {
     considerationsDispatch({
       type: 'ADD_NEW',
       considerationType: 'short',
-      newConsideration: newConsideration
+      newConsideration: newConsideration,
+      user: activeUser
     })   
     modalDispatch({
       type: 'CLOSE_MODAL'
@@ -136,7 +139,6 @@ const CreateShortTermConsideration = ({ visible }) => {
         Alert.alert('Modal has been closed.')
       }}
     >
-    {/* {console.log('aspects: ', aspects)} */}
       <BlurView tint='dark' intensity={100} style={{
         height: '100%',
         width: '100%' 

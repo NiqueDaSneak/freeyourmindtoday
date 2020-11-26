@@ -15,53 +15,69 @@ const initialState = {
   initialLoad: false,
 }
 
+const completeConsideration = (considerationType, id) => {
+  try {
+    db.collection('Considerations').doc(id).update({
+      completed: true,
+    })
+  } catch (err) {
+    console.log('err: ', err)
+  }
+}
+
 const reducer = (state, action) => {
   switch (action.type) {
+  case 'SET_COMPLETE_CONSIDERATION': 
+    completeConsideration(action.considerationType, action.id)
+    return {
+      ...state,
+    }
   case 'LOADING_CONSIDERATIONS':
     return {
       ...state,
-      loading: action.value,
+      loading: action?.value,
     }
   case 'ADD_NEW':
+    return {
+      ...state,
+      needsSaved: {
+        value: true,
+        type: action.considerationType,
+        considerationData: action.newConsideration,
+      }
+    }
+  case 'SAVED_NEW_CONSIDERATION':
     if (action.considerationType === 'short') {
       return {
         ...state,
         shortTermConsiderations: [...state.shortTermConsiderations, action.newConsideration],
         needsSaved: {
-          value: true,
-          type: action.considerationType,
-          considerationData: action.newConsideration
+          value: false,
+          type: null,
+          considerationData: null
         }
-      }
-    } 
-    if (action.considerationType === 'long') {
-      return {
-        ...state,
-        longTermConsiderations: [...state.longTermConsiderations, action.newConsideration],
-        needsSaved: {
-          value: true,
-          type: action.considerationType,
-          considerationData: action.newConsideration
-        }
-      }
-    } 
-    break
-  case 'SAVED_NEW_CONSIDERATION':
-    return {
-      ...state,
-      needsSaved: {
-        value: false,
-        type: null,
-        considerationData: null
       }
     }
 
-    case 'LOADED_CONSIDERATIONS':
+    if (action.considerationType === 'long') {
       return {
         ...state,
-        longTermConsiderations: action.unloadedLongConsiderations,
-        shortTermConsiderations: action.unloadedShortConsiderations
+        longTermConsiderations: [...state.longTermConsiderations, action.newConsideration],      
+        needsSaved: {
+          value: false,
+          type: null,
+          considerationData: null
+        }
       }
+    
+    }
+    break
+  case 'LOADED_CONSIDERATIONS':
+    return {
+      ...state,
+      longTermConsiderations: action.unloadedLongConsiderations,
+      shortTermConsiderations: action.unloadedShortConsiderations
+    }
   default:
     throw new Error()
   }
@@ -85,7 +101,11 @@ export const ConsiderationsContextProvider = ({ children }) => {
     })
     fbLongConsiderations.get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        unloadedLongConsiderations.push(doc.data())
+        let consideration = {
+          id: doc.id,
+          ...doc.data()
+        }
+        unloadedLongConsiderations.push(consideration)
       })
       dispatch({
         type: 'LOADING_CONSIDERATIONS',
@@ -99,7 +119,11 @@ export const ConsiderationsContextProvider = ({ children }) => {
     })
     fbShortConsiderations.get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        unloadedShortConsiderations.push(doc.data())
+        let consideration = {
+          id: doc.id,
+          ...doc.data()
+        }
+        unloadedShortConsiderations.push(consideration)
       })
       dispatch({
         type: 'LOADING_CONSIDERATIONS',
@@ -122,22 +146,29 @@ export const ConsiderationsContextProvider = ({ children }) => {
   }, [initialLoad, isAuthenticated])
 
   useEffect(() => {
+    // need to set id here
     if (state.needsSaved.value) {
       const { type, considerationData } = state.needsSaved
       let newConsideration = {
         userId: activeUser.id,
         type: type,
         createdAt: Date.now(),
+        completed: false,
+        deleted: false,
         ...considerationData
       }
       db.collection('Considerations').add(newConsideration)
         .then((docRef) => {
+          let withId = {
+            ...newConsideration,
+            id: docRef.id
+          }
           dispatch({
-            type: 'SAVED_NEW_CONSIDERATION' 
+            type: 'SAVED_NEW_CONSIDERATION',
+            considerationType: type,
+            newConsideration: withId 
           })
         })
-
-      // console.log(state.newestAspect)
     }
   }, [state.needsSaved])
 

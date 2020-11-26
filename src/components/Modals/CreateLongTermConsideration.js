@@ -15,10 +15,13 @@ import { BlurView } from 'expo-blur'
 import { Picker } from '@react-native-picker/picker'
 
 import { theme, useKeyboard } from '../../assets/utils'
-import { AspectsContext, ModalContext } from '../../state'
+import { AspectsContext, ModalContext, AuthContext } from '../../state'
 import { ConsiderationsContext } from '../../state'
 
 const CreateLongTermConsideration = ({ visible }) => {
+  const [authState, authDispatch] = useContext(AuthContext)
+  const { activeUser } = authState
+
   const [modalState, modalDispatch] = useContext(ModalContext)
   const [considerationsState, considerationsDispatch] = useContext(ConsiderationsContext)
   const [keyboardHeight] = useKeyboard()
@@ -88,7 +91,8 @@ const CreateLongTermConsideration = ({ visible }) => {
     considerationsDispatch({
       type: 'ADD_NEW',
       considerationType: 'long',
-      newConsideration: newConsideration
+      newConsideration: newConsideration,
+      user: activeUser
     })   
     modalDispatch({
       type: 'CLOSE_MODAL'

@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native'
 import { theme } from '../assets/utils'
-import { ModalContext } from '../state'
+import { ConsiderationsContext, ModalContext } from '../state'
 import showConsiderationActions from './Modals/showConsiderationActions'
 const Consideration = ({ style, data, creator, type }) => {
   const [modalState, modalDispatch] = useContext(ModalContext)
-
+  const [considerationState, considerationDispatch] = useContext(ConsiderationsContext)
   return creator ? (
     <TouchableOpacity onPress={() => modalDispatch({
       type: 'OPEN_MODAL',
@@ -31,14 +31,14 @@ const Consideration = ({ style, data, creator, type }) => {
     </TouchableOpacity>
   ) : (
     <TouchableOpacity 
-      onPress={() => showConsiderationActions(modalDispatch, type, data)}
-      key={data.title} 
+      onPress={() => showConsiderationActions(modalDispatch, considerationDispatch, type, data )}
+      key={data?.title} 
       style={[styles.containerStyle, style]}>
       <View>
         <Text style={styles.taskBtn}>+</Text>
       </View>
       <View style={styles.taskText}>
-        <Text>{data.title}</Text>
+        <Text>{data?.title}</Text>
       </View>
     </TouchableOpacity>  
   )

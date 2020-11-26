@@ -1,6 +1,7 @@
 import { Alert } from 'react-native'
 
-const showConsiderationActions = (modalDispatch, type, data ) => {
+const showConsiderationActions = ( modalDispatch, considerationDispatch, type, data ) => {
+  console.log('id: ' + data.id)
   const alertBodyText = type === 'long' ? `${data.title}` : `${data.title}\n\n${data.importanceStatement}`
   Alert.alert(
     'Consideration Details',
@@ -12,9 +13,9 @@ const showConsiderationActions = (modalDispatch, type, data ) => {
       },
       {
         text: 'Mark As Complete',
-        onPress: () => modalDispatch({
-          type: 'OPEN_MODAL',
-          modalType: 'ADD_NEW_ASPECT' 
+        onPress: () => considerationDispatch({
+          type: 'SET_COMPLETE_CONSIDERATION',
+          id: data.id
         }),
       },
       {

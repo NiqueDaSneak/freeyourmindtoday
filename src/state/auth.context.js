@@ -18,7 +18,6 @@ const initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
   case 'LOGIN_SUCCESS':
-    console.log(action.credential)
     return {
       ...state,
       isAuthenticated: true,
@@ -61,9 +60,6 @@ export const AuthContextProvider = ({ children }) => {
           type: 'LOGIN_USER', 
           id: user.uid
         })
-        // modalDispatch({
-        //   type: 'CLOSE_MODAL' 
-        // })
       } else {
         console.log('The user is not logged in')
       }

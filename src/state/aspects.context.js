@@ -53,18 +53,16 @@ export const AspectsContextProvider = ({ children }) => {
     })
     let unloadedAspects = []
     let fbAspects =  db.collection('Aspects').where('userId', '==', activeUser.id)
+    
     fbAspects.get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         unloadedAspects.push(doc.data())
       })
       dispatch({
-        type: 'LOADING_ASPECTS',
-        value: false 
+        type: 'LOADED_ASPECTS',
+        value: false,
+        unloadedAspects
       })
-    })
-    dispatch({
-      type: 'LOADED_ASPECTS',
-      unloadedAspects 
     })
   }
 
@@ -80,16 +78,16 @@ export const AspectsContextProvider = ({ children }) => {
       let newAspect = {
         userId: authState.activeUser.id,
         createdAt: Date.now(),
+        completed: false,
         ...state.needsSaved
       }
+
       db.collection('Aspects').add(newAspect)
         .then((docRef) => {
           dispatch({
             type: 'SAVED_NEW_ASPECT' 
           })
         })
-
-      // console.log(state.newestAspect)
     }
   }, [state.needsSaved])
 

@@ -40,7 +40,6 @@ const AuthModal = ({ visible }) => {
   
   // Function to be called when requesting for a verification code
   const sendVerification = () => {
-    console.log('phoneNumber: ', phoneNumber)
     const phoneProvider = new fb.auth.PhoneAuthProvider()
     phoneProvider
       .verifyPhoneNumber(`+1${phoneNumber}`, recaptchaVerifier.current)
@@ -210,22 +209,17 @@ const AuthModal = ({ visible }) => {
             onChangeText={text => setVerifyCode(text)}
           /> 
           <Button title="Send Code" onPress={() => {
-            console.log('here')
             const credential = confirmCode()
             firebase
               .auth()
               .signInWithCredential(credential)
               .then((result) => {
-                // console.log('result.additionalUserInfo.isNewUser: ', result.additionalUserInfo.isNewUser)
                 if (result.additionalUserInfo.isNewUser) {
-                  // console.log('user: ', result.user)
                   let newUser = {
                     firebaseId: result.user.uid,
                   }
                   db.collection('Users').add(newUser)
                     .then((docRef) => {
-                      // console.log('result.user.uid: ', result.user.uid)
-                      // console.log('docRef.id: ', docRef.id)
                       authDispatch({
                         type: 'LOGIN_USER', 
                         id: result.user.uid
