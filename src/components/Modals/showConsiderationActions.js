@@ -7,10 +7,10 @@ const showConsiderationActions = ( modalDispatch, considerationDispatch, type, d
     'Consideration Details',
     alertBodyText,
     [
-      {
-        text: 'Delete',
-        onPress: () => console.log('Learn More')
-      },
+      // {
+      //   text: 'Delete',
+      //   onPress: () => console.log('Learn More')
+      // },
       {
         text: 'Mark As Complete',
         onPress: () => considerationDispatch({
