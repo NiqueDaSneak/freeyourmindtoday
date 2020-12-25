@@ -19,7 +19,7 @@ const HelpDropdown = ({ text, close, visible }) => {
         setIsExpanded(!isExpanded)
       }
       } style={{
-        width: '100%',
+        maxWidth: '100%',
         borderColor: 'darkgrey',
         borderWidth:  1,
         display: 'flex',
