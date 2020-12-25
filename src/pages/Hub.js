@@ -8,7 +8,7 @@ const Hub = () => {
   return(
     <ScrollView 
       contentContainerStyle={{
-        height: 1000 
+        // height: '100%' 
       }}>
       <AspectsContainer />
       <ConsiderationsContainer type='long' />

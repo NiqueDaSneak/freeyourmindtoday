@@ -1,7 +1,7 @@
 import React, { useContext, createContext, useReducer, useEffect } from 'react'
 // import useThunkReducer from 'react-hook-thunk-reducer'
 import firebase from '../../firebase'
-import { ModalContext } from '../state/modal.context'
+// import { ModalContext } from '../state/modal.context'
 
 export const AuthContext = createContext()
 

@@ -3,9 +3,10 @@ import PropTypes from 'prop-types'
 import { StyleSheet, View, Text, FlatList, TouchableOpacity, Image } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { theme } from '../assets/utils'
-import { AspectsContext, ModalContext, ConsiderationsContext } from '../state'
+import { AspectsContext, ModalContext, ConsiderationsContext, ExplainersContext } from '../state'
 import Consideration from './Consideration'
 import showConsiderationsHelper from './Modals/showConsiderationsHelper'
+import HelpDropdown from './HelpDropdown'
 
 const ConsiderationsContainer = ({ type }) => {
   const [aspectsState, aspectsDispatch] = useContext(AspectsContext)
@@ -13,6 +14,11 @@ const ConsiderationsContainer = ({ type }) => {
   const [modalState, modalDispatch] = useContext(ModalContext)
   const [considerationsState, considerationsDispatch] = useContext(ConsiderationsContext)
   const { longTermConsiderations, shortTermConsiderations } = considerationsState
+  const [explainersState, explainersDispatch] = useContext(ExplainersContext)
+  const {
+    content, showShortTermConsiderationsHelper, 
+    showLongTermConsiderationsHelper 
+  } = explainersState
 
   const getConsiderations = (type) => {
     return type === 'short' ? shortTermConsiderations : longTermConsiderations
@@ -27,10 +33,27 @@ const ConsiderationsContainer = ({ type }) => {
         paddingBottom: '4%' 
 
       }}>
-        <Text style={theme.fonts.types.subHeading}>
-          {type === 'long' ? 'Long Term Considerations' : 'Short Term Considerations'}
-        </Text>
-        <TouchableOpacity onPress={() => showConsiderationsHelper(modalDispatch, type)}>
+        <View style={{
+          display: 'flex',
+        }}>
+          <Text style={[theme.fonts.types.subHeading, {
+            marginBottom: 10 
+          }]}>
+            {type === 'long' ? 'Long Term Considerations' : 'Short Term Considerations'}
+          </Text>
+          <HelpDropdown 
+            visible={type === 'long' ? showLongTermConsiderationsHelper : showShortTermConsiderationsHelper}
+            close={() => {
+              type === 'long' ? explainersDispatch({
+                type: 'CLOSE_LONG_CONSIDERATION_HELPER' 
+              }) : explainersDispatch({
+                type: 'CLOSE_SHORT_CONSIDERATION_HELPER' 
+              })
+            }}
+            text={type === 'long' ? content.longTermConsiderationsHelper : content.shortTermConsiderationsHelper} />
+
+        </View>
+        {/* <TouchableOpacity onPress={() => showConsiderationsHelper(modalDispatch, type)}>
           <Image 
             resizeMode="contain"
             resizeMethod="resize"
@@ -40,7 +63,7 @@ const ConsiderationsContainer = ({ type }) => {
               height: 20,
               width: 20
             }} source={require('../assets/information.png')} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       <ScrollView 
         horizontal={true} 

@@ -7,6 +7,7 @@ import CreateShortTermConsideration from './CreateShortTermConsideration'
 import CreateLongTermConsideration from './CreateLongTermConsideration'
 import AuthModal from './AuthModal'
 import { AuthContext } from '../../state'
+import ExplainerModal from './ExplainerModal'
 
 const ModalConductor = () => {
 
@@ -23,6 +24,7 @@ const ModalConductor = () => {
       <AspectDetails visible={modalType === 'GET_ASPECT_DETAILS'} />
       <CreateShortTermConsideration visible={modalType === 'ADD_SHORT_CONSIDERATION'} />
       <CreateLongTermConsideration visible={modalType === 'ADD_LONG_CONSIDERATION'} />
+      <ExplainerModal visible={true} />
     </>
   )
 }
