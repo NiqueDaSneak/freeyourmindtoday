@@ -1,8 +1,20 @@
 import { useEffect, useState } from 'react'
 import { Keyboard } from 'react-native'
 
-export const theme = {
+export const theme = { 
   layout: {
+    scheme: {
+      darkMode: {
+        background: '#212121',
+        secondaryBackground: '#424242',
+        textColor: '#BDBDBD',
+        black: 'black',
+        accentGrey: '#757575'
+      },
+      lightMode: {
+        
+      },
+    },
     flex: {
       row: {
         display: 'flex',

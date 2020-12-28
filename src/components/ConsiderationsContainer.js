@@ -37,7 +37,8 @@ const ConsiderationsContainer = ({ type }) => {
           display: 'flex',
         }}>
           <Text style={[theme.fonts.types.subHeading, {
-            marginBottom: 10 
+            marginBottom: 10,
+            color: theme.layout.scheme.darkMode.textColor, 
           }]}>
             {type === 'long' ? 'Long Term Considerations' : 'Short Term Considerations'}
           </Text>

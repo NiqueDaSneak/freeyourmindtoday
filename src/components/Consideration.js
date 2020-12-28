@@ -15,8 +15,8 @@ const Consideration = ({ style, data, creator, type }) => {
         ...styles.containerStyle,
         borderStyle: 'dashed',
         borderWidth: 1,
-        borderColor: 'grey',
-        backgroundColor: 'lightgrey',
+        borderColor: theme.layout.scheme.darkMode.accentGrey,
+        backgroundColor: theme.layout.scheme.darkMode.black,
         display: 'flex',
         justifyContent: 'center', 
         alignItems: 'center',
@@ -25,7 +25,7 @@ const Consideration = ({ style, data, creator, type }) => {
       }}>
         <Text style={{
           fontSize: 50,
-          color: 'grey' 
+          color: theme.layout.scheme.darkMode.textColor
         }}>+</Text>
       </View>
     </TouchableOpacity>
@@ -38,7 +38,9 @@ const Consideration = ({ style, data, creator, type }) => {
         <Text style={styles.taskBtn}>+</Text>
       </View>
       <View style={styles.taskText}>
-        <Text>{data?.title}</Text>
+        <Text style={{
+          color: theme.layout.scheme.darkMode.textColor
+        }}>{data?.title}</Text>
       </View>
     </TouchableOpacity>  
   )
@@ -50,7 +52,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginRight: 10,
     padding: 10,
-    borderColor: 'black',
+    borderColor: theme.layout.scheme.darkMode.accentGrey,
+    backgroundColor: theme.layout.scheme.darkMode.secondaryBackground,
     borderWidth: 1, 
     borderRadius: 20,
     display: 'flex',
@@ -60,11 +63,12 @@ const styles = StyleSheet.create({
   },
   taskBtn: {
     fontSize: theme.fonts.sizes.large,
+    color: theme.layout.scheme.darkMode.textColor
   },
   taskText: {
     paddingLeft: 20,
     width: 200,
-    fontSize: theme.fonts.sizes.small
+    fontSize: theme.fonts.sizes.small,
   }
 })
 export default Consideration

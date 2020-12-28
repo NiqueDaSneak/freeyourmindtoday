@@ -21,7 +21,7 @@ const ExplainerModal = ({ visible }) => {
     <Modal
       animationType='fade'
       transparent={true}
-      visible={false}
+      visible={visible}
     >
       <BlurView tint='dark' intensity={100}  style={{
         height: '100%',

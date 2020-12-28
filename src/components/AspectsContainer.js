@@ -18,9 +18,9 @@ const AspectsContainer = () => {
 
   return(
     <Container showAspectsHelper={showAspectsHelper}
-     content={content} 
-     modalDispatch={modalDispatch} 
-     explainersDispatch={explainersDispatch}>
+      content={content} 
+      modalDispatch={modalDispatch} 
+      explainersDispatch={explainersDispatch}>
       <AspectCard creator /> 
       <FlatList
         key={aspects.length}        
@@ -39,7 +39,8 @@ const Container = ({ children, modalDispatch, content, explainersDispatch, showA
   <View style={styles.container}>
     <View>
       <Text style={[theme.fonts.types.heading, {
-        marginBottom: 20 
+        marginBottom: 20,
+        color: theme.layout.scheme.darkMode.textColor
       }]}>Aspects</Text>
       <HelpDropdown 
         visible={showAspectsHelper}

@@ -17,15 +17,15 @@ const AspectCard = ({ aspect, creator }) => {
         ...styles.card,
         borderStyle: 'dashed',
         borderWidth: 1,
-        borderColor: 'grey',
-        backgroundColor: 'lightgrey',
+        borderColor: theme.layout.scheme.darkMode.accentGrey,
+        backgroundColor: theme.layout.scheme.darkMode.black,
         display: 'flex',
         justifyContent: 'center', 
         alignItems: 'center'
       }}>
         <Text style={{
           fontSize: 50,
-          color: 'grey' 
+          color: theme.layout.scheme.darkMode.textColor
         }}>+</Text>
       </View>
     </TouchableOpacity>
@@ -50,18 +50,19 @@ const AspectCard = ({ aspect, creator }) => {
 const styles = StyleSheet.create({
   titleStyle: {
     fontSize: theme.fonts.sizes.small,
-    color: 'black',
+    color: theme.layout.scheme.darkMode.textColor,
     textAlign: 'center' 
   },
   titleContainer: {
-    backgroundColor: 'grey', 
+    backgroundColor: theme.layout.scheme.darkMode.black, 
+    color: 'white',
     width: '100%', 
     borderBottomLeftRadius: 15, 
     borderBottomRightRadius: 15,  
     padding: '4%'
   },
   content: {
-    backgroundColor: 'darkgray', 
+    backgroundColor: theme.layout.scheme.darkMode.secondaryBackground, 
     height: '90%', 
     width: '100%', 
     borderTopLeftRadius: 15, 

@@ -20,7 +20,7 @@ const HelpDropdown = ({ text, close, visible }) => {
       }
       } style={{
         maxWidth: '100%',
-        borderColor: 'darkgrey',
+        borderColor: theme.layout.scheme.darkMode.accentGrey,
         borderWidth:  1,
         display: 'flex',
         borderRadius: 15,
@@ -29,15 +29,18 @@ const HelpDropdown = ({ text, close, visible }) => {
         padding: 10,
         marginBottom: 20,
         justifyContent: 'space-around',
+        backgroundColor: theme.layout.scheme.darkMode.black
       }}>
         <TouchableOpacity onPress={() => close()}>
           <Text style={{
-            fontSize: theme.fonts.sizes.medium 
+            fontSize: theme.fonts.sizes.medium,
+            color: theme.layout.scheme.darkMode.textColor 
           }}>X</Text>
         </TouchableOpacity>
         <Text style={{
           width: '90%',
-          fontSize: theme.fonts.sizes.xsmall
+          fontSize: theme.fonts.sizes.xsmall,
+          color: theme.layout.scheme.darkMode.textColor 
         }}>
           {renderText()}
         </Text>
