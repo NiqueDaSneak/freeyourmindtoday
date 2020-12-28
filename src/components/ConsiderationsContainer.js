@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { StyleSheet, View, Text, FlatList, TouchableOpacity, Image } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { theme } from '../assets/utils'
-import { AspectsContext, ModalContext, ConsiderationsContext, ExplainersContext } from '../state'
+import { AspectsContext, ModalContext, ConsiderationsContext, ExplainersContext, ThemeContext } from '../state'
 import Consideration from './Consideration'
 import showConsiderationsHelper from './Modals/showConsiderationsHelper'
 import HelpDropdown from './HelpDropdown'
@@ -19,6 +19,8 @@ const ConsiderationsContainer = ({ type }) => {
     content, showShortTermConsiderationsHelper, 
     showLongTermConsiderationsHelper 
   } = explainersState
+  const [themeState] = useContext(ThemeContext)
+  const { colorScheme } = themeState
 
   const getConsiderations = (type) => {
     return type === 'short' ? shortTermConsiderations : longTermConsiderations
@@ -38,7 +40,7 @@ const ConsiderationsContainer = ({ type }) => {
         }}>
           <Text style={[theme.fonts.types.subHeading, {
             marginBottom: 10,
-            color: theme.layout.scheme.darkMode.textColor, 
+            color: theme.layout.scheme[colorScheme].textColor, 
           }]}>
             {type === 'long' ? 'Long Term Considerations' : 'Short Term Considerations'}
           </Text>

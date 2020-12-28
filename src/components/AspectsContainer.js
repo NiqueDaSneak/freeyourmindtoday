@@ -3,7 +3,7 @@ import { Image, StyleSheet, View, Text, FlatList, Button } from 'react-native'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { theme } from '../assets/utils'
 import AspectCard from './AspectCard'
-import { AspectsContext, ModalContext, ExplainersContext } from '../state'
+import { AspectsContext, ModalContext, ExplainersContext, ThemeContext } from '../state'
 import PropTypes from 'prop-types'
 import showAspectsTooltip from './Modals/showAspectsHelper'
 import HelpDropdown from './HelpDropdown'
@@ -15,12 +15,15 @@ const AspectsContainer = () => {
   const [modalState, modalDispatch] = useContext(ModalContext)
   const [explainersState, explainersDispatch] = useContext(ExplainersContext)
   const { content, showAspectsHelper } = explainersState
+  const [themeState] = useContext(ThemeContext)
+  const { colorScheme } = themeState
 
   return(
     <Container showAspectsHelper={showAspectsHelper}
       content={content} 
       modalDispatch={modalDispatch} 
-      explainersDispatch={explainersDispatch}>
+      explainersDispatch={explainersDispatch}
+      colorScheme={colorScheme}>
       <AspectCard creator /> 
       <FlatList
         key={aspects.length}        
@@ -35,12 +38,12 @@ const AspectsContainer = () => {
   ) 
 }
 
-const Container = ({ children, modalDispatch, content, explainersDispatch, showAspectsHelper }) => (
+const Container = ({ children, modalDispatch, content, explainersDispatch, showAspectsHelper, colorScheme }) => (
   <View style={styles.container}>
     <View>
       <Text style={[theme.fonts.types.heading, {
         marginBottom: 20,
-        color: theme.layout.scheme.darkMode.textColor
+        color: theme.layout.scheme[colorScheme].textColor
       }]}>Aspects</Text>
       <HelpDropdown 
         visible={showAspectsHelper}

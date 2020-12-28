@@ -4,15 +4,19 @@ import { Keyboard } from 'react-native'
 export const theme = { 
   layout: {
     scheme: {
-      darkMode: {
+      dark: {
         background: '#212121',
         secondaryBackground: '#424242',
         textColor: '#BDBDBD',
-        black: 'black',
+        textContainer: 'black',
         accentGrey: '#757575'
       },
-      lightMode: {
-        
+      light: {
+        background: 'white',
+        secondaryBackground: '#EEEEEE',
+        textColor: 'black',
+        textContainer: '#E0E0E0',
+        accentGrey: '#757575'
       },
     },
     flex: {

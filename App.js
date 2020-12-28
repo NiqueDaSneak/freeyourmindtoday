@@ -8,6 +8,7 @@ import { ExplainersContextProvider } from './src/state/explainers.context'
 import Layout from './src/assets/Layout'
 import Hub from './src/pages/Hub'
 import ModalConductor from './src/components/Modals/ModalConductor'
+import { ThemeContextProvider } from './src/state/theme.context'
 
 const App = () => {
   return (
@@ -16,10 +17,12 @@ const App = () => {
         <AspectsContextProvider>
           <ConsiderationsContextProvider>
             <ExplainersContextProvider>
-              <Layout>
-                <Hub />
-              </Layout>
-              <ModalConductor />
+              <ThemeContextProvider>
+                <Layout>
+                  <Hub />
+                </Layout>
+                <ModalConductor />
+              </ThemeContextProvider>
             </ExplainersContextProvider>
           </ConsiderationsContextProvider>
         </AspectsContextProvider>

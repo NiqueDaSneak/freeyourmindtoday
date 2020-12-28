@@ -1,31 +1,44 @@
 import React, { useContext } from 'react'
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native'
 import { theme } from '../assets/utils'
-import { ConsiderationsContext, ModalContext } from '../state'
+import { ConsiderationsContext, ModalContext, ThemeContext } from '../state'
 import showConsiderationActions from './Modals/showConsiderationActions'
 const Consideration = ({ style, data, creator, type }) => {
   const [modalState, modalDispatch] = useContext(ModalContext)
   const [considerationState, considerationDispatch] = useContext(ConsiderationsContext)
+  const [themeState] = useContext(ThemeContext)
+  const { colorScheme } = themeState
+
   return creator ? (
     <TouchableOpacity onPress={() => modalDispatch({
       type: 'OPEN_MODAL',
       modalType: type === 'short' ? 'ADD_SHORT_CONSIDERATION' : 'ADD_LONG_CONSIDERATION' 
     })}>
       <View style={{
-        ...styles.containerStyle,
+        minHeight: 80,
+        marginBottom: 10,
+        marginRight: 10,
+        padding: 10,
+        borderColor: theme.layout.scheme[colorScheme].accentGrey,
+        backgroundColor: theme.layout.scheme[colorScheme].secondaryBackground,
+        borderWidth: 1, 
+        borderRadius: 20,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around',
         borderStyle: 'dashed',
         borderWidth: 1,
-        borderColor: theme.layout.scheme.darkMode.accentGrey,
-        backgroundColor: theme.layout.scheme.darkMode.black,
+        borderColor: theme.layout.scheme[colorScheme].accentGrey,
+        backgroundColor: theme.layout.scheme[colorScheme].textContainer,
         display: 'flex',
         justifyContent: 'center', 
         alignItems: 'center',
         width: 90,
-        // height: 80
       }}>
         <Text style={{
           fontSize: 50,
-          color: theme.layout.scheme.darkMode.textColor
+          color: theme.layout.scheme[colorScheme].textColor
         }}>+</Text>
       </View>
     </TouchableOpacity>
@@ -33,42 +46,62 @@ const Consideration = ({ style, data, creator, type }) => {
     <TouchableOpacity 
       onPress={() => showConsiderationActions(modalDispatch, considerationDispatch, type, data )}
       key={data?.title} 
-      style={[styles.containerStyle, style]}>
+      style={[{
+        minHeight: 80,
+        marginBottom: 10,
+        marginRight: 10,
+        padding: 10,
+        borderColor: theme.layout.scheme[colorScheme].accentGrey,
+        backgroundColor: theme.layout.scheme[colorScheme].secondaryBackground,
+        borderWidth: 1, 
+        borderRadius: 20,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around'
+      }, style]}>
       <View>
-        <Text style={styles.taskBtn}>+</Text>
-      </View>
-      <View style={styles.taskText}>
         <Text style={{
-          color: theme.layout.scheme.darkMode.textColor
+          fontSize: theme.fonts.sizes.large,
+          color: theme.layout.scheme[colorScheme].textColor
+        }}>+</Text>
+      </View>
+      <View style={{
+        paddingLeft: 20,
+        width: 200,
+        fontSize: theme.fonts.sizes.small,
+      }}>
+        <Text style={{
+          color: theme.layout.scheme[colorScheme].textColor
         }}>{data?.title}</Text>
       </View>
     </TouchableOpacity>  
   )
 }
 
-const styles = StyleSheet.create({
-  containerStyle: {
-    minHeight: 80,
-    marginBottom: 10,
-    marginRight: 10,
-    padding: 10,
-    borderColor: theme.layout.scheme.darkMode.accentGrey,
-    backgroundColor: theme.layout.scheme.darkMode.secondaryBackground,
-    borderWidth: 1, 
-    borderRadius: 20,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around'
-  },
-  taskBtn: {
-    fontSize: theme.fonts.sizes.large,
-    color: theme.layout.scheme.darkMode.textColor
-  },
-  taskText: {
-    paddingLeft: 20,
-    width: 200,
-    fontSize: theme.fonts.sizes.small,
-  }
-})
+// const styles = StyleSheet.create({
+//   containerStyle: {
+//     minHeight: 80,
+//     marginBottom: 10,
+//     marginRight: 10,
+//     padding: 10,
+//     borderColor: theme.layout.scheme[colorScheme].accentGrey,
+//     backgroundColor: theme.layout.scheme[colorScheme].secondaryBackground,
+//     borderWidth: 1, 
+//     borderRadius: 20,
+//     display: 'flex',
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//     justifyContent: 'space-around'
+//   },
+//   taskBtn: {
+//     fontSize: theme.fonts.sizes.large,
+//     color: theme.layout.scheme[colorScheme].textColor
+//   },
+//   taskText: {
+//     paddingLeft: 20,
+//     width: 200,
+//     fontSize: theme.fonts.sizes.small,
+//   }
+// })
 export default Consideration

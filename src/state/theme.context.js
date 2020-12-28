@@ -4,14 +4,15 @@ import { AppearanceProvider, useColorScheme } from 'react-native-appearance'
 export const ThemeContext = createContext()
 
 const initialState = {
-  appAppearance: 'dark'
+  colorScheme: 'dark'
 }
 
 const reducer = (state, action) => {
   switch (action.type) {
-  case 'CLOSE_ASPECTS_HELPER':
+  case 'SET_COLOR_SCHEME':
     return {
       ...state,
+      colorScheme: action.colorScheme
     }
   default:
     throw new Error()
@@ -22,9 +23,15 @@ const reducer = (state, action) => {
 export const ThemeContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
+  const colorScheme = useColorScheme()
+
   useEffect(() => {
-    dispatch({type: 'SET_COLOR_SCHEME', useColorScheme})
-  }, [useColorScheme])
+    dispatch({
+      type: 'SET_COLOR_SCHEME',
+      colorScheme
+    })
+  }, [])
+
   return (
     <ThemeContext.Provider value={[state,dispatch]}>
       <AppearanceProvider>
