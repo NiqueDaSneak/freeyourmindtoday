@@ -81,9 +81,9 @@ Container.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: '10%',
+    // marginTop: '10%',
     // height: 370,
-    paddingLeft: '4%', 
+    // paddingLeft: '4%', 
     paddingRight: '4%', 
     // backgroundColor: 'pink',
     // display: 'flex',

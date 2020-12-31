@@ -1,7 +1,9 @@
 import React, { useReducer, createContext, useEffect, useContext } from 'react'
 import PropTypes from 'prop-types'
+// import { useThunkReducer } from 'react-hook-thunk-reducer'
 import { db } from '../../firebase'
 import { AuthContext } from './auth.context'
+
 export const AspectsContext = createContext()
 
 const initialState = {
@@ -11,17 +13,25 @@ const initialState = {
   initialLoad: false,
 }
 
+// const saveNewAspect = () => {
+//   return (dispatch, getState) => {
+//     console.log('new func?')
+//     // async saving to db...
+//     // dispatch action to add id to aspects array
+//   }
+// }
+
 const reducer = (state, action) => {
   switch (action.type) {
-  case 'ADD_NEW_ASPECT':
+  case 'ASPECT_NEEDS_SAVED':
     return {
       ...state,
-      aspects: [...state.aspects, action.payload],
       needsSaved: action.payload
     }
   case 'SAVED_NEW_ASPECT':
     return {
       ...state,
+      aspects: [...state.aspects, action.newAspect],
       needsSaved: null
     }
   case 'LOADING_ASPECTS': 
@@ -56,7 +66,11 @@ export const AspectsContextProvider = ({ children }) => {
     
     fbAspects.get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        unloadedAspects.push(doc.data())
+        let aspect = {
+          id: doc.id,
+          ...doc.data()
+        }
+        unloadedAspects.push(aspect)
       })
       dispatch({
         type: 'LOADED_ASPECTS',
@@ -73,7 +87,7 @@ export const AspectsContextProvider = ({ children }) => {
   }, [initialLoad, isAuthenticated])
 
   useEffect(() => {
-    if (state.aspects.length > 0 && state.needsSaved !== null) {
+    if (state.needsSaved !== null) {
 
       let newAspect = {
         userId: authState.activeUser.id,
@@ -83,9 +97,13 @@ export const AspectsContextProvider = ({ children }) => {
       }
 
       db.collection('Aspects').add(newAspect)
-        .then((docRef) => {
+        .then((doc) => {
           dispatch({
-            type: 'SAVED_NEW_ASPECT' 
+            type: 'SAVED_NEW_ASPECT', 
+            newAspect: {
+              ...newAspect,
+              id: doc.id
+            }
           })
         })
     }

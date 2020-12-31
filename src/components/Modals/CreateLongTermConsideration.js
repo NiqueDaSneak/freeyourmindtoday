@@ -34,7 +34,6 @@ const CreateLongTermConsideration = ({ visible }) => {
   const slideLeft = useRef(new Animated.Value(0)).current
   const slideLeft2 = useRef(new Animated.Value(400)).current
 
-  
   useEffect(() => {
     if (visible) {
       inputRef.current.focus()
@@ -129,7 +128,7 @@ const CreateLongTermConsideration = ({ visible }) => {
           <TextInput
             ref={inputRef}
             blurOnSubmit
-            // maxLength={41}
+            maxLength={85}
             keyboardAppearance={'dark'}
             returnKeyType={'next'}  
             enablesReturnKeyAutomatically        
@@ -183,7 +182,7 @@ const CreateLongTermConsideration = ({ visible }) => {
             >
               <Picker.Item label='No Match' value='No Match' />
               {aspects.map(aspect => (
-                <Picker.Item key={aspect.title} label={aspect.title} value={aspect.title} />
+                <Picker.Item key={aspect?.title} label={aspect?.title} value={aspect?.title} />
               ))}
             </Picker>
             <Button color="green" title="Create" onPress={() => submitNewConsideration()} />

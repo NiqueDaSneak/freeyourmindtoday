@@ -19,14 +19,8 @@ const Consideration = ({ style, data, creator, type }) => {
         marginBottom: 10,
         marginRight: 10,
         padding: 10,
-        borderColor: theme.layout.scheme[colorScheme].accentGrey,
-        backgroundColor: theme.layout.scheme[colorScheme].secondaryBackground,
-        borderWidth: 1, 
         borderRadius: 20,
-        display: 'flex',
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-around',
         borderStyle: 'dashed',
         borderWidth: 1,
         borderColor: theme.layout.scheme[colorScheme].accentGrey,
@@ -47,10 +41,10 @@ const Consideration = ({ style, data, creator, type }) => {
       onPress={() => showConsiderationActions(modalDispatch, considerationDispatch, type, data )}
       key={data?.title} 
       style={[{
-        minHeight: 80,
+        height: 80,
         marginBottom: 10,
         marginRight: 10,
-        padding: 10,
+        padding: 4,
         borderColor: theme.layout.scheme[colorScheme].accentGrey,
         backgroundColor: theme.layout.scheme[colorScheme].secondaryBackground,
         borderWidth: 1, 

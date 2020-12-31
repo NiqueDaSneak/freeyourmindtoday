@@ -8,7 +8,8 @@ import Consideration from './Consideration'
 import showConsiderationsHelper from './Modals/showConsiderationsHelper'
 import HelpDropdown from './HelpDropdown'
 
-const ConsiderationsContainer = ({ type }) => {
+const ConsiderationsContainer = ({ type, aspect, hideHelper }) => {
+
   const [aspectsState, aspectsDispatch] = useContext(AspectsContext)
   const { aspects } = aspectsState
   const [modalState, modalDispatch] = useContext(ModalContext)
@@ -27,7 +28,7 @@ const ConsiderationsContainer = ({ type }) => {
   }
   
   return(
-    <View style={styles.container}>
+    <View>
       <View style={{
         display: 'flex',
         flexDirection: 'row', 
@@ -44,7 +45,8 @@ const ConsiderationsContainer = ({ type }) => {
           }]}>
             {type === 'long' ? 'Long Term Considerations' : 'Short Term Considerations'}
           </Text>
-          <HelpDropdown 
+          <HelpDropdown
+            hidden={hideHelper} 
             visible={type === 'long' ? showLongTermConsiderationsHelper : showShortTermConsiderationsHelper}
             close={() => {
               type === 'long' ? explainersDispatch({
@@ -76,7 +78,7 @@ const ConsiderationsContainer = ({ type }) => {
         <Consideration creator type={type} />
         <FlatList 
           contentContainerStyle={{
-            height: 140,
+            // height: 140,
             display: 'flex',
             justifyContent: 'space-between' 
           }}
@@ -95,8 +97,8 @@ const ConsiderationsContainer = ({ type }) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: '10%',
-    height: 220,
+    // marginTop: '10%',
+    // height: 220,
     paddingLeft: '4%',     
   },
 })

@@ -3,7 +3,7 @@ import { TouchableOpacity, Text, View } from 'react-native'
 import { theme } from '../assets/utils'
 import { ExplainersContext, ThemeContext } from '../state'
 
-const HelpDropdown = ({ text, close, visible }) => {
+const HelpDropdown = ({ text, close, visible, hidden }) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const [explainersState, explainersDispatch] = useContext(ExplainersContext)
   // const { showAspectsHelper } = explainersState
@@ -16,7 +16,7 @@ const HelpDropdown = ({ text, close, visible }) => {
 
   return (
     <View style={{
-      display: visible ? 'inherit' : 'none'
+      display: visible && !hidden ? 'inherit' : 'none'
     }}>
       <TouchableOpacity onPress={() => {
         setIsExpanded(!isExpanded)

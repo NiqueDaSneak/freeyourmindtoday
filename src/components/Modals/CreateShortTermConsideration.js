@@ -249,7 +249,7 @@ const CreateShortTermConsideration = ({ visible }) => {
             >
               <Picker.Item label='No Match' value='No Match' />
               {aspects.map(aspect => (
-                <Picker.Item key={aspect.title} label={aspect.title} value={aspect.title} />
+                <Picker.Item key={aspect?.title} label={aspect?.title} value={aspect?.title} />
               ))}
             </Picker>
             <Button color="green" title="Create" onPress={() => submitNewConsideration()} />

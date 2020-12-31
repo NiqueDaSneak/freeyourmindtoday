@@ -12,6 +12,8 @@ const Hub = () => {
     <ScrollView 
       contentContainerStyle={{
         backgroundColor: theme.layout.scheme[colorScheme].background,
+        paddingLeft: '4%',
+        paddingTop: '10%',
       }}>
       <AspectsContainer />
       <ConsiderationsContainer type='long' />
