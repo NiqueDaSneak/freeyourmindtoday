@@ -13,7 +13,6 @@ const HelpDropdown = ({ text, close, visible, hidden }) => {
   const renderText = () => {
     return isExpanded ? text : `${text?.substring(0, 100)}...` 
   }
-
   return (
     <View style={{
       display: visible && !hidden ? 'inherit' : 'none'

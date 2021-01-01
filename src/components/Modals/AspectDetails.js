@@ -66,7 +66,7 @@ const AspectDetails = ({ visible }) => {
               color: 'white',
             }}>Why is this important to you?</Text>
             <EditableInput aspect={aspect} editableValue={aspect?.importanceStatement} size="large" />
-            <ConsiderationsContainer hideHelper={true} type='long' aspect={aspect?.id} />
+            <ConsiderationsContainer hideHelper={true} type='long' singleAspectId={aspect?.id} />
             <Button disabled={importanceEditable || titleEditable} 
               color="red" 
               title="Go Back" 

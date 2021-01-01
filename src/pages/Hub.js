@@ -13,7 +13,7 @@ const Hub = () => {
       contentContainerStyle={{
         backgroundColor: theme.layout.scheme[colorScheme].background,
         paddingLeft: '4%',
-        paddingTop: '10%',
+        paddingTop: '12%',
       }}>
       <AspectsContainer />
       <ConsiderationsContainer type='long' />

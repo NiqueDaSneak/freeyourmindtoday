@@ -1,17 +1,16 @@
-import React, { useContext } from 'react'
-import PropTypes from 'prop-types'
-import { StyleSheet, View, Text, FlatList, TouchableOpacity, Image } from 'react-native'
+import React, { useContext, useState, useEffect } from 'react'
+import { StyleSheet, View, Text, FlatList } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { theme } from '../assets/utils'
 import { AspectsContext, ModalContext, ConsiderationsContext, ExplainersContext, ThemeContext } from '../state'
 import Consideration from './Consideration'
-import showConsiderationsHelper from './Modals/showConsiderationsHelper'
 import HelpDropdown from './HelpDropdown'
 
-const ConsiderationsContainer = ({ type, aspect, hideHelper }) => {
+const ConsiderationsContainer = ({ type, singleAspectId, hideHelper }) => {
 
   const [aspectsState, aspectsDispatch] = useContext(AspectsContext)
   const { aspects } = aspectsState
+  const [disabled, setDisabled] = useState(aspects.length <= 2)
   const [modalState, modalDispatch] = useContext(ModalContext)
   const [considerationsState, considerationsDispatch] = useContext(ConsiderationsContext)
   const { longTermConsiderations, shortTermConsiderations } = considerationsState
@@ -23,6 +22,17 @@ const ConsiderationsContainer = ({ type, aspect, hideHelper }) => {
   const [themeState] = useContext(ThemeContext)
   const { colorScheme } = themeState
 
+  useEffect(() => {
+    if (aspects.length <= 2) {
+      setDisabled(true)
+    } else {
+      setDisabled(false)
+    }
+    console.log('disabled: ', disabled)
+    console.log('aspects.length: ', aspects.length)  
+    console.log('aspects.length < 2: ', aspects.length < 2)
+  }, [aspects])
+
   const getConsiderations = (type) => {
     return type === 'short' ? shortTermConsiderations : longTermConsiderations
   }
@@ -33,8 +43,8 @@ const ConsiderationsContainer = ({ type, aspect, hideHelper }) => {
         display: 'flex',
         flexDirection: 'row', 
         alignItems: 'center',
-        paddingBottom: '4%' 
-
+        paddingBottom: '4%', 
+        marginTop: '4%'
       }}>
         <View style={{
           display: 'flex',
@@ -46,7 +56,7 @@ const ConsiderationsContainer = ({ type, aspect, hideHelper }) => {
             {type === 'long' ? 'Long Term Considerations' : 'Short Term Considerations'}
           </Text>
           <HelpDropdown
-            hidden={hideHelper} 
+            hidden={hideHelper || disabled} 
             visible={type === 'long' ? showLongTermConsiderationsHelper : showShortTermConsiderationsHelper}
             close={() => {
               type === 'long' ? explainersDispatch({
@@ -75,7 +85,7 @@ const ConsiderationsContainer = ({ type, aspect, hideHelper }) => {
         showsVerticalScrollIndicator={false} 
         showsHorizontalScrollIndicator={false}
       >
-        <Consideration creator type={type} />
+        <Consideration disabled={disabled} creator type={type} />
         <FlatList 
           contentContainerStyle={{
             // height: 140,
