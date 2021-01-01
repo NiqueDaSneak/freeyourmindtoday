@@ -1,6 +1,5 @@
 import React, { useReducer, createContext, useEffect, useContext } from 'react'
 import PropTypes from 'prop-types'
-// import { useThunkReducer } from 'react-hook-thunk-reducer'
 import { db } from '../../firebase'
 import { AuthContext } from './auth.context'
 
@@ -12,14 +11,6 @@ const initialState = {
   loading: true,
   initialLoad: false,
 }
-
-// const saveNewAspect = () => {
-//   return (dispatch, getState) => {
-//     console.log('new func?')
-//     // async saving to db...
-//     // dispatch action to add id to aspects array
-//   }
-// }
 
 const reducer = (state, action) => {
   switch (action.type) {
