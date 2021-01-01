@@ -28,9 +28,6 @@ const ConsiderationsContainer = ({ type, singleAspectId, hideHelper }) => {
     } else {
       setDisabled(false)
     }
-    console.log('disabled: ', disabled)
-    console.log('aspects.length: ', aspects.length)  
-    console.log('aspects.length < 2: ', aspects.length < 2)
   }, [aspects])
 
   const getConsiderations = (type) => {
