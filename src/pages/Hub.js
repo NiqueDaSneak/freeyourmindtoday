@@ -9,6 +9,7 @@ const Hub = () => {
       contentContainerStyle={{
         paddingLeft: '4%',
         paddingTop: '12%',
+        paddingBottom: '12%',
       }}>
       <AspectsContainer />
       <ConsiderationsContainer type='long' />
