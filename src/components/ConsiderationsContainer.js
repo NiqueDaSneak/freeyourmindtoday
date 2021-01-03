@@ -34,6 +34,26 @@ const ConsiderationsContainer = ({ type, singleAspectId, hideHelper }) => {
     return type === 'short' ? shortTermConsiderations : longTermConsiderations
   }
   
+  const renderData = () => {
+    if (singleAspectId) {
+      let longMatches = longTermConsiderations.filter(consideration => consideration.aspectId === singleAspectId) 
+      let shortMatches = shortTermConsiderations.filter(consideration => consideration.aspectId === singleAspectId)
+      return shortMatches.concat(longMatches)
+    } else {
+      console.log('singleAspectId in else renderData: ', singleAspectId)
+      return getConsiderations(type)
+    }
+  }
+
+  const renderTitle = () => {
+    if (singleAspectId) {
+      return 'All Considerations'
+    } else {
+      return type === 'long' ? 'Long Term Considerations' : 'Short Term Considerations'
+    }
+
+  }
+
   return(
     <View>
       <View style={{
@@ -50,7 +70,7 @@ const ConsiderationsContainer = ({ type, singleAspectId, hideHelper }) => {
             marginBottom: 10,
             color: theme.layout.scheme[colorScheme].textColor, 
           }]}>
-            {type === 'long' ? 'Long Term Considerations' : 'Short Term Considerations'}
+            {renderTitle()}
           </Text>
           <HelpDropdown
             hidden={hideHelper || disabled} 
@@ -82,7 +102,9 @@ const ConsiderationsContainer = ({ type, singleAspectId, hideHelper }) => {
         showsVerticalScrollIndicator={false} 
         showsHorizontalScrollIndicator={false}
       >
-        <Consideration disabled={disabled} creator type={type} />
+        {!singleAspectId && (
+          <Consideration disabled={disabled} creator type={type} />
+        )}
         <FlatList 
           contentContainerStyle={{
             // height: 140,
@@ -92,9 +114,9 @@ const ConsiderationsContainer = ({ type, singleAspectId, hideHelper }) => {
           key={getConsiderations(type).length}
           keyExtractor={(item, index) => `${index}`}
           numColumns={Math.ceil(getConsiderations(type).length / 2)}
-          data={getConsiderations(type)}
+          data={renderData()}
           renderItem={({ item: consideration }) => (
-            <Consideration type={type} data={consideration} />
+            <Consideration type={consideration.type} data={consideration} />
           )}
         />
       </ScrollView>
