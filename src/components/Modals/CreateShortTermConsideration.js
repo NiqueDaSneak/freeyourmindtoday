@@ -115,7 +115,7 @@ const CreateShortTermConsideration = ({ visible }) => {
     let newConsideration = {
       title: considerationTitle,
       importanceStatement: importance,
-      aspect: aspectPicker
+      aspectId: aspectPicker
     }
     considerationsDispatch({
       type: 'ADD_NEW',
@@ -165,7 +165,7 @@ const CreateShortTermConsideration = ({ visible }) => {
           <TextInput
             ref={inputRef}
             blurOnSubmit
-            maxLength={41}
+            maxLength={85}
             keyboardAppearance={'dark'}
             returnKeyType={'next'}          
             enablesReturnKeyAutomatically
@@ -197,6 +197,7 @@ const CreateShortTermConsideration = ({ visible }) => {
           }}>Why is this important to you?</Text>
           <TextInput
             ref={inputRef2}
+            maxLength={800}
             keyboardAppearance={'dark'}
             blurOnSubmit
             returnKeyType={'next'}     
@@ -249,7 +250,7 @@ const CreateShortTermConsideration = ({ visible }) => {
             >
               <Picker.Item label='No Match' value='No Match' />
               {aspects.map(aspect => (
-                <Picker.Item key={aspect?.title} label={aspect?.title} value={aspect?.title} />
+                <Picker.Item key={aspect?.title} label={aspect?.title} value={aspect?.id} />
               ))}
             </Picker>
             <Button color="green" title="Create" onPress={() => submitNewConsideration()} />
