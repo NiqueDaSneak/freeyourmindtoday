@@ -85,7 +85,7 @@ const CreateLongTermConsideration = ({ visible }) => {
   const submitNewConsideration = () => {
     let newConsideration = {
       title: considerationText,
-      aspect: aspectPicker
+      aspectId: aspectPicker
     }
     considerationsDispatch({
       type: 'ADD_NEW',
@@ -176,13 +176,14 @@ const CreateLongTermConsideration = ({ visible }) => {
               style={{
                 width: '80%',
               }}
-              onValueChange={(itemValue) =>
+              onValueChange={(itemValue) => {
                 setAspectPicker(itemValue)
+              }
               }
             >
               <Picker.Item label='No Match' value='No Match' />
               {aspects.map(aspect => (
-                <Picker.Item key={aspect?.title} label={aspect?.title} value={aspect?.title} />
+                <Picker.Item key={aspect?.title} label={aspect?.title} value={aspect?.id} />
               ))}
             </Picker>
             <Button color="green" title="Create" onPress={() => submitNewConsideration()} />
