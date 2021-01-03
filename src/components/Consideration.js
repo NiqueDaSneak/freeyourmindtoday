@@ -9,7 +9,6 @@ const Consideration = ({ style, data, creator, type, disabled }) => {
   const [themeState] = useContext(ThemeContext)
   const { colorScheme } = themeState
 
-  console.log('disabled in consideration: ', disabled)
   return creator ? (
     <View style={{
       display: 'flex',
@@ -46,7 +45,7 @@ const Consideration = ({ style, data, creator, type, disabled }) => {
           width: '50%',
           fontSize: theme.fonts.sizes.small,
           color: theme.layout.scheme[colorScheme].textColor 
-        }}>You must add at least two Aspects before you can create considerations.</Text>
+        }}>You must add at least three Aspects before you can create considerations.</Text>
       )}
     </View>
   ) : (
