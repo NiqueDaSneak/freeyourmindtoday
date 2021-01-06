@@ -4,8 +4,25 @@ import { TouchableOpacity,
   Image,
   Text,StyleSheet } from 'react-native'
 
-const PhoneLogin = ({ onPress }) => {
-  return(
+  const styles = StyleSheet.create({
+    loginIcon: {
+      resizeMode: 'contain',
+      height: 15,
+      width: 15
+    },
+    loginButtonContainer: {
+      width: 220,
+      height:  45,
+      borderRadius: 10,
+      backgroundColor: 'black', 
+      flexDirection: 'row',
+      justifyContent: 'space-evenly', 
+      alignItems: 'center',
+      marginTop: '10%'
+    },
+  })
+  
+const PhoneLogin = ({ onPress }) => (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.loginButtonContainer}>
         <Image 
@@ -17,24 +34,6 @@ const PhoneLogin = ({ onPress }) => {
         }}>Sign in with phone number</Text>
       </View>
     </TouchableOpacity>
-  )
-}
-const styles = StyleSheet.create({
-  loginIcon: {
-    resizeMode: 'contain',
-    height: 15,
-    width: 15
-  },
-  loginButtonContainer: {
-    width: 220,
-    height:  45,
-    borderRadius: 10,
-    backgroundColor: 'black', 
-    flexDirection: 'row',
-    justifyContent: 'space-evenly', 
-    alignItems: 'center',
-    marginTop: '10%'
-  },
-})
-
+)
+  
 export default PhoneLogin

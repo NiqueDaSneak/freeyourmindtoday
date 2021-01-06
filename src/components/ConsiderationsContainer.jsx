@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { StyleSheet, View, Text, FlatList } from 'react-native'
+import { View, Text, FlatList } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { theme } from '../assets/utils'
 import { AspectsContext, ModalContext, ConsiderationsContext, ExplainersContext, ThemeContext } from '../state'
@@ -30,27 +30,24 @@ const ConsiderationsContainer = ({ type, singleAspectId, hideHelper }) => {
     }
   }, [aspects])
 
-  const getConsiderations = (type) => {
-    return type === 'short' ? shortTermConsiderations : longTermConsiderations
-  }
+  const getConsiderations = () => type === 'short' ? shortTermConsiderations : longTermConsiderations
   
   const renderData = () => {
     if (singleAspectId) {
-      let longMatches = longTermConsiderations.filter(consideration => consideration.aspectId === singleAspectId) 
-      let shortMatches = shortTermConsiderations.filter(consideration => consideration.aspectId === singleAspectId)
+      const longMatches = longTermConsiderations.filter(consideration => consideration.aspectId === singleAspectId) 
+      const shortMatches = shortTermConsiderations.filter(consideration => consideration.aspectId === singleAspectId)
       return shortMatches.concat(longMatches)
-    } else {
-      console.log('singleAspectId in else renderData: ', singleAspectId)
+    } 
       return getConsiderations(type)
-    }
+    
   }
 
   const renderTitle = () => {
     if (singleAspectId) {
       return 'All Considerations'
-    } else {
+    } 
       return type === 'long' ? 'Long Term Considerations' : 'Short Term Considerations'
-    }
+    
 
   }
 
@@ -75,15 +72,13 @@ const ConsiderationsContainer = ({ type, singleAspectId, hideHelper }) => {
           <HelpDropdown
             hidden={hideHelper || disabled} 
             visible={type === 'long' ? showLongTermConsiderationsHelper : showShortTermConsiderationsHelper}
-            close={() => {
-              type === 'long' ? explainersDispatch({
+            close={() => type === 'long' ? explainersDispatch({
                 type: 'CLOSE_LONG_CONSIDERATION_HELPER' 
               }) : explainersDispatch({
                 type: 'CLOSE_SHORT_CONSIDERATION_HELPER' 
-              })
-            }}
-            text={type === 'long' ? content.longTermConsiderationsHelper : content.shortTermConsiderationsHelper} />
-
+              })}
+            text={type === 'long' ? content.longTermConsiderationsHelper : content.shortTermConsiderationsHelper} 
+            />
         </View>
         {/* <TouchableOpacity onPress={() => showConsiderationsHelper(modalDispatch, type)}>
           <Image 
@@ -98,7 +93,7 @@ const ConsiderationsContainer = ({ type, singleAspectId, hideHelper }) => {
         </TouchableOpacity> */}
       </View>
       <ScrollView 
-        horizontal={true} 
+        horizontal 
         showsVerticalScrollIndicator={false} 
         showsHorizontalScrollIndicator={false}
       >
@@ -107,7 +102,6 @@ const ConsiderationsContainer = ({ type, singleAspectId, hideHelper }) => {
         )}
         <FlatList 
           contentContainerStyle={{
-            // height: 140,
             display: 'flex',
             justifyContent: 'space-between' 
           }}
@@ -123,13 +117,5 @@ const ConsiderationsContainer = ({ type, singleAspectId, hideHelper }) => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    // marginTop: '10%',
-    // height: 220,
-    paddingLeft: '4%',     
-  },
-})
 
 export default ConsiderationsContainer

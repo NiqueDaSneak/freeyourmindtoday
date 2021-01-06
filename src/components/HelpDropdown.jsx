@@ -1,18 +1,15 @@
 import React, { useState, useContext } from 'react'
 import { TouchableOpacity, Text, View } from 'react-native'
 import { theme } from '../assets/utils'
-import { ExplainersContext, ThemeContext } from '../state'
+import { ThemeContext } from '../state'
 
 const HelpDropdown = ({ text, close, visible, hidden }) => {
   const [isExpanded, setIsExpanded] = useState(false)
-  const [explainersState, explainersDispatch] = useContext(ExplainersContext)
-  // const { showAspectsHelper } = explainersState
   const [themeState] = useContext(ThemeContext)
   const { colorScheme } = themeState
 
-  const renderText = () => {
-    return isExpanded ? text : `${text?.substring(0, 100)}...` 
-  }
+  // eslint-disable-next-line react/prop-types
+  const renderText = () => isExpanded ? text : `${text?.substring(0, 100)}...`
   return (
     <View style={{
       display: visible && !hidden ? 'inherit' : 'none'

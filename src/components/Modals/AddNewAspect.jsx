@@ -77,7 +77,7 @@ const AddNewAspect = ({ visible }) => {
     setImportance('')
   }
   const submitNewAspect = () => {
-    let newAspect = {
+    const newAspect = {
       title: aspectTitle,
       importanceStatement: importance,
     }
@@ -90,11 +90,48 @@ const AddNewAspect = ({ visible }) => {
     })
     resetForm()
   }
-
+  const styles = StyleSheet.create({
+    titleContainer: {
+      width: '100%',
+      marginTop: 'auto',
+      display: 'flex',
+      alignItems: 'center',
+      position: 'absolute'
+    },
+    titleInput: { 
+      borderRadius: 10, 
+      fontSize: theme.fonts.sizes.medium, 
+      borderColor: 'gray', 
+      borderWidth: 1 ,
+      paddingLeft: '2%',
+      marginBottom: '4%', 
+      width: '80%',
+      textAlign: 'center',
+      padding: '2%',
+    },
+    importanceContainer: {
+      width: '100%',
+      marginTop: 'auto',
+      display: 'flex',
+      alignItems: 'center',
+      position: 'absolute'
+    },
+    importanceInput: { 
+      borderRadius: 10, 
+      height: 80, 
+      width: '80%',
+      marginBottom: '4%', 
+      fontSize: theme.fonts.sizes.small, 
+      borderColor: 'gray', 
+      borderWidth: 1,
+      padding: '4%',
+    }
+  })
+  
   return(
     <Modal
       animationType='slide'
-      transparent={true}
+      transparent
       visible={visible}
       onRequestClose={() => {
         Alert.alert('Modal has been closed.')
@@ -119,8 +156,8 @@ const AddNewAspect = ({ visible }) => {
             ref={inputRef}
             blurOnSubmit
             maxLength={41}
-            keyboardAppearance={'dark'}
-            returnKeyType={'next'}      
+            keyboardAppearance="dark"
+            returnKeyType="next"      
             enablesReturnKeyAutomatically    
             style={styles.titleInput}
             onChangeText={text => setAspectTitle(text)}
@@ -146,11 +183,11 @@ const AddNewAspect = ({ visible }) => {
           }}>Why is this important to you?</Text>
           <TextInput
             ref={inputRef2}
-            keyboardAppearance={'dark'}
+            keyboardAppearance="dark"
             blurOnSubmit
-            returnKeyType={'done'}   
+            returnKeyType="done"   
             enablesReturnKeyAutomatically      
-            multiline={true}
+            multiline
             numberOfLines={4}
             style={styles.importanceInput}
             onChangeText={text => setImportance(text)}
@@ -168,43 +205,5 @@ const AddNewAspect = ({ visible }) => {
     </Modal>
   )
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    width: '100%',
-    marginTop: 'auto',
-    display: 'flex',
-    alignItems: 'center',
-    position: 'absolute'
-  },
-  titleInput: { 
-    borderRadius: 10, 
-    fontSize: theme.fonts.sizes.medium, 
-    borderColor: 'gray', 
-    borderWidth: 1 ,
-    paddingLeft: '2%',
-    marginBottom: '4%', 
-    width: '80%',
-    textAlign: 'center',
-    padding: '2%',
-  },
-  importanceContainer: {
-    width: '100%',
-    marginTop: 'auto',
-    display: 'flex',
-    alignItems: 'center',
-    position: 'absolute'
-  },
-  importanceInput: { 
-    borderRadius: 10, 
-    height: 80, 
-    width: '80%',
-    marginBottom: '4%', 
-    fontSize: theme.fonts.sizes.small, 
-    borderColor: 'gray', 
-    borderWidth: 1,
-    padding: '4%',
-  }
-})
 
 export default AddNewAspect

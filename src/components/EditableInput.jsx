@@ -1,23 +1,18 @@
-import React, { useState, useContext, useRef } from 'react'
+import React, { useState } from 'react'
 import { 
-  StyleSheet, 
-  Text, 
   View, 
   TouchableOpacity, 
   TextInput,
-  Button,
-  Modal,
   Keyboard,
   Image
 } from 'react-native'
-import { theme, useKeyboard } from '../assets/utils'
+import { theme } from '../assets/utils'
 
 const EditableInput = ({ aspect, editableValue, size }) => {
   const [editable, setEditable] = useState(false)
   const [inputValue, setInputValue] = useState(editableValue)
 
-  const EditToggle = ({ type, editable }) => {
-    return editable ? (
+  const EditToggle = ({ type, editable }) => editable ? (
       <TouchableOpacity onPress={() => {
         setEditable(false)
       }}>
@@ -51,7 +46,6 @@ const EditableInput = ({ aspect, editableValue, size }) => {
           source={require('../assets/edit.png')} />
       </TouchableOpacity> 
     )
-  }
   return(
     <View style={{
       display: 'flex',
@@ -60,12 +54,12 @@ const EditableInput = ({ aspect, editableValue, size }) => {
     }}>
       <TextInput
         editable={editable}
-        keyboardAppearance={'dark'}
+        keyboardAppearance="dark"
         blurOnSubmit
-        returnKeyType={'done'}          
+        returnKeyType="done"          
         maxLength={41}
         value={inputValue}
-        multiline={size === 'large' ? true : false}
+        multiline={size === 'large'}
         numberOfLines={4}
         style={[{ 
           height: size === 'large' ? 150 : null,

@@ -2,11 +2,10 @@ import React, { useContext } from 'react'
 // import { useModal } from '../../hooks/modal.hook'
 import AddNewAspect from './AddNewAspect'
 import AspectDetails from './AspectDetails'
-import { ModalContext } from '../../state'
+import { ModalContext, AuthContext } from '../../state'
 import CreateShortTermConsideration from './CreateShortTermConsideration'
 import CreateLongTermConsideration from './CreateLongTermConsideration'
 import AuthModal from './AuthModal'
-import { AuthContext } from '../../state'
 import ExplainerModal from './ExplainerModal'
 
 const ModalConductor = () => {

@@ -10,8 +10,7 @@ import Hub from './src/pages/Hub'
 import ModalConductor from './src/components/Modals/ModalConductor'
 import { ThemeContextProvider } from './src/state/theme.context'
 
-const App = () => {
-  return (
+const App = () => (
     <AuthContextProvider>
       <ModalContextProvider>
         <AspectsContextProvider>
@@ -29,6 +28,5 @@ const App = () => {
       </ModalContextProvider>
     </AuthContextProvider>
   )
-}
 
 export default App

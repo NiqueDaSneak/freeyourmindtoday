@@ -1,4 +1,4 @@
-import React, { useContext, createContext, useReducer, useEffect } from 'react'
+import React, { createContext, useReducer, useEffect } from 'react'
 // import useThunkReducer from 'react-hook-thunk-reducer'
 import firebase from '../../firebase'
 // import { ModalContext } from '../state/modal.context'
@@ -53,8 +53,7 @@ export const AuthContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   // const [modalState, modalDispatch] = useContext(ModalContext)
 
-  const onAuthStateChange = () => {
-    return firebase.auth().onAuthStateChanged(user => {
+  const onAuthStateChange = () => firebase.auth().onAuthStateChanged(user => {
       if (user) {
         console.log('The user is logged in')
         dispatch({
@@ -65,7 +64,6 @@ export const AuthContextProvider = ({ children }) => {
         console.log('The user is not logged in')
       }
     })
-  }
   
   useEffect(() => {
     const unsubscribe = onAuthStateChange()

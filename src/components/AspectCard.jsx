@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { Text, View, TouchableOpacity } from 'react-native'
 import { theme } from '../assets/utils'
 import { ModalContext, ThemeContext } from '../state'
 
@@ -56,8 +56,7 @@ const AspectCard = ({ aspect, creator }) => {
           width: '100%', 
           borderTopLeftRadius: 15, 
           borderTopRightRadius: 15, 
-        }}>
-        </View>
+        }} />
         <View style={{
           backgroundColor: theme.layout.scheme[colorScheme].textContainer, 
           color: 'white',

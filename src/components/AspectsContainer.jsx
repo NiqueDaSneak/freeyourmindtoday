@@ -1,11 +1,9 @@
 import React, { useContext } from 'react'
-import { Image, StyleSheet, View, Text, FlatList, Button } from 'react-native'
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
+import { ScrollView, StyleSheet, View, Text, FlatList } from 'react-native'
+// import { TouchableOpacity } from 'react-native-gesture-handler'
 import { theme } from '../assets/utils'
 import AspectCard from './AspectCard'
 import { AspectsContext, ModalContext, ExplainersContext, ThemeContext } from '../state'
-import PropTypes from 'prop-types'
-import showAspectsTooltip from './Modals/showAspectsHelper'
 import HelpDropdown from './HelpDropdown'
 
 const AspectsContainer = () => {
@@ -39,7 +37,7 @@ const AspectsContainer = () => {
 }
 
 const Container = ({ children, modalDispatch, content, explainersDispatch, showAspectsHelper, colorScheme }) => (
-  <View style={styles.container}>
+  <View style={{paddingRight: '4%'}}>
     <View>
       <Text style={[theme.fonts.types.heading, {
         marginBottom: 20,
@@ -64,8 +62,7 @@ const Container = ({ children, modalDispatch, content, explainersDispatch, showA
       </TouchableOpacity> */}
     </View>
     <ScrollView 
-      // style={{backgroundColor: 'green'}}
-      horizontal={true} 
+      horizontal 
       showsVerticalScrollIndicator={false} 
       showsHorizontalScrollIndicator={false}
     >
@@ -73,22 +70,5 @@ const Container = ({ children, modalDispatch, content, explainersDispatch, showA
     </ScrollView>
   </View>
 )
-
-Container.propTypes = {
-  children: PropTypes.any,
-  modalDispatch: PropTypes.any
-}
-
-const styles = StyleSheet.create({
-  container: {
-    // marginTop: '10%',
-    // height: 370,
-    // paddingLeft: '4%', 
-    paddingRight: '4%', 
-    // backgroundColor: 'pink',
-    // display: 'flex',
-    // flexDirection: 'column'
-  },
-})
 
 export default AspectsContainer

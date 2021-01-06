@@ -12,10 +12,10 @@ import {
 } from 'react-native'
 import { BlurView } from 'expo-blur'
 import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha'
-import firebase, { db } from '../../../firebase'
 import fb from 'firebase'
+import firebase, { db } from '../../../firebase'
 import { theme, useKeyboard } from '../../assets/utils'
-import { AspectsContext, AuthContext, ModalContext } from '../../state'
+import { AuthContext }  from '../../state'
 import PhoneLogin from '../PhoneLogin'
 
 const AuthModal = ({ visible }) => {
@@ -46,12 +46,10 @@ const AuthModal = ({ visible }) => {
       .then(val => setFirebaseVerificationResponse(val))
   }
 
-  const confirmCode = () => {
-    return firebase.auth.PhoneAuthProvider.credential(
+  const confirmCode = () => firebase.auth.PhoneAuthProvider.credential(
       firebaseVerificationResponse,
       verifyCode
     )
-  }
   useEffect(() => {
     if (phoneLoggingIn) {
       Animated.timing(phoneNumberInputRefAnimation, {
@@ -88,10 +86,44 @@ const AuthModal = ({ visible }) => {
     }
   }, [verifyNumber])
   
+  const styles = StyleSheet.create({
+    loginIcon: {
+      resizeMode: 'contain',
+      height: 15,
+      width: 15
+    },
+    buttonsContainer: {
+      justifyContent: 'space-evenly', 
+      alignItems: 'center'
+    },
+    loginButtonContainer: {
+      width: 220,
+      height:  45,
+      borderRadius: 10,
+      backgroundColor: 'black', 
+      flexDirection: 'row',
+      justifyContent: 'space-evenly', 
+      alignItems: 'center',
+      marginTop: '10%'
+    },
+    phoneNumInput: { 
+      borderRadius: 10, 
+      fontSize: theme.fonts.sizes.medium, 
+      borderColor: 'gray', 
+      borderWidth: 1 ,
+      paddingLeft: '2%',
+      marginBottom: '4%', 
+      width: '80%',
+      textAlign: 'center',
+      padding: '2%',
+      color: 'white' 
+    },
+  })
+  
   return(
     <Modal
       animationType='fade'
-      transparent={true}
+      transparent
       visible={visible}
     >
       <BlurView tint='dark' intensity={100}  style={{
@@ -155,7 +187,7 @@ const AuthModal = ({ visible }) => {
           <Text style={{
             fontSize: theme.fonts.sizes.large,
             color: 'white' 
-          }}>What's your number?</Text>
+          }}>What is your number?</Text>
           <Text style={{
             fontSize: theme.fonts.sizes.small,
             color: 'white' 
@@ -163,8 +195,8 @@ const AuthModal = ({ visible }) => {
           <TextInput
             ref={phoneNumberInputRef}
             value={phoneNumber}
-            keyboardAppearance={'dark'}
-            returnKeyType={'next'}      
+            keyboardAppearance="dark"
+            returnKeyType="next"      
             enablesReturnKeyAutomatically    
             style={[styles.phoneNumInput]}
             placeholder=""
@@ -195,12 +227,12 @@ const AuthModal = ({ visible }) => {
           <Text style={{
             fontSize: theme.fonts.sizes.small,
             color: 'white' 
-          }}>Enter the code we've sent via text to {phoneNumber}</Text>
+          }}>Enter the code we just sent via text to {phoneNumber}</Text>
           <TextInput
             ref={verifyInputRef}
             value={verifyCode}
-            keyboardAppearance={'dark'}
-            returnKeyType={'next'}      
+            keyboardAppearance="dark"
+            returnKeyType="next"      
             enablesReturnKeyAutomatically    
             style={[styles.phoneNumInput]}
             placeholder=""
@@ -215,11 +247,11 @@ const AuthModal = ({ visible }) => {
               .signInWithCredential(credential)
               .then((result) => {
                 if (result.additionalUserInfo.isNewUser) {
-                  let newUser = {
+                  const newUser = {
                     firebaseId: result.user.uid,
                   }
                   db.collection('Users').add(newUser)
-                    .then((docRef) => {
+                    .then(() => {
                       authDispatch({
                         type: 'LOGIN_USER', 
                         id: result.user.uid
@@ -235,40 +267,5 @@ const AuthModal = ({ visible }) => {
     </Modal>
   )
 }
-
-const styles = StyleSheet.create({
-  loginIcon: {
-    resizeMode: 'contain',
-    height: 15,
-    width: 15
-  },
-  buttonsContainer: {
-    justifyContent: 'space-evenly', 
-    alignItems: 'center'
-  },
-  loginButtonContainer: {
-    width: 220,
-    height:  45,
-    borderRadius: 10,
-    backgroundColor: 'black', 
-    flexDirection: 'row',
-    justifyContent: 'space-evenly', 
-    alignItems: 'center',
-    marginTop: '10%'
-  },
-  phoneNumInput: { 
-    borderRadius: 10, 
-    fontSize: theme.fonts.sizes.medium, 
-    borderColor: 'gray', 
-    borderWidth: 1 ,
-    paddingLeft: '2%',
-    marginBottom: '4%', 
-    width: '80%',
-    textAlign: 'center',
-    padding: '2%',
-    color: 'white' 
-  },
-
-})
 
 export default AuthModal

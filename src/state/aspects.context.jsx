@@ -1,5 +1,4 @@
 import React, { useReducer, createContext, useEffect, useContext } from 'react'
-import PropTypes from 'prop-types'
 import { db } from '../../firebase'
 import { AuthContext } from './auth.context'
 
@@ -52,12 +51,12 @@ export const AspectsContextProvider = ({ children }) => {
       type: 'LOADING_ASPECTS',
       value: true 
     })
-    let unloadedAspects = []
-    let fbAspects =  db.collection('Aspects').where('userId', '==', activeUser.id)
+    const unloadedAspects = []
+    const fbAspects =  db.collection('Aspects').where('userId', '==', activeUser.id)
     
     fbAspects.get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        let aspect = {
+        const aspect = {
           id: doc.id,
           ...doc.data()
         }
@@ -80,7 +79,7 @@ export const AspectsContextProvider = ({ children }) => {
   useEffect(() => {
     if (state.needsSaved !== null) {
 
-      let newAspect = {
+      const newAspect = {
         userId: authState.activeUser.id,
         createdAt: Date.now(),
         completed: false,
@@ -105,8 +104,4 @@ export const AspectsContextProvider = ({ children }) => {
       {children}
     </AspectsContext.Provider>
   )
-}
-
-AspectsContextProvider.propTypes = {
-  children: PropTypes.any
 }

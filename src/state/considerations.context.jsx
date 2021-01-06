@@ -90,10 +90,10 @@ export const ConsiderationsContextProvider = ({ children }) => {
   const { activeUser, isAuthenticated } = authState
 
   const getConsiderationsOnInitialLoad = () => {
-    let unloadedLongConsiderations = []
-    let unloadedShortConsiderations = []
-    let fbLongConsiderations =  db.collection('Considerations').where('userId', '==', activeUser.id).where('type', '==', 'long')
-    let fbShortConsiderations =  db.collection('Considerations').where('userId', '==', activeUser.id).where('type', '==', 'short')
+    const unloadedLongConsiderations = []
+    const unloadedShortConsiderations = []
+    const fbLongConsiderations =  db.collection('Considerations').where('userId', '==', activeUser.id).where('type', '==', 'long')
+    const fbShortConsiderations =  db.collection('Considerations').where('userId', '==', activeUser.id).where('type', '==', 'short')
 
     dispatch({
       type: 'LOADING_CONSIDERATIONS',
@@ -101,7 +101,7 @@ export const ConsiderationsContextProvider = ({ children }) => {
     })
     fbLongConsiderations.get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        let consideration = {
+        const consideration = {
           id: doc.id,
           ...doc.data()
         }
@@ -119,7 +119,7 @@ export const ConsiderationsContextProvider = ({ children }) => {
     })
     fbShortConsiderations.get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        let consideration = {
+        const consideration = {
           id: doc.id,
           ...doc.data()
         }
@@ -149,9 +149,9 @@ export const ConsiderationsContextProvider = ({ children }) => {
     // need to set id here
     if (state.needsSaved.value) {
       const { type, considerationData } = state.needsSaved
-      let newConsideration = {
+      const newConsideration = {
         userId: activeUser.id,
-        type: type,
+        type,
         createdAt: Date.now(),
         completed: false,
         deleted: false,
@@ -159,7 +159,7 @@ export const ConsiderationsContextProvider = ({ children }) => {
       }
       db.collection('Considerations').add(newConsideration)
         .then((docRef) => {
-          let withId = {
+          const withId = {
             ...newConsideration,
             id: docRef.id
           }

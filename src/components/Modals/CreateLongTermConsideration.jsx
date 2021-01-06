@@ -15,13 +15,11 @@ import { BlurView } from 'expo-blur'
 import { Picker } from '@react-native-picker/picker'
 
 import { theme, useKeyboard } from '../../assets/utils'
-import { AspectsContext, ModalContext, AuthContext } from '../../state'
-import { ConsiderationsContext } from '../../state'
+import { AspectsContext, ModalContext, AuthContext, ConsiderationsContext } from '../../state'
 
 const CreateLongTermConsideration = ({ visible }) => {
   const [authState, authDispatch] = useContext(AuthContext)
   const { activeUser } = authState
-
   const [modalState, modalDispatch] = useContext(ModalContext)
   const [considerationsState, considerationsDispatch] = useContext(ConsiderationsContext)
   const [keyboardHeight] = useKeyboard()
@@ -83,14 +81,14 @@ const CreateLongTermConsideration = ({ visible }) => {
   }
 
   const submitNewConsideration = () => {
-    let newConsideration = {
+    const newConsideration = {
       title: considerationText,
       aspectId: aspectPicker
     }
     considerationsDispatch({
       type: 'ADD_NEW',
       considerationType: 'long',
-      newConsideration: newConsideration,
+      newConsideration,
       user: activeUser
     })   
     modalDispatch({
@@ -98,11 +96,51 @@ const CreateLongTermConsideration = ({ visible }) => {
     })
     resetForm()
   }
-
+  
+  const styles = StyleSheet.create({
+    titleContainer: {
+      width: '100%',
+      marginTop: 'auto',
+      
+      display: 'flex',
+      alignItems: 'center',
+      position: 'absolute'
+    },
+    titleInput: { 
+      borderRadius: 10, 
+      fontSize: theme.fonts.sizes.medium, 
+      borderColor: 'gray', 
+      borderWidth: 1 ,
+      paddingLeft: '2%',
+      marginBottom: '4%', 
+      width: '80%',
+      textAlign: 'center',
+      padding: '2%',
+    },
+    importanceContainer: {
+      width: '100%',
+      marginTop: 'auto',
+      display: 'flex',
+      alignItems: 'center',
+      position: 'absolute'
+    },
+    importanceInput: { 
+      borderRadius: 10, 
+      height: 80, 
+      width: '80%',
+      marginBottom: '4%', 
+      fontSize: theme.fonts.sizes.small, 
+      borderColor: 'gray', 
+      borderWidth: 1,
+      padding: '4%',
+      color: 'white',
+    }
+  })
+  
   return(
     <Modal
       animationType='slide'
-      transparent={true}
+      transparent
       visible={visible}
       onRequestClose={() => {
         Alert.alert('Modal has been closed.')
@@ -129,10 +167,10 @@ const CreateLongTermConsideration = ({ visible }) => {
             ref={inputRef}
             blurOnSubmit
             maxLength={85}
-            keyboardAppearance={'dark'}
-            returnKeyType={'next'}  
+            keyboardAppearance="dark"
+            returnKeyType="next"  
             enablesReturnKeyAutomatically        
-            multiline={true}
+            multiline
             numberOfLines={4}
             style={styles.importanceInput}
             onChangeText={text => setConsiderationText(text)}
@@ -199,45 +237,5 @@ const CreateLongTermConsideration = ({ visible }) => {
     </Modal>
   )
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    width: '100%',
-    marginTop: 'auto',
-    
-    display: 'flex',
-    alignItems: 'center',
-    position: 'absolute'
-  },
-  titleInput: { 
-    borderRadius: 10, 
-    fontSize: theme.fonts.sizes.medium, 
-    borderColor: 'gray', 
-    borderWidth: 1 ,
-    paddingLeft: '2%',
-    marginBottom: '4%', 
-    width: '80%',
-    textAlign: 'center',
-    padding: '2%',
-  },
-  importanceContainer: {
-    width: '100%',
-    marginTop: 'auto',
-    display: 'flex',
-    alignItems: 'center',
-    position: 'absolute'
-  },
-  importanceInput: { 
-    borderRadius: 10, 
-    height: 80, 
-    width: '80%',
-    marginBottom: '4%', 
-    fontSize: theme.fonts.sizes.small, 
-    borderColor: 'gray', 
-    borderWidth: 1,
-    padding: '4%',
-    color: 'white',
-  }
-})
 
 export default CreateLongTermConsideration

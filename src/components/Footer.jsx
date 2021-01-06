@@ -6,18 +6,6 @@ import {
   TouchableOpacity, 
 } from 'react-native'
 import { theme } from '../assets/utils'
-// import {useModal} from '../hooks/modal.hook'
-
-const Footer = () => {
-  
-  return(
-    <View style={styles.footer}>
-      <TouchableOpacity onPress={() => console.log('pressed')}>
-        <Text style={styles.plus}>+</Text>
-      </TouchableOpacity>
-    </View>
-  )
-}
 
 const styles = StyleSheet.create({
   footer: {
@@ -34,5 +22,12 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   }
 })
+const Footer = () => (
+    <View style={styles.footer}>
+      <TouchableOpacity onPress={() => console.log('pressed')}>
+        <Text style={styles.plus}>+</Text>
+      </TouchableOpacity>
+    </View>
+)
 
 export default Footer

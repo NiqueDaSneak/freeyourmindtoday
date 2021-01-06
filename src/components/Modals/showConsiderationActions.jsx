@@ -1,16 +1,11 @@
 import { Alert } from 'react-native'
 
 const showConsiderationActions = ( modalDispatch, considerationDispatch, type, data ) => {
-  console.log('id: ' + data.id)
   const alertBodyText = type === 'long' ? `${data.title}` : `${data.title}\n\n${data.importanceStatement}`
   Alert.alert(
     'Consideration Details',
     alertBodyText,
     [
-      // {
-      //   text: 'Delete',
-      //   onPress: () => console.log('Learn More')
-      // },
       {
         text: 'Mark As Complete',
         onPress: () => considerationDispatch({
