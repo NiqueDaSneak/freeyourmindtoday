@@ -2,9 +2,8 @@ import React, {
   useContext 
 } from 'react'
 import {
-  ScrollView, StyleSheet, View, Text, FlatList 
+  ScrollView, View, Text, FlatList 
 } from 'react-native'
-// import { TouchableOpacity } from 'react-native-gesture-handler'
 import {
   theme 
 } from '../assets/utils'
@@ -13,8 +12,6 @@ import {
   AspectsContext, ModalContext, ExplainersContext, ThemeContext 
 } from '../state'
 import HelpDropdown from './HelpDropdown'
-import CreatorCard from './CreatorCard'
-import ArchiveToggle from './ArchiveToggle'
 import ItemOptions from './ItemOptions'
 
 const AspectsContainer = () => {
@@ -28,10 +25,7 @@ const AspectsContainer = () => {
   const { colorScheme } = themeState
 
   return(
-    <View style={{
-      // paddingRight: '4%'
-      // height: 500,
-    }}>
+    <View>
       <View>
         <Text style={[theme.fonts.types.heading, {
           marginBottom: 20,
@@ -47,9 +41,6 @@ const AspectsContainer = () => {
       <ScrollView 
         contentContainerStyle={{
           marginTop: 10
-          // backgroundColor: 'red',
-          // display: 'flex',
-          // justifyContent: 'space-between'
         }}
         horizontal 
         showsVerticalScrollIndicator={false} 
