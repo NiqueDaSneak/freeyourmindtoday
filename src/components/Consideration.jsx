@@ -1,19 +1,19 @@
 import React, {
- useContext 
+  useContext 
 } from 'react'
 import {
- View, TouchableOpacity, Text, StyleSheet 
+  View, TouchableOpacity, Text, StyleSheet 
 } from 'react-native'
 import {
- theme 
+  theme 
 } from '../assets/utils'
 import {
- ConsiderationsContext, ModalContext, ThemeContext 
+  ConsiderationsContext, ModalContext, ThemeContext 
 } from '../state'
 import showConsiderationActions from './Modals/showConsiderationActions'
 
 const Consideration = ({
- style, data, type, disabled 
+  style, data, type, disabled 
 }) => {
   const [modalState, modalDispatch] = useContext(ModalContext)
   const [considerationState, considerationDispatch] = useContext(ConsiderationsContext)

@@ -1,8 +1,8 @@
 import React, {
-  useContext, useState 
+  useContext 
 } from 'react'
 import {
-  Text, View, TouchableOpacity, Image 
+  Text, View, TouchableOpacity 
 } from 'react-native'
 import {
   theme 

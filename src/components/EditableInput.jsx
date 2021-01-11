@@ -13,39 +13,39 @@ const EditableInput = ({ aspect, editableValue, size }) => {
   const [inputValue, setInputValue] = useState(editableValue)
 
   const EditToggle = ({ type, editable }) => editable ? (
-      <TouchableOpacity onPress={() => {
-        setEditable(false)
-      }}>
-        <Image 
-          resizeMode="contain"
-          resizeMethod="resize"
-          style={{
-            resizeMode: 'contain',
-            marginLeft: 30,
-            height: 30,
-            width: 30,
-            marginBottom: 20
-          }} 
-          // will be save button
-          source={require('../assets/check.png')} />
-      </TouchableOpacity> 
-    ) : (
-      <TouchableOpacity onPress={() => {
-        setEditable(true)
-      }}>
-        <Image 
-          resizeMode="contain"
-          resizeMethod="resize"
-          style={{
-            resizeMode: 'contain',
-            marginLeft: 30,
-            height: 30,
-            width: 30,
-            marginBottom: 20
-          }} 
-          source={require('../assets/edit.png')} />
-      </TouchableOpacity> 
-    )
+    <TouchableOpacity onPress={() => {
+      setEditable(false)
+    }}>
+      <Image 
+        resizeMode="contain"
+        resizeMethod="resize"
+        style={{
+          resizeMode: 'contain',
+          marginLeft: 30,
+          height: 30,
+          width: 30,
+          marginBottom: 20
+        }} 
+        // will be save button
+        source={require('../assets/check.png')} />
+    </TouchableOpacity> 
+  ) : (
+    <TouchableOpacity onPress={() => {
+      setEditable(true)
+    }}>
+      <Image 
+        resizeMode="contain"
+        resizeMethod="resize"
+        style={{
+          resizeMode: 'contain',
+          marginLeft: 30,
+          height: 30,
+          width: 30,
+          marginBottom: 20
+        }} 
+        source={require('../assets/edit.png')} />
+    </TouchableOpacity> 
+  )
   return(
     <View style={{
       display: 'flex',

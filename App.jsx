@@ -11,22 +11,22 @@ import ModalConductor from './src/components/Modals/ModalConductor'
 import { ThemeContextProvider } from './src/state/theme.context'
 
 const App = () => (
-    <AuthContextProvider>
-      <ModalContextProvider>
-        <AspectsContextProvider>
-          <ConsiderationsContextProvider>
-            <ExplainersContextProvider>
-              <ThemeContextProvider>
-                <Layout>
-                  <Hub />
-                </Layout>
-                <ModalConductor />
-              </ThemeContextProvider>
-            </ExplainersContextProvider>
-          </ConsiderationsContextProvider>
-        </AspectsContextProvider>
-      </ModalContextProvider>
-    </AuthContextProvider>
-  )
+  <AuthContextProvider>
+    <ModalContextProvider>
+      <AspectsContextProvider>
+        <ConsiderationsContextProvider>
+          <ExplainersContextProvider>
+            <ThemeContextProvider>
+              <Layout>
+                <Hub />
+              </Layout>
+              <ModalConductor />
+            </ThemeContextProvider>
+          </ExplainersContextProvider>
+        </ConsiderationsContextProvider>
+      </AspectsContextProvider>
+    </ModalContextProvider>
+  </AuthContextProvider>
+)
 
 export default App
