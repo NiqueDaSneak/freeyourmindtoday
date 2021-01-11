@@ -14,6 +14,8 @@ import {
 } from '../state'
 import HelpDropdown from './HelpDropdown'
 import CreatorCard from './CreatorCard'
+import ArchiveToggle from './ArchiveToggle'
+import ItemOptions from './ItemOptions'
 
 const AspectsContainer = () => {
 
@@ -53,11 +55,12 @@ const AspectsContainer = () => {
         showsVerticalScrollIndicator={false} 
         showsHorizontalScrollIndicator={false}
       >
-        <CreatorCard
-          total={aspects.length} onPress={() => modalDispatch({
+        <ItemOptions
+          creatorOnPress={() => modalDispatch({
             type: 'OPEN_MODAL',
             modalType: 'ADD_NEW_ASPECT'
-          })}/>
+          })}
+          archiveTotal={aspects.length} />
         <FlatList
           key={aspects.length}        
           keyExtractor={(item, index) => `${index}`}

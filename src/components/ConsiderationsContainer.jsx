@@ -5,7 +5,7 @@ import { theme } from '../assets/utils'
 import { AspectsContext, ModalContext, ConsiderationsContext, ExplainersContext, ThemeContext } from '../state'
 import Consideration from './Consideration'
 import HelpDropdown from './HelpDropdown'
-import CreatorCard from './CreatorCard'
+import ItemOptions from './ItemOptions'
 
 const ConsiderationsContainer = ({ type, singleAspectId, hideHelper }) => {
 
@@ -53,12 +53,10 @@ const ConsiderationsContainer = ({ type, singleAspectId, hideHelper }) => {
   return(
     <View style={{marginBottom: 20}}>
       <View style={{
-        // backgroundColor: 'purple',
         display: 'flex',
         flexDirection: 'row', 
         alignItems: 'center',
         marginBottom: 20,  
-        // marginTop: '4%'
       }}>
         <View style={{
           display: 'flex',
@@ -82,16 +80,21 @@ const ConsiderationsContainer = ({ type, singleAspectId, hideHelper }) => {
         </View>
       </View>
       <ScrollView 
-        // contentContainerStyle={}
         horizontal 
         showsVerticalScrollIndicator={false} 
         showsHorizontalScrollIndicator={false}
       >
         {!singleAspectId && (
-          <CreatorCard completed={0} total={getConsiderations(type).length} onPress={() => modalDispatch({
-            type: 'OPEN_MODAL',
-            modalType: type === 'short' ? 'ADD_SHORT_CONSIDERATION' : 'ADD_LONG_CONSIDERATION' 
-          })}/>
+          <>
+            <ItemOptions
+              creatorOnPress={() => modalDispatch({
+                type: 'OPEN_MODAL',
+                modalType: type === 'short' ? 'ADD_SHORT_CONSIDERATION' : 'ADD_LONG_CONSIDERATION' 
+              })} 
+              archiveCompleted={0}
+              archiveTotal={getConsiderations(type).length}
+            />
+          </>
         )}
         <FlatList 
           contentContainerStyle={{
@@ -103,7 +106,9 @@ const ConsiderationsContainer = ({ type, singleAspectId, hideHelper }) => {
           numColumns={Math.ceil(getConsiderations(type).length / 2)}
           data={renderData()}
           renderItem={({ item: consideration }) => (
-            <Consideration type={consideration.type} data={consideration} />
+            <Consideration
+              type={consideration.type}
+              data={consideration} />
           )}
         />
       </ScrollView>
