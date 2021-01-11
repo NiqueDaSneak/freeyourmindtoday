@@ -17,15 +17,32 @@ const ModalConductor = () => {
   const [authState, authDispatch] = useContext(AuthContext)
   const { isAuthenticated } = authState
 
+  const closeModal = () => {
+    dispatch({type: 'CLOSE_MODAL'})
+  }
   return(
     <>
-      <AuthModal visible={isAuthenticated !== true} />
-      <AddNewAspect visible={modalType === 'ADD_NEW_ASPECT'} />
-      <AspectDetails visible={modalType === 'GET_ASPECT_DETAILS'} />
-      <CreateShortTermConsideration visible={modalType === 'ADD_SHORT_CONSIDERATION'} />
-      <CreateLongTermConsideration visible={modalType === 'ADD_LONG_CONSIDERATION'} />
-      <ExplainerModal visible={modalType === 'SHOW_EXPLAINER'} />
-      <ArchiveModal visible={modalType === 'ARCHIVE'} />
+      <AuthModal
+        visible={isAuthenticated !== true} 
+        close={() => closeModal()} />
+      <AddNewAspect
+        visible={modalType === 'ADD_NEW_ASPECT'} 
+        close={() => closeModal()} />
+      <AspectDetails
+        visible={modalType === 'GET_ASPECT_DETAILS'} 
+        close={() => closeModal()} />
+      <CreateShortTermConsideration
+        visible={modalType === 'ADD_SHORT_CONSIDERATION'} 
+        close={() => closeModal()} />
+      <CreateLongTermConsideration
+        visible={modalType === 'ADD_LONG_CONSIDERATION'} 
+        close={() => closeModal()} />
+      <ExplainerModal
+        visible={modalType === 'SHOW_EXPLAINER'} 
+        close={() => closeModal()} />
+      <ArchiveModal
+        visible={modalType === 'ARCHIVE'}
+        close={() => closeModal()} />
     </>
   )
 }

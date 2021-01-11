@@ -17,7 +17,7 @@ import { Picker } from '@react-native-picker/picker'
 import { theme, useKeyboard } from '../../assets/utils'
 import { AspectsContext, ModalContext, AuthContext, ConsiderationsContext } from '../../state'
 
-const CreateLongTermConsideration = ({ visible }) => {
+const CreateLongTermConsideration = ({ visible, close }) => {
   const [authState, authDispatch] = useContext(AuthContext)
   const { activeUser } = authState
   const [modalState, modalDispatch] = useContext(ModalContext)
@@ -146,10 +146,13 @@ const CreateLongTermConsideration = ({ visible }) => {
         Alert.alert('Modal has been closed.')
       }}
     >
-      <BlurView tint='dark' intensity={100} style={{
-        height: '100%',
-        width: '100%' 
-      }}>
+      <BlurView
+        tint='dark'
+        intensity={100}
+        style={{
+          height: '100%',
+          width: '100%' 
+        }}>
         <Animated.View 
           style={[styles.titleContainer, {
             bottom: keyboardHeight + 30,
@@ -181,17 +184,24 @@ const CreateLongTermConsideration = ({ visible }) => {
             }
             }
           /> 
-          <Button disabled={!(considerationText.split(' ').length > 4)} color="green" title="Next" onPress={() => {
-            setQuestionIndex(questionIndex + 1)
-            Keyboard.dismiss()
-          }
-          } />
-          <Button color="red" title="Cancel" onPress={() => {
-            modalDispatch({
-              type: 'CLOSE_MODAL'
-            })
-            resetForm()
-          }} />
+          <Button
+            disabled={!(considerationText.split(' ').length > 4)}
+            color="green"
+            title="Next"
+            onPress={() => {
+              setQuestionIndex(questionIndex + 1)
+              Keyboard.dismiss()
+            }
+            } />
+          <Button
+            color="red"
+            title="Cancel"
+            onPress={() => {
+              modalDispatch({
+                type: 'CLOSE_MODAL'
+              })
+              resetForm()
+            }} />
         </Animated.View>
         <Animated.View 
           style={[styles.importanceContainer, {
@@ -219,18 +229,27 @@ const CreateLongTermConsideration = ({ visible }) => {
               }
               }
             >
-              <Picker.Item label='No Match' value='No Match' />
+              <Picker.Item
+                label='No Match'
+                value='No Match' />
               {aspects.map(aspect => (
-                <Picker.Item key={aspect?.title} label={aspect?.title} value={aspect?.id} />
+                <Picker.Item
+                  key={aspect?.title}
+                  label={aspect?.title}
+                  value={aspect?.id} />
               ))}
             </Picker>
-            <Button color="green" title="Create" onPress={() => submitNewConsideration()} />
-            <Button color="red" title="Cancel" onPress={() => {
-              modalDispatch({
-                type: 'CLOSE_MODAL'
-              })
-              resetForm()
-            }} />
+            <Button
+              color="green"
+              title="Create"
+              onPress={() => submitNewConsideration()} />
+            <Button
+              color="red"
+              title="Cancel"
+              onPress={() => {
+                close()
+                resetForm()
+              }} />
           </View>
         </Animated.View>
       </BlurView>

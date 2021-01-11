@@ -14,7 +14,7 @@ import { BlurView } from 'expo-blur'
 import { theme, useKeyboard } from '../../assets/utils'
 import { AspectsContext, ModalContext } from '../../state'
 
-const AddNewAspect = ({ visible }) => {
+const AddNewAspect = ({ visible, close }) => {
   const [modalState, modalDispatch] = useContext(ModalContext)
   const [aspectsState, aspectsDispatch] = useContext(AspectsContext)
   const [keyboardHeight] = useKeyboard()
@@ -137,10 +137,12 @@ const AddNewAspect = ({ visible }) => {
         Alert.alert('Modal has been closed.')
       }}
     >
-      <BlurView intensity={100} style={{
-        height: '100%',
-        width: '100%' 
-      }}>
+      <BlurView
+        intensity={100}
+        style={{
+          height: '100%',
+          width: '100%' 
+        }}>
         <Animated.View 
           style={[styles.titleContainer, {
             bottom: keyboardHeight + 30,
@@ -164,13 +166,20 @@ const AddNewAspect = ({ visible }) => {
             placeholder=""
             onSubmitEditing={() => setQuestionIndex(questionIndex + 1)}
           /> 
-          <Button disabled={!(aspectTitle.length > 0)} color="green" title="Next" onPress={() => setQuestionIndex(questionIndex + 1)} />
-          <Button color="red" title="Cancel" onPress={() => {
-            modalDispatch({
-              type: 'CLOSE_MODAL'
-            })
-            resetForm()
-          }} />
+          <Button
+            disabled={!(aspectTitle.length > 0)}
+            color="green"
+            title="Next"
+            onPress={() => setQuestionIndex(questionIndex + 1)} />
+          <Button
+            color="red"
+            title="Cancel"
+            onPress={() => {
+              modalDispatch({
+                type: 'CLOSE_MODAL'
+              })
+              resetForm()
+            }} />
         </Animated.View>
         <Animated.View 
           style={[styles.importanceContainer, {
@@ -193,13 +202,18 @@ const AddNewAspect = ({ visible }) => {
             onChangeText={text => setImportance(text)}
             onSubmitEditing={() => submitNewAspect()}
           />
-          <Button disabled={!(importance.length > 25)} color="green" title="Create" onPress={() => submitNewAspect()} />
-          <Button color="red" title="Cancel" onPress={() => {
-            modalDispatch({
-              type: 'CLOSE_MODAL'
-            })
-            resetForm()
-          }} />
+          <Button
+            disabled={!(importance.length > 25)}
+            color="green"
+            title="Create"
+            onPress={() => submitNewAspect()} />
+          <Button
+            color="red"
+            title="Cancel"
+            onPress={() => {
+              close()
+              resetForm()
+            }} />
         </Animated.View>
       </BlurView>
     </Modal>

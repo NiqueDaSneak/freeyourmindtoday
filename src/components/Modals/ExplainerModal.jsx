@@ -3,7 +3,7 @@ import { Modal } from 'react-native'
 import { BlurView } from 'expo-blur'
 import Carousel from '../Carousel/index.tsx'
 
-const ExplainerModal = ({ visible }) => (
+const ExplainerModal = ({ visible, close }) => (
     <Modal
       animationType='fade'
       transparent

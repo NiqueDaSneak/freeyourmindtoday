@@ -12,7 +12,7 @@ import { theme, useKeyboard } from '../../assets/utils'
 import { AspectsContext, ModalContext } from '../../state'
 import ConsiderationsContainer from '../ConsiderationsContainer'
 
-const AspectDetails = ({ visible }) => {
+const AspectDetails = ({ visible, close }) => {
   const [modalState, modalDispatch] = useContext(ModalContext)
   const aspect = modalState.modalData
   const [titleEditable, setTitleEditable] = useState(false)
@@ -24,10 +24,13 @@ const AspectDetails = ({ visible }) => {
       transparent
       visible={visible}
     >
-      <BlurView tint='dark' intensity={100} style={{
-        height: '100%',
-        width: '100%', 
-      }}>
+      <BlurView
+        tint='dark'
+        intensity={100}
+        style={{
+          height: '100%',
+          width: '100%', 
+        }}>
         
         <View 
           style={{
@@ -47,20 +50,26 @@ const AspectDetails = ({ visible }) => {
               marginBottom: '4%', 
               textAlign: 'left'
             }}>Aspect Title</Text>
-            <EditableInput aspect={aspect} editableValue={aspect?.title} />
+            <EditableInput
+              aspect={aspect}
+              editableValue={aspect?.title} />
             <Text style={{
               fontSize: theme.fonts.sizes.medium,
               marginBottom: '4%', 
               color: 'white',
             }}>Why is this important to you?</Text>
-            <EditableInput aspect={aspect} editableValue={aspect?.importanceStatement} size="large" />
-            <ConsiderationsContainer hideHelper singleAspectId={aspect?.id} />
-            <Button disabled={importanceEditable || titleEditable} 
-              color="red" 
-              title="Go Back" 
-              onPress={() => modalDispatch({
-                type: 'CLOSE_MODAL'
-              })} />
+            <EditableInput
+              aspect={aspect}
+              editableValue={aspect?.importanceStatement}
+              size="large" />
+            <ConsiderationsContainer
+              hideHelper
+              singleAspectId={aspect?.id} />
+            <Button
+              disabled={importanceEditable || titleEditable}
+              color="red"
+              title="Go Back"
+              onPress={close} />
           </ScrollView>
         </View>
       </BlurView>
