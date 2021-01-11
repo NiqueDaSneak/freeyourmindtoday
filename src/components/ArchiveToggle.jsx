@@ -1,6 +1,6 @@
 import React, {useContext} from 'react'
 import { View, Image, Text, TouchableOpacity } from 'react-native'
-import { ThemeContext } from '../state'
+import { ThemeContext, ModalContext } from '../state'
 import {
   theme 
 } from '../assets/utils'
@@ -8,9 +8,10 @@ import {
 const ArchiveToggle = ({completed, total}) => {
   const [themeState] = useContext(ThemeContext)
   const { colorScheme } = themeState
+  const [modalState, modalDispatch] = useContext(ModalContext)
 
   return (    
-    <TouchableOpacity onPress={() => console.log('hello')}>
+    <TouchableOpacity onPress={() => modalDispatch({type: 'OPEN_MODAL', modalType: 'ARCHIVE'})}>
       <View style={{
         backgroundColor: theme.layout.scheme[colorScheme].third,
         width: '100%',

@@ -7,6 +7,7 @@ import CreateShortTermConsideration from './CreateShortTermConsideration'
 import CreateLongTermConsideration from './CreateLongTermConsideration'
 import AuthModal from './AuthModal'
 import ExplainerModal from './ExplainerModal'
+import ArchiveModal from './ArchiveModal'
 
 const ModalConductor = () => {
 
@@ -24,6 +25,7 @@ const ModalConductor = () => {
       <CreateShortTermConsideration visible={modalType === 'ADD_SHORT_CONSIDERATION'} />
       <CreateLongTermConsideration visible={modalType === 'ADD_LONG_CONSIDERATION'} />
       <ExplainerModal visible={modalType === 'SHOW_EXPLAINER'} />
+      <ArchiveModal visible={modalType === 'ARCHIVE'} />
     </>
   )
 }
