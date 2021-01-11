@@ -6,17 +6,19 @@ export const theme = {
     scheme: {
       dark: {
         background: '#212121',
-        secondaryBackground: '#424242',
+        secondary: '#424242',
+        third: '#9E9E9E',
         textColor: '#BDBDBD',
         textContainer: 'black',
-        accentGrey: '#757575'
+        accentGrey: '#757575',
       },
       light: {
         background: 'white',
-        secondaryBackground: '#EEEEEE',
+        secondary: '#EEEEEE',
+        third: '#9E9E9E',
         textColor: 'black',
         textContainer: '#E0E0E0',
-        accentGrey: '#757575'
+        accentGrey: '#757575',
       },
     },
     flex: {

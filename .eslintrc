@@ -1,0 +1,30 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+  },
+  "extends": [
+    "plugin:react/recommended",
+    "airbnb",
+    "prettier",
+    "prettier/react"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true,
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module",
+  },
+  "plugins": [
+    "react",
+    "react-hooks",
+    "prettier"
+  ],
+  "rules": {
+    "indent": ["error", 2],
+    "no-inline-comments": "error",
+    "react/jsx-first-prop-new-line": "error",
+    "react/jsx-max-props-per-line": [1, {"maximum": 1}]
+  }
+}

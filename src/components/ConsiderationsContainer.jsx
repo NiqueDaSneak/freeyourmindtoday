@@ -5,6 +5,7 @@ import { theme } from '../assets/utils'
 import { AspectsContext, ModalContext, ConsiderationsContext, ExplainersContext, ThemeContext } from '../state'
 import Consideration from './Consideration'
 import HelpDropdown from './HelpDropdown'
+import ItemOptions from './ItemOptions'
 
 const ConsiderationsContainer = ({ type, singleAspectId, hideHelper }) => {
 
@@ -38,7 +39,7 @@ const ConsiderationsContainer = ({ type, singleAspectId, hideHelper }) => {
       const shortMatches = shortTermConsiderations.filter(consideration => consideration.aspectId === singleAspectId)
       return shortMatches.concat(longMatches)
     } 
-      return getConsiderations(type)
+    return getConsiderations(type)
     
   }
 
@@ -46,19 +47,16 @@ const ConsiderationsContainer = ({ type, singleAspectId, hideHelper }) => {
     if (singleAspectId) {
       return 'All Considerations'
     } 
-      return type === 'long' ? 'Long Term Considerations' : 'Short Term Considerations'
-    
-
+    return type === 'long' ? 'Long Term Considerations' : 'Short Term Considerations'
   }
 
   return(
-    <View>
+    <View style={{marginBottom: 20}}>
       <View style={{
         display: 'flex',
         flexDirection: 'row', 
         alignItems: 'center',
-        paddingBottom: '4%', 
-        marginTop: '4%'
+        marginBottom: 20,  
       }}>
         <View style={{
           display: 'flex',
@@ -73,24 +71,13 @@ const ConsiderationsContainer = ({ type, singleAspectId, hideHelper }) => {
             hidden={hideHelper || disabled} 
             visible={type === 'long' ? showLongTermConsiderationsHelper : showShortTermConsiderationsHelper}
             close={() => type === 'long' ? explainersDispatch({
-                type: 'CLOSE_LONG_CONSIDERATION_HELPER' 
-              }) : explainersDispatch({
-                type: 'CLOSE_SHORT_CONSIDERATION_HELPER' 
-              })}
+              type: 'CLOSE_LONG_CONSIDERATION_HELPER' 
+            }) : explainersDispatch({
+              type: 'CLOSE_SHORT_CONSIDERATION_HELPER' 
+            })}
             text={type === 'long' ? content.longTermConsiderationsHelper : content.shortTermConsiderationsHelper} 
-            />
+          />
         </View>
-        {/* <TouchableOpacity onPress={() => showConsiderationsHelper(modalDispatch, type)}>
-          <Image 
-            resizeMode="contain"
-            resizeMethod="resize"
-            style={{
-              resizeMode: 'contain',
-              marginLeft: 10,
-              height: 20,
-              width: 20
-            }} source={require('../assets/information.png')} />
-        </TouchableOpacity> */}
       </View>
       <ScrollView 
         horizontal 
@@ -98,7 +85,16 @@ const ConsiderationsContainer = ({ type, singleAspectId, hideHelper }) => {
         showsHorizontalScrollIndicator={false}
       >
         {!singleAspectId && (
-          <Consideration disabled={disabled} creator type={type} />
+          <>
+            <ItemOptions
+              creatorOnPress={() => modalDispatch({
+                type: 'OPEN_MODAL',
+                modalType: type === 'short' ? 'ADD_SHORT_CONSIDERATION' : 'ADD_LONG_CONSIDERATION' 
+              })} 
+              archiveCompleted={0}
+              archiveTotal={getConsiderations(type).length}
+            />
+          </>
         )}
         <FlatList 
           contentContainerStyle={{
@@ -110,7 +106,9 @@ const ConsiderationsContainer = ({ type, singleAspectId, hideHelper }) => {
           numColumns={Math.ceil(getConsiderations(type).length / 2)}
           data={renderData()}
           renderItem={({ item: consideration }) => (
-            <Consideration type={consideration.type} data={consideration} />
+            <Consideration
+              type={consideration.type}
+              data={consideration} />
           )}
         />
       </ScrollView>

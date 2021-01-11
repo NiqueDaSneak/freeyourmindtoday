@@ -14,22 +14,22 @@ const HelpDropdown = ({ text, close, visible, hidden }) => {
     <View style={{
       display: visible && !hidden ? 'inherit' : 'none'
     }}>
-      <TouchableOpacity onPress={() => {
-        setIsExpanded(!isExpanded)
-      }
-      } style={{
-        maxWidth: '100%',
-        borderColor: theme.layout.scheme[colorScheme].accentGrey,
-        borderWidth:  1,
-        display: 'flex',
-        borderRadius: 15,
-        flexDirection: 'row',
-        alignItems: 'center', 
-        padding: 10,
-        marginBottom: 20,
-        justifyContent: 'space-around',
-        backgroundColor: theme.layout.scheme[colorScheme].textContainer
-      }}>
+      <TouchableOpacity
+        onPress={() => {
+          setIsExpanded(!isExpanded)
+        }
+        } style={{
+          maxWidth: '100%',
+          borderColor: theme.layout.scheme[colorScheme].accentGrey,
+          borderWidth:  1,
+          display: 'flex',
+          borderRadius: 15,
+          flexDirection: 'row',
+          alignItems: 'center', 
+          padding: 10,
+          justifyContent: 'space-around',
+          backgroundColor: theme.layout.scheme[colorScheme].textContainer
+        }}>
         <TouchableOpacity onPress={() => close()}>
           <Text style={{
             fontSize: theme.fonts.sizes.medium,
