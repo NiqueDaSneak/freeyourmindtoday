@@ -1,57 +1,64 @@
-import React, { useContext, useState } from 'react'
-import { Text, View, TouchableOpacity } from 'react-native'
-import { theme } from '../assets/utils'
-import { ModalContext, ThemeContext } from '../state'
+import React, {
+  useContext, useState 
+} from 'react'
+import {
+  Text, View, TouchableOpacity, Image 
+} from 'react-native'
+import {
+  theme 
+} from '../assets/utils'
+import {
+  ModalContext, ThemeContext 
+} from '../state'
 
 
-const AspectCard = ({ aspect, creator }) => {
+const AspectCard = ({ aspect }) => {
   const [modalState, modalDispatch] = useContext(ModalContext)
   const [themeState] = useContext(ThemeContext)
   const { colorScheme } = themeState
-  // const [isExpanded, setIsExpanded] = useState(false)
 
-  return creator ? (
-    <TouchableOpacity onPress={() => modalDispatch({
-      type: 'OPEN_MODAL',
-      modalType: 'ADD_NEW_ASPECT' 
-    })}>
-      <View style={{
-        width: 175,
-        height: 99,
+  return (
+    <TouchableOpacity
+      style={{
+        width: 180,
+        height: 130,
+        backgroundColor: theme.layout.scheme[colorScheme].secondary, 
         borderRadius: 15,
         marginRight: 20,
-        marginBottom: 60,
-        borderStyle: 'dashed',
-        borderWidth: 1,
-        borderColor: theme.layout.scheme[colorScheme].accentGrey,
-        backgroundColor: theme.layout.scheme[colorScheme].textContainer,
-        display: 'flex',
-        justifyContent: 'center', 
-        alignItems: 'center'
+        marginBottom: 30,
+      }}
+      onPress={() => modalDispatch({
+        type: 'OPEN_MODAL',
+        modalType: 'GET_ASPECT_DETAILS',
+        modalData: aspect
+      })}>
+      <View style={{height: '70%'}} />
+      <View style={{
+        backgroundColor: theme.layout.scheme[colorScheme].textContainer, 
+        color: 'white',
+        width: '100%', 
+        height: '30%',
+        borderBottomLeftRadius: 15, 
+        borderBottomRightRadius: 15,  
+        // padding: '4%'
       }}>
         <Text style={{
-          fontSize: 50,
-          color: theme.layout.scheme[colorScheme].textColor
-        }}>+</Text>
+          fontSize: theme.fonts.sizes.small,
+          color: theme.layout.scheme[colorScheme].textColor,
+          textAlign: 'center', 
+        }}>{aspect?.title}</Text>
       </View>
-    </TouchableOpacity>
 
-  ) : (
-    <TouchableOpacity onPress={() => modalDispatch({
-      type: 'OPEN_MODAL',
-      modalType: 'GET_ASPECT_DETAILS',
-      modalData: aspect
-    })}>
-      <View style={{
-        width: 175,
-        height: 99,
+      {/* <View style={{
+        width: 130,
+        height: 130,
         backgroundColor: 'white',
         borderRadius: 15,
         marginRight: 20,
         marginBottom: 60,
       }}>
         <View style={{
-          backgroundColor: theme.layout.scheme[colorScheme].secondaryBackground, 
+          backgroundColor: theme.layout.scheme[colorScheme].secondary, 
           height: '90%', 
           width: '100%', 
           borderTopLeftRadius: 15, 
@@ -71,7 +78,7 @@ const AspectCard = ({ aspect, creator }) => {
             textAlign: 'center', 
           }}>{aspect?.title}</Text>
         </View>
-      </View>
+      </View> */}
     </TouchableOpacity>
   )
 }

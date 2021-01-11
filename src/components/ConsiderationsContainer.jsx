@@ -5,6 +5,7 @@ import { theme } from '../assets/utils'
 import { AspectsContext, ModalContext, ConsiderationsContext, ExplainersContext, ThemeContext } from '../state'
 import Consideration from './Consideration'
 import HelpDropdown from './HelpDropdown'
+import CreatorCard from './CreatorCard'
 
 const ConsiderationsContainer = ({ type, singleAspectId, hideHelper }) => {
 
@@ -38,7 +39,7 @@ const ConsiderationsContainer = ({ type, singleAspectId, hideHelper }) => {
       const shortMatches = shortTermConsiderations.filter(consideration => consideration.aspectId === singleAspectId)
       return shortMatches.concat(longMatches)
     } 
-      return getConsiderations(type)
+    return getConsiderations(type)
     
   }
 
@@ -46,19 +47,18 @@ const ConsiderationsContainer = ({ type, singleAspectId, hideHelper }) => {
     if (singleAspectId) {
       return 'All Considerations'
     } 
-      return type === 'long' ? 'Long Term Considerations' : 'Short Term Considerations'
-    
-
+    return type === 'long' ? 'Long Term Considerations' : 'Short Term Considerations'
   }
 
   return(
-    <View>
+    <View style={{marginBottom: 20}}>
       <View style={{
+        // backgroundColor: 'purple',
         display: 'flex',
         flexDirection: 'row', 
         alignItems: 'center',
-        paddingBottom: '4%', 
-        marginTop: '4%'
+        marginBottom: 20,  
+        // marginTop: '4%'
       }}>
         <View style={{
           display: 'flex',
@@ -73,32 +73,25 @@ const ConsiderationsContainer = ({ type, singleAspectId, hideHelper }) => {
             hidden={hideHelper || disabled} 
             visible={type === 'long' ? showLongTermConsiderationsHelper : showShortTermConsiderationsHelper}
             close={() => type === 'long' ? explainersDispatch({
-                type: 'CLOSE_LONG_CONSIDERATION_HELPER' 
-              }) : explainersDispatch({
-                type: 'CLOSE_SHORT_CONSIDERATION_HELPER' 
-              })}
+              type: 'CLOSE_LONG_CONSIDERATION_HELPER' 
+            }) : explainersDispatch({
+              type: 'CLOSE_SHORT_CONSIDERATION_HELPER' 
+            })}
             text={type === 'long' ? content.longTermConsiderationsHelper : content.shortTermConsiderationsHelper} 
-            />
+          />
         </View>
-        {/* <TouchableOpacity onPress={() => showConsiderationsHelper(modalDispatch, type)}>
-          <Image 
-            resizeMode="contain"
-            resizeMethod="resize"
-            style={{
-              resizeMode: 'contain',
-              marginLeft: 10,
-              height: 20,
-              width: 20
-            }} source={require('../assets/information.png')} />
-        </TouchableOpacity> */}
       </View>
       <ScrollView 
+        // contentContainerStyle={}
         horizontal 
         showsVerticalScrollIndicator={false} 
         showsHorizontalScrollIndicator={false}
       >
         {!singleAspectId && (
-          <Consideration disabled={disabled} creator type={type} />
+          <CreatorCard completed={0} total={getConsiderations(type).length} onPress={() => modalDispatch({
+            type: 'OPEN_MODAL',
+            modalType: type === 'short' ? 'ADD_SHORT_CONSIDERATION' : 'ADD_LONG_CONSIDERATION' 
+          })}/>
         )}
         <FlatList 
           contentContainerStyle={{
