@@ -26,6 +26,7 @@ const ArchiveToggle = ({completed, total}) => {
             resizeMode: 'contain',
             height: 30,
             width: 30,
+            marginBottom: 10,
           }} 
           source={require('../assets/archive.png')} />
         <Text style={{
