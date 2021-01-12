@@ -12,13 +12,15 @@ const HelpDropdown = ({ text, close, visible, hidden }) => {
   const renderText = () => isExpanded ? text : `${text?.substring(0, 100)}...`
   return (
     <View style={{
-      display: visible && !hidden ? 'inherit' : 'none'
+      display: visible && !hidden ? 'inherit' : 'none',
+      zIndex: 1
     }}>
       <TouchableOpacity
         onPress={() => {
           setIsExpanded(!isExpanded)
         }
-        } style={{
+        }
+        style={{
           maxWidth: '100%',
           borderColor: theme.layout.scheme[colorScheme].accentGrey,
           borderWidth:  1,
@@ -30,9 +32,9 @@ const HelpDropdown = ({ text, close, visible, hidden }) => {
           justifyContent: 'space-around',
           backgroundColor: theme.layout.scheme[colorScheme].textContainer
         }}>
-        <TouchableOpacity onPress={() => close()}>
+        <TouchableOpacity onPress={close}>
           <Text style={{
-            fontSize: theme.fonts.sizes.medium,
+            fontSize: theme.fonts.sizes.large,
             color: theme.layout.scheme[colorScheme].textColor 
           }}>X</Text>
         </TouchableOpacity>

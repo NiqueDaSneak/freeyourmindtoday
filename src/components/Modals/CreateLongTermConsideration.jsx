@@ -191,8 +191,7 @@ const CreateLongTermConsideration = ({ visible, close }) => {
             onPress={() => {
               setQuestionIndex(questionIndex + 1)
               Keyboard.dismiss()
-            }
-            } />
+            }} />
           <Button
             color="red"
             title="Cancel"
