@@ -83,11 +83,11 @@ const CreateLongTermConsideration = ({ visible, close }) => {
   const submitNewConsideration = () => {
     const newConsideration = {
       title: considerationText,
-      aspectId: aspectPicker
+      aspectId: aspectPicker,
+      type: 'long'
     }
     considerationsDispatch({
       type: 'ADD_NEW',
-      considerationType: 'long',
       newConsideration,
       user: activeUser
     })   

@@ -114,11 +114,11 @@ const CreateShortTermConsideration = ({ visible, close }) => {
     const newConsideration = {
       title: considerationTitle,
       importanceStatement: importance,
-      aspectId: aspectPicker
+      aspectId: aspectPicker,
+      type: 'short'
     }
     considerationsDispatch({
       type: 'ADD_NEW',
-      considerationType: 'short',
       newConsideration,
       user: activeUser
     })   

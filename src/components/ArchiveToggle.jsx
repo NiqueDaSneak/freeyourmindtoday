@@ -14,8 +14,8 @@ const ArchiveToggle = ({completed, total}) => {
     <TouchableOpacity onPress={() => modalDispatch({type: 'OPEN_MODAL', modalType: 'ARCHIVE'})}>
       <View style={{
         backgroundColor: theme.layout.scheme[colorScheme].third,
-        width: '100%',
-        height: 80,
+        height: 60,
+        width: 70,
         borderRadius: 15,
         justifyContent: 'center',
         alignItems: 'center'
@@ -25,9 +25,9 @@ const ArchiveToggle = ({completed, total}) => {
           resizeMethod="resize"
           style={{
             resizeMode: 'contain',
-            height: 30,
-            width: 30,
-            marginBottom: 10,
+            height: 20,
+            width: 20,
+            marginBottom: 4,
           }} 
           source={require('../assets/archive.png')} />
         <Text style={{

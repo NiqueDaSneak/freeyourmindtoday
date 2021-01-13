@@ -8,6 +8,7 @@ import CreateLongTermConsideration from './CreateLongTermConsideration'
 import AuthModal from './AuthModal'
 import ExplainerModal from './ExplainerModal'
 import ArchiveModal from './ArchiveModal'
+import ConsiderationChooser from './ConsiderationChooser'
 
 const ModalConductor = () => {
 
@@ -43,6 +44,10 @@ const ModalConductor = () => {
       <ArchiveModal
         visible={modalType === 'ARCHIVE'}
         close={() => closeModal()} />
+      <ConsiderationChooser 
+                // visible={true}
+        visible={modalType === 'CHOOSE_CONSIDERATION_TYPE'}
+      />
     </>
   )
 }

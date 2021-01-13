@@ -12,7 +12,7 @@ const Hub = () => (
       }}>
       <AspectsContainer />
       <ConsiderationsContainer type='long' />
-      <ConsiderationsContainer type='short' />
+      {/* <ConsiderationsContainer type='short' /> */}
     </ScrollView>
   </SafeAreaView>
 )

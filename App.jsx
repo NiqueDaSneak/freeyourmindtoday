@@ -5,7 +5,7 @@ import { AspectsContextProvider } from './src/state/aspects.context'
 import { ConsiderationsContextProvider } from './src/state/considerations.context'
 import { ExplainersContextProvider } from './src/state/explainers.context'
 
-import Layout from './src/assets/Layout'
+import Layout from './src/components/Layout'
 import Hub from './src/pages/Hub'
 import ModalConductor from './src/components/Modals/ModalConductor'
 import { ThemeContextProvider } from './src/state/theme.context'

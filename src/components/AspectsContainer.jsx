@@ -1,12 +1,8 @@
-import React, {
-  useContext 
-} from 'react'
+import React, {useContext} from 'react'
 import {
   ScrollView, View, Text, FlatList 
 } from 'react-native'
-import {
-  theme 
-} from '../assets/utils'
+import {theme} from '../assets/utils'
 import AspectCard from './AspectCard'
 import {
   AspectsContext, ModalContext, ExplainersContext, ThemeContext 
@@ -17,12 +13,18 @@ import ItemOptions from './ItemOptions'
 const AspectsContainer = () => {
 
   const [aspectState] = useContext(AspectsContext)
-  const { aspects } = aspectState
+  const {
+    aspects 
+  } = aspectState
   const [modalState, modalDispatch] = useContext(ModalContext)
   const [explainersState, explainersDispatch] = useContext(ExplainersContext)
-  const { content, showAspectsHelper } = explainersState
+  const {
+    content, showAspectsHelper 
+  } = explainersState
   const [themeState] = useContext(ThemeContext)
-  const { colorScheme } = themeState
+  const {
+    colorScheme 
+  } = themeState
 
   return(
     <View>
@@ -33,31 +35,31 @@ const AspectsContainer = () => {
         }]}>Aspects</Text>
         <HelpDropdown 
           visible={showAspectsHelper}
-          close={() => explainersDispatch({
-            type: 'CLOSE_ASPECTS_HELPER' 
-          })} 
+          close={() => explainersDispatch({type: 'CLOSE_ASPECTS_HELPER'})} 
           text={content.aspectsHelper} />
       </View>
       <ScrollView 
-        contentContainerStyle={{
-          marginTop: 10
-        }}
+        contentContainerStyle={{marginTop: 10}}
         horizontal 
         showsVerticalScrollIndicator={false} 
         showsHorizontalScrollIndicator={false}
       >
-        <ItemOptions
+        {/* <ItemOptions
           creatorOnPress={() => modalDispatch({
             type: 'OPEN_MODAL',
             modalType: 'ADD_NEW_ASPECT'
           })}
-          archiveTotal={aspects.length} />
+          archiveTotal={aspects.length} /> */}
         <FlatList
           key={aspects.length}        
-          keyExtractor={(item, index) => `${index}`}
+          keyExtractor={(
+            item, index
+          ) => `${index}`}
           numColumns={Math.ceil(aspects.length / 2)}
           data={aspects}
-          renderItem={({ item: aspect }) => (
+          renderItem={({
+            item: aspect 
+          }) => (
             <AspectCard aspect={aspect} />
           )}
         />
