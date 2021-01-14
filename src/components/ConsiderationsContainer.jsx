@@ -1,49 +1,36 @@
 import React, {
-  useContext, useState, useEffect, useRef 
+  useContext, useState, useEffect 
 } from 'react'
 import {
-  View, Text, FlatList, Animated, Easing, Button
+  View, 
+  Text, 
+  FlatList,
 } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
-import SegmentedControl from '@react-native-community/segmented-control';
-import { BlurView } from 'expo-blur'
+import {theme} from '../assets/utils'
 import {
-  theme, useKeyboard 
-} from '../assets/utils'
-import {
-  AspectsContext, ModalContext, ConsiderationsContext, ExplainersContext, ThemeContext 
+  AspectsContext,
+  ModalContext,
+  ConsiderationsContext,
+  ThemeContext 
 } from '../state'
 import Consideration from './Consideration'
 import ArchiveToggle from './ArchiveToggle'
-import HelpDropdown from './HelpDropdown'
-import ItemOptions from './ItemOptions'
 import CreatorCard from './CreatorCard'
 
 const ConsiderationsContainer = ({
   type, singleAspectId, hideHelper 
 }) => {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [aspectsState, aspectsDispatch] = useContext(AspectsContext)
-  const {
-    aspects 
-  } = aspectsState
+  const [aspectsState] = useContext(AspectsContext)
+  const {aspects} = aspectsState
   const [disabled, setDisabled] = useState(aspects.length <= 2)
   const [modalState, modalDispatch] = useContext(ModalContext)
   const [considerationsState, considerationsDispatch] = useContext(ConsiderationsContext)
-  const {
-    considerations 
-  } = considerationsState
-  const [explainersState, explainersDispatch] = useContext(ExplainersContext)
-  const {
-    content, showConsiderationsHelper, 
-     
-  } = explainersState
+  const {considerations} = considerationsState
   const [themeState] = useContext(ThemeContext)
-  const {
-    colorScheme 
-  } = themeState
+  const {colorScheme} = themeState
 
-  const [keyboardHeight] = useKeyboard()
   useEffect(
     () => {
       if (aspects.length <= 2) {
@@ -60,15 +47,6 @@ const ConsiderationsContainer = ({
     } 
     return considerations
   }
-  const slideUp = useRef(new Animated.Value(0)).current
-  // Animated.timing(slideLeft, {
-  //   toValue: -400,
-  //   duration: 300,
-  //   useNativeDriver: false,
-  //   easing: Easing.ease,
-  // }).start()
-  // console.log('slideUp: ', slideUp)
-  const [segmentIndex, setSegmentIndex] = useState(0)
   return(
     <View style={{ marginBottom: 20 }}>
       <View style={{
@@ -85,13 +63,9 @@ const ConsiderationsContainer = ({
             alignItems: 'center',
             justifyContent: 'space-between' 
           }}>
-            <Text style={[theme.fonts.types.subHeading, {
-              // marginBottom: 10,
-              color: theme.layout.scheme[colorScheme].textColor, 
-            }]}>
+            <Text style={[theme.fonts.types.subHeading, {color: theme.layout.scheme[colorScheme].textColor,}]}>
             Considerations
             </Text>
-            {/* <ItemOptions /> */}
             <ArchiveToggle
               total={considerations?.length}
               completed={considerations?.length} />
@@ -102,22 +76,8 @@ const ConsiderationsContainer = ({
                   modalType: 'CHOOSE_CONSIDERATION_TYPE'
                 })
                 setMenuOpen(true)
-                // Animated.timing(
-                //   slideUp, {
-                //     toValue: 300,
-                //     duration: 100,
-                //     useNativeDriver: false,
-                //     easing: Easing.ease,
-                //   }
-                // ).start()
               }} />
           </View>
-          {/* <HelpDropdown
-            hidden={hideHelper || disabled} 
-            visible={showConsiderationsHelper}
-            close={() => explainersDispatch({type: 'CLOSE_CONSIDERATION_HELPER'})}
-            text={content.considerationsHelper} 
-          /> */}
         </View>
       </View>
       <ScrollView 
@@ -125,18 +85,6 @@ const ConsiderationsContainer = ({
         showsVerticalScrollIndicator={false} 
         showsHorizontalScrollIndicator={false}
       >
-        {/* {!singleAspectId && (
-          <>
-            <ItemOptions
-              creatorOnPress={() => modalDispatch({
-                type: 'OPEN_MODAL',
-                modalType: type === 'short' ? 'ADD_SHORT_CONSIDERATION' : 'ADD_LONG_CONSIDERATION' 
-              })} 
-              archiveCompleted={0}
-              archiveTotal={considerations?.length || [].length}
-            />
-          </>
-        )} */}
         <FlatList 
           contentContainerStyle={{
             display: 'flex',
@@ -148,9 +96,7 @@ const ConsiderationsContainer = ({
           ) => `${index}`}
           numColumns={Math.ceil(considerations?.length / 3) || [].length}
           data={renderData()}
-          renderItem={({
-            item: consideration 
-          }) => (
+          renderItem={({item: consideration}) => (
             <Consideration
               type={consideration.type}
               data={consideration} />

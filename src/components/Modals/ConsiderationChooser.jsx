@@ -2,19 +2,22 @@ import React, {
   useState, useRef, useContext, useEffect
 } from 'react'
 import {
-  Modal, Text, View, Animated, Button, Easing 
+  Text, 
+  View, 
+  Animated, 
+  Button, 
+  Easing 
 } from 'react-native'
 import { BlurView } from 'expo-blur'
 import SegmentedControl from '@react-native-community/segmented-control';
-import {
-  theme, useKeyboard 
-} from '../../assets/utils'
+import {theme} from '../../assets/utils'
 import { ModalContext } from '../../state';
 
 const ConsiderationChooser = ({
-  visible, close 
+  visible,
+  close 
 }) => {
-  const [menuOpen, setMenuOpen] = useState(false)
+  // const [menuOpen, setMenuOpen] = useState(false)
   const toggleSlide = useRef(new Animated.Value(-400)).current
 
   useEffect(
@@ -23,19 +26,18 @@ const ConsiderationChooser = ({
         Animated.timing(
           toggleSlide, {
             toValue: 0,
-            duration: 500,
+            duration: 300,
             useNativeDriver: false,
             easing: Easing.ease,
           }
         ).start()
-
       }
       
       if (!visible) {
         Animated.timing(
           toggleSlide, {
             toValue: -400,
-            duration: 500,
+            duration: 300,
             useNativeDriver: false,
             easing: Easing.ease,
           }
@@ -45,7 +47,7 @@ const ConsiderationChooser = ({
   )
 
   const [segmentIndex, setSegmentIndex] = useState(0)
-  const [modalState, modalDispatch] = useContext(ModalContext)
+  const [modalDispatch] = useContext(ModalContext)
   return (
     <>
       <BlurView
@@ -68,6 +70,9 @@ const ConsiderationChooser = ({
         zIndex: 1,
         paddingBottom: 30,
         paddingTop: 30,
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+
       }}>
         <Text style={[{...theme.fonts.types.heading}, {
           color: 'white',
@@ -87,10 +92,7 @@ const ConsiderationChooser = ({
             setSegmentIndex(event.nativeEvent.selectedSegmentIndex)
           }}
         />
-        <View style={{
-        // backgroundColor: 'pink',
-          height: 70,
-        }}>
+        <View style={{height: 70,}}>
           <Text style={{
             color: 'white',
             textAlign: 'center',
@@ -110,23 +112,10 @@ const ConsiderationChooser = ({
           title='Cancel'
           color='red'
           onPress={() => {
-            // const promise = Promise.resolve(() => {
-            //   Animated.timing(
-            //     toggleSlide, {
-            //       toValue: -400,
-            //       duration: 100,
-            //       useNativeDriver: false,
-            //       easing: Easing.ease,
-            //     }
-            //   ).start()
-            // })
-            // promise.then(() => {
             modalDispatch({ type: 'CLOSE_MODAL' })
-            // })
           }} />
 
       </Animated.View>
-      {/* </BlurView> */}
     </>
   )
 }
