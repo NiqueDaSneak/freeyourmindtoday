@@ -45,7 +45,6 @@ const ModalConductor = () => {
         visible={modalType === 'ARCHIVE'}
         close={() => closeModal()} />
       <ConsiderationChooser 
-                // visible={true}
         visible={modalType === 'CHOOSE_CONSIDERATION_TYPE'}
       />
     </>

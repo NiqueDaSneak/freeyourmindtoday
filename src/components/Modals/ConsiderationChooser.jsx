@@ -6,17 +6,15 @@ import {
   View, 
   Animated, 
   Button, 
-  Easing 
+  Easing, 
+  Pressable
 } from 'react-native'
 import { BlurView } from 'expo-blur'
 import SegmentedControl from '@react-native-community/segmented-control';
 import {theme} from '../../assets/utils'
 import { ModalContext } from '../../state';
 
-const ConsiderationChooser = ({
-  visible,
-  close 
-}) => {
+const ConsiderationChooser = ({visible}) => {
   // const [menuOpen, setMenuOpen] = useState(false)
   const toggleSlide = useRef(new Animated.Value(-400)).current
 
@@ -47,7 +45,7 @@ const ConsiderationChooser = ({
   )
 
   const [segmentIndex, setSegmentIndex] = useState(0)
-  const [modalDispatch] = useContext(ModalContext)
+  const [modalState, modalDispatch] = useContext(ModalContext)
   return (
     <>
       <BlurView
@@ -107,7 +105,15 @@ const ConsiderationChooser = ({
             )}
           </Text>
         </View>
-        <Button title={`Create ${segmentIndex === 0 ? 'Long Term' : 'Short Term'} Consideraton`} />
+        <Button
+          onPress={() => segmentIndex === 0 ? modalDispatch({
+            type: 'OPEN_MODAL',
+            modalType: 'ADD_LONG_CONSIDERATION' 
+          }): modalDispatch({
+            type: 'OPEN_MODAL',
+            modalType: 'ADD_SHORT_CONSIDERATION' 
+          })}
+          title={`Create ${segmentIndex === 0 ? 'Long Term' : 'Short Term'} Consideraton`} />
         <Button
           title='Cancel'
           color='red'
