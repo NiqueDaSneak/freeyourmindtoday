@@ -12,20 +12,20 @@ import showConsiderationActions from './Modals/showConsiderationActions'
 const Consideration = ({
   style,
   data,
-  type,
   disabled
 }) => {
   const [modalDispatch] = useContext(ModalContext)
   const [considerationDispatch] = useContext(ConsiderationsContext)
   const [themeState] = useContext(ThemeContext)
   const {colorScheme} = themeState
-
+  
   return (
     <TouchableOpacity
       onPress={ () => showConsiderationActions(
-        modalDispatch, considerationDispatch, type, data 
+        modalDispatch, considerationDispatch, data?.type, data 
       ) }
       style={{
+        ...style,
         backgroundColor: 'grey',
         marginRight: 10,
         marginBottom: 20,
@@ -43,10 +43,10 @@ const Consideration = ({
         alignItems: 'center',
       }}>
         <Text style={{ fontSize: theme.fonts.sizes.xsmall }}>
-          {type === 'long' && (
+          {data?.type === 'long' && (
             `${moment(data?.createdAt).format("M/D/YYYY")}`
           )}
-          {type === 'short' && (
+          {data?.type === 'short' && (
             `${moment(data?.createdAt).fromNow()}`
           )}
         </Text>
@@ -63,7 +63,7 @@ const Consideration = ({
           borderTopLeftRadius: 10,
         }}>
           <Text style={{fontSize: theme.fonts.sizes.medium}}>
-            {type === 'long' ? "L" : "S"}
+            {data?.type === 'long' ? "L" : "S"}
           </Text>
         </View>
       </View>
