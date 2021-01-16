@@ -5,36 +5,54 @@ import { db } from '../../firebase'
 import { AuthContext } from './auth.context'
 
 export const ConsiderationsContext = createContext()
-
 const initialState = {
+  considerations: [],
   needsSaved: {
     value: null,
     considerationData: null
   },
-  initialLoad: false,
+  needsSetPriority: {
+    value: null,
+    id: null
+  },
+  needsCompleted: {
+    value: null,
+    id: null
+  },
 }
 
-const completeConsideration = (id) => {
-  try {
-    db.collection('Considerations').doc(id).update({
-      completed: true,
-    })
-  } catch (err) {
-    console.log('err: ', err)
-  }
-}
-
-const reducer = (state, action) => {
+const reducer = (
+  state, action
+) => {
   switch (action.type) {
-  case 'SET_COMPLETE_CONSIDERATION': 
-    completeConsideration(action.id)
+  case 'SET_CONSIDERATIONS':
     return {
       ...state,
+      considerations: [...action.considerationData]
     }
-  case 'LOADING_CONSIDERATIONS':
+  case 'SET_PRIORITY':
     return {
       ...state,
-      loading: action?.value,
+      needsSetPriority: {
+        value: true,
+        id: action.id
+      }
+    }
+  case 'SET_COMPLETE': 
+    return {
+      ...state,
+      needsCompleted: {
+        value: true,
+        id: action.id
+      }
+    }
+  case 'COMPLETED': 
+    return {
+      ...state,
+      needsCompleted: {
+        value: false,
+        id: null
+      }
     }
   case 'ADD_NEW':
     return {
@@ -44,20 +62,13 @@ const reducer = (state, action) => {
         considerationData: action.newConsideration,
       }
     }
-  case 'SAVED_NEW_CONSIDERATION':
+  case 'SAVED_NEW':
     return {
       ...state,
-      considerations: [...state.considerations, action.newConsideration],      
       needsSaved: {
         value: false,
-        type: null,
         considerationData: null
       }
-    }
-  case 'LOADED_CONSIDERATIONS':
-    return {
-      ...state,
-      considerations: action.unloadedConsiderations,
     }
   default:
     throw new Error()
@@ -65,69 +76,64 @@ const reducer = (state, action) => {
 }
 
 export const ConsiderationsContextProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const [state, dispatch] = useReducer(
+    reducer, initialState
+  )
   const [authState, authDispatch] = useContext(AuthContext)
-  const { initialLoad } = state
-  const { activeUser, isAuthenticated } = authState
+  const {
+    activeUser, isAuthenticated 
+  } = authState
 
-  const getConsiderationsOnInitialLoad = () => {
-    const unloadedConsiderations = []
-    const considerations =  db.collection('Considerations').where('userId', '==', activeUser.id)
-
-    dispatch({
-      type: 'LOADING_CONSIDERATIONS',
-      value: true 
-    })
-    considerations.get().then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        const consideration = {
-          id: doc.id,
-          ...doc.data()
+  useEffect(
+    () => {
+      if (state.needsSaved.value) {
+        const { considerationData } = state.needsSaved
+        const newConsideration = {
+          userId: activeUser.id,
+          createdAt: Date.now(),
+          completed: false,
+          deleted: false,
+          priority: false,
+          ...considerationData
         }
-        unloadedConsiderations.push(consideration)
-      })
-      dispatch({
-        type: 'LOADING_CONSIDERATIONS',
-        value: false 
-      })
-    })
-
-    dispatch({
-      type: 'LOADED_CONSIDERATIONS',
-      unloadedConsiderations,
-    })
-  }
-
-  useEffect(() => {
-    if (!initialLoad && isAuthenticated) {
-      getConsiderationsOnInitialLoad()
-    }
-  }, [initialLoad, isAuthenticated])
-
-  useEffect(() => {
-    // need to set id here
-    if (state.needsSaved.value) {
-      const { considerationData } = state.needsSaved
-      const newConsideration = {
-        userId: activeUser.id,
-        createdAt: Date.now(),
-        completed: false,
-        deleted: false,
-        ...considerationData
-      }
-      db.collection('Considerations').add(newConsideration)
-        .then((docRef) => {
-          const withId = {
-            ...newConsideration,
-            id: docRef.id
-          }
-          dispatch({
-            type: 'SAVED_NEW_CONSIDERATION',
-            newConsideration: withId 
-          })
+        db.collection('Considerations').add(newConsideration).then(() => {
+          dispatch({type: 'SAVED_NEW'})
         })
-    }
-  }, [state.needsSaved])
+      }
+    }, [activeUser.id, state.needsSaved]
+  )
+
+  useEffect(
+    () => {
+      const subscriber = db.collection('Considerations').where(
+        'userId', '==', activeUser.id
+      ).onSnapshot(querySnapshot => {
+        const considerationData = []
+        querySnapshot.forEach((doc) => {
+          const withId = {
+            id: doc.id,
+            ...doc.data()
+          }
+          considerationData.push(withId)
+        })
+        dispatch({
+          type: 'SET_CONSIDERATIONS',
+          considerationData
+        })
+      })
+      return () => subscriber()
+    }, [activeUser.id]
+  )
+
+  useEffect(
+    () => {
+      if (state.needsCompleted.value) {
+        db.collection('Considerations').doc(state.needsCompleted.id).update({ completed: true }).then(() => {
+          dispatch({type: 'COMPLETED'})
+        })
+      }
+    }, [state.needsCompleted]
+  )
 
   return (
     <ConsiderationsContext.Provider value={[state, dispatch]}>

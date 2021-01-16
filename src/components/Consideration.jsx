@@ -15,7 +15,7 @@ const Consideration = ({
   disabled
 }) => {
   const [modalDispatch] = useContext(ModalContext)
-  const [considerationDispatch] = useContext(ConsiderationsContext)
+  const [considerationState, considerationDispatch] = useContext(ConsiderationsContext)
   const [themeState] = useContext(ThemeContext)
   const {colorScheme} = themeState
   
@@ -51,7 +51,7 @@ const Consideration = ({
           )}
         </Text>
         <View style={{
-          backgroundColor: 'white',
+          backgroundColor: data?.completed ? 'green' : 'red',
           borderLeftWidth: 1,
           borderTopWidth: 1,
           paddingLeft: 12,

@@ -65,18 +65,13 @@ const ArchiveModal = ({
           width: '100%',
           justifyContent: 'space-between',
           height: '55%',
-
-          paddingTop: 40,
-          paddingBottom: 20,
+          paddingTop: 30,
+          paddingBottom: 30,
 
         }}>
           <FlatList
-            columnWrapperStyle={{
-              justifyContent: 'space-around',
-            }}
-            contentContainerStyle={{
-              padding: 20,
-            }}
+            columnWrapperStyle={{justifyContent: 'space-around'}}
+            contentContainerStyle={{padding: 20,}}
             keyExtractor={(
               item, index
             ) => `${index}`}
@@ -101,13 +96,13 @@ const ArchiveModal = ({
             <Text style={[theme.fonts.types.heading, {
               textAlign: 'center',
               color: theme.layout.scheme[colorScheme].textColor,
-              marginBottom: 10
+              // marginBottom: 10
             }]}>Archive</Text>
             <HelpDropdown 
               visible={explainersState.showArchiveHelper}
               close={() => explainersDispatch({type: 'CLOSE_ARCHIVE_HELPER'})} 
               text={content.archiveHelper} />
-
+            <View style={{paddingTop: 20}}>
             <SegmentedControl
               values={['By Date', 'By Aspect']}
               selectedIndex={segmentIndex}
@@ -115,6 +110,7 @@ const ArchiveModal = ({
                 setSegmentIndex(event.nativeEvent.selectedSegmentIndex)
               }}
             />
+            </View>
           </View>
           <View style={{
             width: '100%',
