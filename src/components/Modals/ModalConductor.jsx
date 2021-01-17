@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-// import { useModal } from '../../hooks/modal.hook'
 import AddNewAspect from './AddNewAspect'
 import AspectDetails from './AspectDetails'
 import { ModalContext, AuthContext } from '../../state'

@@ -8,31 +8,47 @@ import {
   AspectsContext, ModalContext, ExplainersContext, ThemeContext 
 } from '../state'
 import HelpDropdown from './HelpDropdown'
-import ItemOptions from './ItemOptions'
+// import ItemOptions from './ItemOptions'
+import ArchiveToggle from './ArchiveToggle'
+import CreatorCard from './CreatorCard'
+
 
 const AspectsContainer = () => {
 
   const [aspectState] = useContext(AspectsContext)
-  const {
-    aspects 
-  } = aspectState
+  const {aspects} = aspectState
   const [modalState, modalDispatch] = useContext(ModalContext)
   const [explainersState, explainersDispatch] = useContext(ExplainersContext)
   const {
     content, showAspectsHelper 
   } = explainersState
   const [themeState] = useContext(ThemeContext)
-  const {
-    colorScheme 
-  } = themeState
+  const {colorScheme} = themeState
 
   return(
     <View>
       <View>
-        <Text style={[theme.fonts.types.heading, {
-          marginBottom: 20,
-          color: theme.layout.scheme[colorScheme].textColor
-        }]}>Aspects</Text>
+        <View style={{
+          display: 'flex',
+          flexDirection: 'row', 
+          marginTop: 40,  
+          marginBottom: 20,  
+          width: '100%',
+          paddingRight: 10,
+          alignItems: 'center',
+          justifyContent: 'space-between' 
+        }}>
+          <Text style={[theme.fonts.types.heading, {color: theme.layout.scheme[colorScheme].textColor}]}>
+            Aspects
+          </Text>
+          <CreatorCard
+            onPress={() => {
+              modalDispatch({
+                type: 'OPEN_MODAL',
+                modalType: 'ADD_NEW_ASPECT'
+              })
+            }} />
+        </View>
         <HelpDropdown 
           visible={showAspectsHelper}
           close={() => explainersDispatch({type: 'CLOSE_ASPECTS_HELPER'})} 
@@ -44,12 +60,7 @@ const AspectsContainer = () => {
         showsVerticalScrollIndicator={false} 
         showsHorizontalScrollIndicator={false}
       >
-        {/* <ItemOptions
-          creatorOnPress={() => modalDispatch({
-            type: 'OPEN_MODAL',
-            modalType: 'ADD_NEW_ASPECT'
-          })}
-          archiveTotal={aspects.length} /> */}
+        <AspectCard noMatch />
         <FlatList
           key={aspects.length}        
           keyExtractor={(
@@ -57,9 +68,7 @@ const AspectsContainer = () => {
           ) => `${index}`}
           numColumns={Math.ceil(aspects.length / 2)}
           data={aspects}
-          renderItem={({
-            item: aspect 
-          }) => (
+          renderItem={({item: aspect}) => (
             <AspectCard aspect={aspect} />
           )}
         />

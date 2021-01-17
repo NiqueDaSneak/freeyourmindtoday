@@ -81,12 +81,12 @@ export const AspectsContextProvider = ({ children }) => {
           userId: activeUser.id,
           createdAt: Date.now(),
           deleted: false,
-          ...state.needsSaved
+          ...state.needsSaved.data
         }
 
         db.collection('Aspects').add(newAspect)
           .then(() => {
-            dispatch({type: 'SAVED_NEW',})
+            dispatch({type: 'SAVED_NEW'})
           })
       }
     }, [activeUser.id, state.needsSaved]

@@ -19,9 +19,8 @@ import ArchiveToggle from './ArchiveToggle'
 import CreatorCard from './CreatorCard'
 
 const ConsiderationsContainer = ({
-  type, singleAspectId, hideHelper 
+  singleAspectId, hideHelper, hideActions
 }) => {
-  const [menuOpen, setMenuOpen] = useState(false)
   const [aspectsState] = useContext(AspectsContext)
   const {aspects} = aspectsState
   const [disabled, setDisabled] = useState(aspects.length <= 2)
@@ -48,24 +47,22 @@ const ConsiderationsContainer = ({
     return considerations.filter(consideration => !consideration.completed)
   }
   return(
-    <View style={{ marginBottom: 20 }}>
+    <View style={{
+      marginBottom: 20,
+      width: '100%' 
+    }}>
       <View style={{
         display: 'flex',
         flexDirection: 'row', 
         marginBottom: 20,  
+        alignItems: 'center',
+        justifyContent: 'space-between' 
       }}>
-        <View style={{ width: '100%'}}>
-          <View style={{
-            width: '100%',
-            marginBottom: 20,
-            paddingRight: 10,
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between' 
-          }}>
-            <Text style={[theme.fonts.types.subHeading, {color: theme.layout.scheme[colorScheme].textColor,}]}>
-            Considerations
-            </Text>
+        <Text style={[theme.fonts.types.subHeading, {color: theme.layout.scheme[colorScheme].textColor,}]}>
+          Considerations
+        </Text>
+        {!hideActions && (
+          <>
             <ArchiveToggle
               total={considerations?.length}
               completed={considerations?.filter(el => el.completed).length} />
@@ -75,10 +72,9 @@ const ConsiderationsContainer = ({
                   type: 'OPEN_MODAL',
                   modalType: 'CHOOSE_CONSIDERATION_TYPE'
                 })
-                setMenuOpen(true)
               }} />
-          </View>
-        </View>
+          </>
+        )}
       </View>
       <ScrollView 
         horizontal 

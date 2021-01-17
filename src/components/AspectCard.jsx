@@ -12,7 +12,7 @@ import {
 } from '../state'
 
 
-const AspectCard = ({ aspect }) => {
+const AspectCard = ({ aspect, noMatch }) => {
   const [modalState, modalDispatch] = useContext(ModalContext)
   const [themeState] = useContext(ThemeContext)
   const { colorScheme } = themeState
@@ -30,7 +30,7 @@ const AspectCard = ({ aspect }) => {
       onPress={() => modalDispatch({
         type: 'OPEN_MODAL',
         modalType: 'GET_ASPECT_DETAILS',
-        modalData: aspect
+        modalData: noMatch ? 'No Match' : aspect
       })}>
       <View style={{height: '70%'}} />
       <View style={{
@@ -46,7 +46,7 @@ const AspectCard = ({ aspect }) => {
           fontSize: theme.fonts.sizes.small,
           color: theme.layout.scheme[colorScheme].textColor,
           textAlign: 'center', 
-        }}>{aspect?.title}</Text>
+        }}>{noMatch ? 'No Match' : aspect?.title}</Text>
       </View>
 
       {/* <View style={{
