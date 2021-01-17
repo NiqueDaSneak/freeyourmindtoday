@@ -1,59 +1,81 @@
-import React, {
- useContext 
-} from 'react'
+import React, {useContext} from 'react'
 import {
- View, TouchableOpacity, Text, StyleSheet 
+  View, TouchableOpacity, Text
 } from 'react-native'
+import moment from 'moment'
+import {theme} from '../assets/utils'
 import {
- theme 
-} from '../assets/utils'
-import {
- ConsiderationsContext, ModalContext, ThemeContext 
+  ConsiderationsContext, ModalContext, ThemeContext
 } from '../state'
 import showConsiderationActions from './Modals/showConsiderationActions'
 
 const Consideration = ({
- style, data, type, disabled 
+  style,
+  data,
+  disabled
 }) => {
-  const [modalState, modalDispatch] = useContext(ModalContext)
+  const [modalDispatch] = useContext(ModalContext)
   const [considerationState, considerationDispatch] = useContext(ConsiderationsContext)
   const [themeState] = useContext(ThemeContext)
-  const { colorScheme } = themeState
-
+  const {colorScheme} = themeState
+  
+  // const renderStatusColor = () => {
+  //   if (data?.completed) {
+  //     re
+  //   }
+  //   if (data?.priority) {
+  //     return 'gold'
+  //   }
+  // }
   return (
-    <TouchableOpacity 
-      onPress={() => showConsiderationActions(modalDispatch, considerationDispatch, type, data )}
-      key={data?.title}
-      style={[{
-        height: 80,
+    <TouchableOpacity
+      onPress={ () => showConsiderationActions(
+        modalDispatch, considerationDispatch, data?.type, data 
+      ) }
+      style={{
+        ...style,
+        backgroundColor: 'grey',
         marginRight: 10,
         marginBottom: 20,
-        padding: 4,
-        borderColor: theme.layout.scheme[colorScheme].accentGrey,
-        backgroundColor: theme.layout.scheme[colorScheme].secondary,
-        borderWidth: 1, 
-        borderRadius: 20,
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-around'
-      }, style]}>
-      <View>
-        <Text style={{
-          fontSize: theme.fonts.sizes.large,
-          color: theme.layout.scheme[colorScheme].textColor
-        }}>+</Text>
+        width: 150,
+        height: 170,
+        borderRadius: 12,
+        justifyContent: 'space-between'
+      }}>
+      <View style={{padding: 10,}}>
+        <Text style={{fontSize: theme.fonts.sizes.small}}>{data?.title}</Text>
       </View>
       <View style={{
-        paddingLeft: 20,
-        width: 200,
-        fontSize: theme.fonts.sizes.small,
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
       }}>
-        <Text style={{
-          color: theme.layout.scheme[colorScheme].textColor
-        }}>{data?.title}</Text>
+        <Text style={{ fontSize: theme.fonts.sizes.xsmall }}>
+          {data?.type === 'long' && (
+            `${moment(data?.createdAt).format("M/D/YYYY")}`
+          )}
+          {data?.type === 'short' && (
+            `${moment(data?.createdAt).fromNow()}`
+          )}
+        </Text>
+        <View style={{
+          backgroundColor: data?.deleted ? 'red' : data?.completed ? 'green' : data?.priority ? 'gold' : 'white',
+          borderLeftWidth: 1,
+          borderTopWidth: 1,
+          paddingLeft: 12,
+          paddingRight: 12,
+          paddingTop: 4,
+          paddingBottom: 4,
+          marginLeft: 10,
+          borderBottomRightRadius: 10,
+          borderTopLeftRadius: 10,
+        }}>
+          <Text style={{fontSize: theme.fonts.sizes.medium}}>
+            {data?.type === 'long' ? "L" : "S"}
+          </Text>
+        </View>
       </View>
-    </TouchableOpacity>  
+    </TouchableOpacity>
   )
 }
 

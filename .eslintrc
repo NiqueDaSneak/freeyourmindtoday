@@ -7,14 +7,15 @@
     "plugin:react/recommended",
     "airbnb",
     "prettier",
-    "prettier/react"
+    "prettier/react",
+    "plugin:react-hooks/recommended"
   ],
   "parserOptions": {
     "ecmaFeatures": {
-      "jsx": true,
+      "jsx": true
     },
     "ecmaVersion": 12,
-    "sourceType": "module",
+    "sourceType": "module"
   },
   "plugins": [
     "react",
@@ -25,6 +26,23 @@
     "indent": ["error", 2],
     "no-inline-comments": "error",
     "react/jsx-first-prop-new-line": "error",
-    "react/jsx-max-props-per-line": [1, {"maximum": 1}]
+    "react/jsx-max-props-per-line": [1, {"maximum": 1}],
+    "function-paren-newline": ["error", {"minItems": 2}],
+    "object-property-newline": ["error", {"allowAllPropertiesOnSameLine": false}],
+    "object-curly-newline": [
+    "error",
+    {
+        "ObjectExpression": { "multiline": true, "minProperties": 2 },
+        "ObjectPattern": { "multiline": true, "minProperties": 2 },
+        "ImportDeclaration": { "multiline": true, "minProperties": 2 },
+        "ExportDeclaration": { "multiline": true, "minProperties": 1 }
+    }
+    ],
+    "prefer-destructuring": ["error", {
+      "array": true,
+      "object": true
+    }, {
+      "enforceForRenamedProperties": false
+    }]
   }
 }

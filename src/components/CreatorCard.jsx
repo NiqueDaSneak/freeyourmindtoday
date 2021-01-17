@@ -17,12 +17,12 @@ const CreatorCard = ({onPress}) => {
     <TouchableOpacity onPress={onPress}>
       <View style={{
         height: 60,
-        width: '100%',
+        width: 70,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: theme.layout.scheme[colorScheme].third,
         borderRadius: 15,
-        marginBottom: 10
+        // marginBottom: 10
       }}>
         <Text style={{
           fontSize: theme.fonts.sizes.large,

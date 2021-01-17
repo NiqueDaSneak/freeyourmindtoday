@@ -1,5 +1,7 @@
 import React, { useState, useContext } from 'react'
-import { TouchableOpacity, Text, View } from 'react-native'
+import {
+  TouchableOpacity, Text, View 
+} from 'react-native'
 import { theme } from '../assets/utils'
 import { ThemeContext } from '../state'
 
@@ -12,13 +14,17 @@ const HelpDropdown = ({ text, close, visible, hidden }) => {
   const renderText = () => isExpanded ? text : `${text?.substring(0, 100)}...`
   return (
     <View style={{
-      display: visible && !hidden ? 'inherit' : 'none'
+      display: visible && !hidden ? 'inherit' : 'none',
+      zIndex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingRight: 10
     }}>
       <TouchableOpacity
         onPress={() => {
           setIsExpanded(!isExpanded)
-        }
-        } style={{
+        }}
+        style={{
           maxWidth: '100%',
           borderColor: theme.layout.scheme[colorScheme].accentGrey,
           borderWidth:  1,
@@ -28,14 +34,9 @@ const HelpDropdown = ({ text, close, visible, hidden }) => {
           alignItems: 'center', 
           padding: 10,
           justifyContent: 'space-around',
-          backgroundColor: theme.layout.scheme[colorScheme].textContainer
+          backgroundColor: theme.layout.scheme[colorScheme].textContainer,
+          marginRight: 10
         }}>
-        <TouchableOpacity onPress={() => close()}>
-          <Text style={{
-            fontSize: theme.fonts.sizes.medium,
-            color: theme.layout.scheme[colorScheme].textColor 
-          }}>X</Text>
-        </TouchableOpacity>
         <Text style={{
           width: '90%',
           fontSize: theme.fonts.sizes.xsmall,
@@ -43,6 +44,14 @@ const HelpDropdown = ({ text, close, visible, hidden }) => {
         }}>
           {renderText()}
         </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={close}
+        style={{backgroundColor: 'black', padding: 10, borderRadius: 15, borderColor: theme.layout.scheme[colorScheme].accentGrey, borderWidth:  1}}>
+        <Text style={{
+          fontSize: theme.fonts.sizes.medium,
+          color: theme.layout.scheme[colorScheme].textColor 
+        }}>X</Text>
       </TouchableOpacity>
     </View>
   )

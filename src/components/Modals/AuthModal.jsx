@@ -18,7 +18,7 @@ import { theme, useKeyboard } from '../../assets/utils'
 import { AuthContext }  from '../../state'
 import PhoneLogin from '../PhoneLogin'
 
-const AuthModal = ({ visible }) => {
+const AuthModal = ({ visible, close }) => {
   const recaptchaVerifier = useRef(null)
 
   const [keyboardHeight, keyboardOpen] = useKeyboard()
@@ -47,9 +47,9 @@ const AuthModal = ({ visible }) => {
   }
 
   const confirmCode = () => firebase.auth.PhoneAuthProvider.credential(
-      firebaseVerificationResponse,
-      verifyCode
-    )
+    firebaseVerificationResponse,
+    verifyCode
+  )
   useEffect(() => {
     if (phoneLoggingIn) {
       Animated.timing(phoneNumberInputRefAnimation, {
@@ -126,9 +126,12 @@ const AuthModal = ({ visible }) => {
       transparent
       visible={visible}
     >
-      <BlurView tint='dark' intensity={100}  style={{
-        height: '100%',
-      }}>
+      <BlurView
+        tint='dark'
+        intensity={100}
+        style={{
+          height: '100%',
+        }}>
         <Animated.View 
           style={{
             bottom: keyboardHeight + 30,
@@ -146,7 +149,8 @@ const AuthModal = ({ visible }) => {
               marginTop: '30%',
               height: 200,
               width: 200
-            }} source={require('../../assets/information.png')} />
+            }}
+            source={require('../../assets/information.png')} />
           <Text style={{
             fontSize: theme.fonts.sizes.large,
             marginTop: '30%',
@@ -204,10 +208,12 @@ const AuthModal = ({ visible }) => {
             autoCompleteType="tel"
             onChangeText={text => setPhoneNumber(text)}
           /> 
-          <Button title="Send Code" onPress={() => {
-            setVerifyNumber(true)
-            sendVerification()
-          }} />
+          <Button
+            title="Send Code"
+            onPress={() => {
+              setVerifyNumber(true)
+              sendVerification()
+            }} />
         </Animated.View>
         <Animated.View 
           style={{
@@ -240,27 +246,29 @@ const AuthModal = ({ visible }) => {
             autoCompleteType="tel"
             onChangeText={text => setVerifyCode(text)}
           /> 
-          <Button title="Send Code" onPress={() => {
-            const credential = confirmCode()
-            firebase
-              .auth()
-              .signInWithCredential(credential)
-              .then((result) => {
-                if (result.additionalUserInfo.isNewUser) {
-                  const newUser = {
-                    firebaseId: result.user.uid,
-                  }
-                  db.collection('Users').add(newUser)
-                    .then(() => {
-                      authDispatch({
-                        type: 'LOGIN_USER', 
-                        id: result.user.uid
+          <Button
+            title="Send Code"
+            onPress={() => {
+              const credential = confirmCode()
+              firebase
+                .auth()
+                .signInWithCredential(credential)
+                .then((result) => {
+                  if (result.additionalUserInfo.isNewUser) {
+                    const newUser = {
+                      firebaseId: result.user.uid,
+                    }
+                    db.collection('Users').add(newUser)
+                      .then(() => {
+                        authDispatch({
+                          type: 'LOGIN_USER', 
+                          id: result.user.uid
+                        })
                       })
-                    })
-                }
-              })
-          }
-          } />
+                  }
+                })
+            }
+            } />
         </Animated.View>
 
       </BlurView>
