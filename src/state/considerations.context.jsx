@@ -88,31 +88,7 @@ export const ConsiderationsContextProvider = ({ children }) => {
     reducer, initialState
   )
   const [authState, authDispatch] = useContext(AuthContext)
-  const {
-    activeUser, isAuthenticated 
-  } = authState
-
-  useEffect(
-    () => {
-      if (state.needsSaved.value) {
-        const { considerationData } = state.needsSaved
-        const newConsideration = {
-          userId: activeUser.id,
-          createdAt: Date.now(),
-          completed: false,
-          completedAt: null,
-          deleted: false,
-          deletedAt: null,
-          priority: false,
-          prioritizedAt: null,
-          ...considerationData
-        }
-        db.collection('Considerations').add(newConsideration).then(() => {
-          dispatch({type: 'SAVED_NEW'})
-        })
-      }
-    }, [activeUser.id, state.needsSaved]
-  )
+  const {activeUser} = authState
 
   useEffect(
     () => {
@@ -134,6 +110,28 @@ export const ConsiderationsContextProvider = ({ children }) => {
       })
       return () => subscriber()
     }, [activeUser.id]
+  )
+
+  useEffect(
+    () => {
+      if (state.needsSaved.value) {
+        const { considerationData } = state.needsSaved
+        const newConsideration = {
+          userId: activeUser.id,
+          createdAt: Date.now(),
+          completed: false,
+          completedAt: null,
+          deleted: false,
+          deletedAt: null,
+          priority: false,
+          prioritizedAt: null,
+          ...considerationData
+        }
+        db.collection('Considerations').add(newConsideration).then(() => {
+          dispatch({type: 'SAVED_NEW'})
+        })
+      }
+    }, [activeUser.id, state.needsSaved]
   )
 
   useEffect(

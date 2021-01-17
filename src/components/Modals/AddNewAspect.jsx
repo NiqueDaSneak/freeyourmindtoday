@@ -82,7 +82,7 @@ const AddNewAspect = ({ visible, close }) => {
       importanceStatement: importance,
     }
     aspectsDispatch({
-      type: 'ASPECT_NEEDS_SAVED',
+      type: 'NEEDS_SAVED',
       payload: newAspect
     })
     modalDispatch({

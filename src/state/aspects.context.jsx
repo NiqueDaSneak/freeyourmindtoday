@@ -1,4 +1,6 @@
-import React, { useReducer, createContext, useEffect, useContext } from 'react'
+import React, {
+  useReducer, createContext, useEffect, useContext 
+} from 'react'
 import { db } from '../../firebase'
 import { AuthContext } from './auth.context'
 
@@ -6,34 +8,36 @@ export const AspectsContext = createContext()
 
 const initialState = {
   aspects: [],
-  needsSaved: null,
-  loading: true,
-  initialLoad: false,
+  needsSaved: {
+    value: null,
+    data: null
+  },
 }
 
-const reducer = (state, action) => {
+const reducer = (
+  state, action
+) => {
   switch (action.type) {
-  case 'ASPECT_NEEDS_SAVED':
+  case 'SET_ASPECTS':
     return {
       ...state,
-      needsSaved: action.payload
+      aspects: [...action.data]
     }
-  case 'SAVED_NEW_ASPECT':
+  case 'NEEDS_SAVED':
     return {
       ...state,
-      aspects: [...state.aspects, action.newAspect],
-      needsSaved: null
+      needsSaved: {
+        value: true,
+        data: action.payload
+      }
     }
-  case 'LOADING_ASPECTS': 
+  case 'SAVED_NEW':
     return {
       ...state,
-      loading: action.value
-    }
-  case 'LOADED_ASPECTS':
-    return {
-      ...state,
-      initialLoad: true,
-      aspects: action.unloadedAspects
+      needsSaved: {
+        value: false,
+        data: null
+      }
     }
   default:
     throw new Error()
@@ -41,63 +45,52 @@ const reducer = (state, action) => {
 }
 
 export const AspectsContextProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState)
-  const { initialLoad } = state
+  const [state, dispatch] = useReducer(
+    reducer, initialState
+  )
   const [authState, authDispatch] = useContext(AuthContext)
-  const { activeUser, isAuthenticated } = authState
+  const {activeUser} = authState
 
-  const getAspectsOnInitialLoad = () => {
-    dispatch({
-      type: 'LOADING_ASPECTS',
-      value: true 
-    })
-    const unloadedAspects = []
-    const fbAspects =  db.collection('Aspects').where('userId', '==', activeUser.id)
-    
-    fbAspects.get().then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        const aspect = {
-          id: doc.id,
-          ...doc.data()
-        }
-        unloadedAspects.push(aspect)
-      })
-      dispatch({
-        type: 'LOADED_ASPECTS',
-        value: false,
-        unloadedAspects
-      })
-    })
-  }
-
-  useEffect(() => {
-    if (!initialLoad && isAuthenticated) {
-      getAspectsOnInitialLoad()
-    }
-  }, [initialLoad, isAuthenticated])
-
-  useEffect(() => {
-    if (state.needsSaved !== null) {
-
-      const newAspect = {
-        userId: authState.activeUser.id,
-        createdAt: Date.now(),
-        completed: false,
-        ...state.needsSaved
-      }
-
-      db.collection('Aspects').add(newAspect)
-        .then((doc) => {
-          dispatch({
-            type: 'SAVED_NEW_ASPECT', 
-            newAspect: {
-              ...newAspect,
-              id: doc.id
-            }
-          })
+  useEffect(
+    () => {
+      const subscriber = db.collection('Aspects').where(
+        'userId', '==', activeUser.id
+      ).onSnapshot(querySnapshot => {
+        const aspectData = []
+        querySnapshot.forEach((doc) => {
+          const withId = {
+            id: doc.id,
+            ...doc.data()
+          }
+          aspectData.push(withId)
         })
-    }
-  }, [state.needsSaved])
+        dispatch({
+          type: 'SET_ASPECTS',
+          data: aspectData
+        })
+      })
+      return () => subscriber()
+    }, [activeUser.id]
+  )
+
+  useEffect(
+    () => {
+      if (state.needsSaved.value) {
+
+        const newAspect = {
+          userId: activeUser.id,
+          createdAt: Date.now(),
+          deleted: false,
+          ...state.needsSaved
+        }
+
+        db.collection('Aspects').add(newAspect)
+          .then(() => {
+            dispatch({type: 'SAVED_NEW',})
+          })
+      }
+    }, [activeUser.id, state.needsSaved]
+  )
 
   return (
     <AspectsContext.Provider value={[state, dispatch]}>
