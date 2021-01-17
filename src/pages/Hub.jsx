@@ -9,10 +9,10 @@ const Hub = () => (
       contentContainerStyle={{
         paddingLeft: '4%',
         paddingBottom: '12%',
+        minHeight: '100%'
       }}>
       <AspectsContainer />
-      <ConsiderationsContainer type='long' />
-      {/* <ConsiderationsContainer type='short' /> */}
+      <ConsiderationsContainer />
     </ScrollView>
   </SafeAreaView>
 )

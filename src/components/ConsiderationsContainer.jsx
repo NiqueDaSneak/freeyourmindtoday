@@ -46,59 +46,65 @@ const ConsiderationsContainer = ({
     } 
     return considerations.filter(consideration => !consideration.completed)
   }
-  return(
+  return (
     <View style={{
       marginBottom: 20,
       width: '100%' 
     }}>
-      <View style={{
-        display: 'flex',
-        flexDirection: 'row', 
-        marginBottom: 20,  
-        alignItems: 'center',
-        justifyContent: 'space-between' 
-      }}>
-        <Text style={[theme.fonts.types.subHeading, {color: theme.layout.scheme[colorScheme].textColor,}]}>
-          Considerations
-        </Text>
-        {!hideActions && (
-          <>
-            <ArchiveToggle
-              total={considerations?.length}
-              completed={considerations?.filter(el => el.completed).length} />
-            <CreatorCard
-              onPress={() => {
-                modalDispatch({
-                  type: 'OPEN_MODAL',
-                  modalType: 'CHOOSE_CONSIDERATION_TYPE'
-                })
-              }} />
-          </>
-        )}
-      </View>
-      <ScrollView 
-        horizontal 
-        showsVerticalScrollIndicator={false} 
-        showsHorizontalScrollIndicator={false}
-      >
-        <FlatList 
-          contentContainerStyle={{
+      {!disabled && (
+        <>
+          
+          <View style={{
             display: 'flex',
-            justifyContent: 'space-between' 
-          }}
-          key={considerations?.length || [].length}
-          keyExtractor={(
-            item, index
-          ) => `${index}`}
-          numColumns={Math.ceil(considerations?.length / 3) || [].length}
-          data={renderData()}
-          renderItem={({item: consideration}) => (
-            <Consideration
-              type={consideration.type}
-              data={consideration} />
-          )}
-        />
-      </ScrollView>
+            flexDirection: 'row', 
+            marginBottom: 20,  
+            alignItems: 'center',
+            justifyContent: 'space-between', 
+            marginRight: 10,
+          }}>
+            <Text style={[theme.fonts.types.subHeading, {color: theme.layout.scheme[colorScheme].textColor,}]}>
+          Considerations
+            </Text>
+            {!hideActions && (
+              <>
+                <ArchiveToggle
+                  total={considerations?.length}
+                  completed={considerations?.filter(el => el.completed).length} />
+                <CreatorCard
+                  onPress={() => {
+                    modalDispatch({
+                      type: 'OPEN_MODAL',
+                      modalType: 'CHOOSE_CONSIDERATION_TYPE'
+                    })
+                  }} />
+              </>
+            )}
+          </View>
+          <ScrollView 
+            horizontal 
+            showsVerticalScrollIndicator={false} 
+            showsHorizontalScrollIndicator={false}
+          >
+            <FlatList 
+              contentContainerStyle={{
+                display: 'flex',
+                justifyContent: 'space-between' 
+              }}
+              key={considerations?.length || [].length}
+              keyExtractor={(
+                item, index
+              ) => `${index}`}
+              numColumns={Math.ceil(considerations?.length / 3) || [].length}
+              data={renderData()}
+              renderItem={({item: consideration}) => (
+                <Consideration
+                  type={consideration.type}
+                  data={consideration} />
+              )}
+            />
+          </ScrollView>
+        </>
+      )}
     </View>
   )
 }

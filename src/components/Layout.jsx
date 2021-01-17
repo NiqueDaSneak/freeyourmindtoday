@@ -11,6 +11,7 @@ const Layout =  ({ children }) => {
   return (
     <View style={{
       backgroundColor: theme.layout.scheme[colorScheme].background,
+      minHeight: '100%'
     }}>
       {children}
       {/* <Footer /> */}
