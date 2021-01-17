@@ -38,12 +38,11 @@ const ArchiveModal = ({
   const { considerations } = considerationsState
   
   const renderArchivedData = () => {
-    if (segmentIndex === 0) {
+    // if (segmentIndex === 0) {
        
-    } 
-    if (segmentIndex === 1) {
-      const filteredConsiderations = considerations.filter(consideration => consideration.aspectId === aspectPicker)
-      return filteredConsiderations
+    // } 
+    if (segmentIndex === 0) {
+      return considerations.filter(consideration => consideration.completed && consideration.aspectId === aspectPicker)
     } 
   }
 
@@ -103,20 +102,21 @@ const ArchiveModal = ({
               close={() => explainersDispatch({type: 'CLOSE_ARCHIVE_HELPER'})} 
               text={content.archiveHelper} />
             <View style={{paddingTop: 20}}>
-            <SegmentedControl
-              values={['By Date', 'By Aspect']}
-              selectedIndex={segmentIndex}
-              onChange={(event) => {
-                setSegmentIndex(event.nativeEvent.selectedSegmentIndex)
-              }}
-            />
+              <SegmentedControl
+              // values={['By Date', 'By Aspect']}
+                values={['By Aspect']}
+                selectedIndex={segmentIndex}
+                onChange={(event) => {
+                  setSegmentIndex(event.nativeEvent.selectedSegmentIndex)
+                }}
+              />
             </View>
           </View>
           <View style={{
             width: '100%',
             justifyContent: 'center'
           }}>
-            {segmentIndex === 0 && (
+            {/* {segmentIndex === 0 && (
               <View style={{width: '100%'}}>
                 <DateTimePicker
                   textColor="white"
@@ -129,8 +129,8 @@ const ArchiveModal = ({
                     event, selectedDate
                   ) => setDate(selectedDate)} />
               </View>
-            )}
-            {segmentIndex === 1 && (
+            )} */}
+            {segmentIndex === 0 && (
               <Picker
                 selectedValue={aspectPicker}
                 style={{

@@ -43,9 +43,9 @@ const ConsiderationsContainer = ({
   
   const renderData = () => {
     if (singleAspectId) {
-      return considerations.filter(consideration => consideration.aspectId === singleAspectId) 
+      return considerations.filter(consideration => !consideration.completed && consideration.aspectId === singleAspectId) 
     } 
-    return considerations
+    return considerations.filter(consideration => !consideration.completed)
   }
   return(
     <View style={{ marginBottom: 20 }}>
@@ -68,7 +68,7 @@ const ConsiderationsContainer = ({
             </Text>
             <ArchiveToggle
               total={considerations?.length}
-              completed={considerations?.length} />
+              completed={considerations?.filter(el => el.completed).length} />
             <CreatorCard
               onPress={() => {
                 modalDispatch({

@@ -38,6 +38,14 @@ const reducer = (
         id: action.id
       }
     }
+  case 'PRIORITIZED':
+    return {
+      ...state,
+      needsSetPriority: {
+        value: false,
+        id: null
+      }
+    }
   case 'SET_COMPLETE': 
     return {
       ...state,
@@ -92,8 +100,11 @@ export const ConsiderationsContextProvider = ({ children }) => {
           userId: activeUser.id,
           createdAt: Date.now(),
           completed: false,
+          completedAt: null,
           deleted: false,
+          deletedAt: null,
           priority: false,
+          prioritizedAt: null,
           ...considerationData
         }
         db.collection('Considerations').add(newConsideration).then(() => {
@@ -133,6 +144,16 @@ export const ConsiderationsContextProvider = ({ children }) => {
         })
       }
     }, [state.needsCompleted]
+  )
+
+  useEffect(
+    () => {
+      if (state.needsSetPriority.value) {
+        db.collection('Considerations').doc(state.needsSetPriority.id).update({ priority: true }).then(() => {
+          dispatch({type: 'PRIORITIZED'})
+        })
+      }
+    }, [state.needsSetPriority]
   )
 
   return (

@@ -10,13 +10,10 @@ const initialState = {
   },
   showAspectsHelper: true,
   showConsiderationsHelper: true,
-  // showShortTermConsiderationsHelper: true,
-  // showLongTermConsiderationsHelper: true,
   showArchiveHelper: true,
 }
 
 const reducer = (state, action) => {
-  console.log('action.type: ', action.type)
   switch (action.type) {
   case 'CLOSE_ASPECTS_HELPER':
     return {

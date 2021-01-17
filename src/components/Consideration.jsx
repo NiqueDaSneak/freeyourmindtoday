@@ -19,6 +19,14 @@ const Consideration = ({
   const [themeState] = useContext(ThemeContext)
   const {colorScheme} = themeState
   
+  // const renderStatusColor = () => {
+  //   if (data?.completed) {
+  //     re
+  //   }
+  //   if (data?.priority) {
+  //     return 'gold'
+  //   }
+  // }
   return (
     <TouchableOpacity
       onPress={ () => showConsiderationActions(
@@ -51,7 +59,7 @@ const Consideration = ({
           )}
         </Text>
         <View style={{
-          backgroundColor: data?.completed ? 'green' : 'red',
+          backgroundColor: data?.deleted ? 'red' : data?.completed ? 'green' : data?.priority ? 'gold' : 'white',
           borderLeftWidth: 1,
           borderTopWidth: 1,
           paddingLeft: 12,
