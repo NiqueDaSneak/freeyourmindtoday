@@ -97,10 +97,10 @@ const ArchiveModal = ({
               color: theme.layout.scheme[colorScheme].textColor,
               // marginBottom: 10
             }]}>Archive</Text>
-            <HelpDropdown 
+            {/* <HelpDropdown 
               visible={explainersState.showArchiveHelper}
               close={() => explainersDispatch({type: 'CLOSE_ARCHIVE_HELPER'})} 
-              text={content.archiveHelper} />
+              text={content.archiveHelper} /> */}
             <View style={{paddingTop: 20}}>
               <SegmentedControl
               // values={['By Date', 'By Aspect']}
