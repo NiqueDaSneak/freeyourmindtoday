@@ -12,7 +12,7 @@ const initialState = {
 
 const reducer = (state, action) => {
   switch (action.type) {
-  case 'OPEN_MODAL':
+  case 'OPEN':
     return {
       modalActive: true,
       modalType: action.modalType,

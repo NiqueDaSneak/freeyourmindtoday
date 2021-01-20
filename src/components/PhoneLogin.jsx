@@ -3,6 +3,7 @@ import { TouchableOpacity,
   View,
   Image,
   Text,StyleSheet } from 'react-native'
+import { theme } from '../assets/utils'
 
 const styles = StyleSheet.create({
   loginIcon: {
@@ -14,7 +15,7 @@ const styles = StyleSheet.create({
     width: 220,
     height:  45,
     borderRadius: 10,
-    backgroundColor: 'black', 
+    // backgroundColor: 'black', 
     flexDirection: 'row',
     justifyContent: 'space-evenly', 
     alignItems: 'center',
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
   
 const PhoneLogin = ({ onPress }) => (
   <TouchableOpacity onPress={onPress}>
-    <View style={styles.loginButtonContainer}>
+    <View style={[styles.loginButtonContainer, {backgroundColor: theme.greyPalette[600]}]}>
       <Image 
         resizeMode="contain"
         resizeMethod="resize"

@@ -28,7 +28,7 @@ const AspectCard = ({ aspect, noMatch }) => {
         marginBottom: 30,
       }}
       onPress={() => modalDispatch({
-        type: 'OPEN_MODAL',
+        type: 'OPEN',
         modalType: 'GET_ASPECT_DETAILS',
         modalData: noMatch ? 'No Match' : aspect
       })}>

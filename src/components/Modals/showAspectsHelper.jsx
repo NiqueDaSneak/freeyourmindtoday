@@ -8,7 +8,7 @@ const showAspectsTooltip = (modalDispatch) => {
       {
         text: 'Create An Aspect',
         onPress: () => modalDispatch({
-          type: 'OPEN_MODAL',
+          type: 'OPEN',
           modalType: 'ADD_NEW_ASPECT' 
         }),
       },

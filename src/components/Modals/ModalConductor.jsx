@@ -8,6 +8,7 @@ import AuthModal from './AuthModal'
 import ExplainerModal from './ExplainerModal'
 import ArchiveModal from './ArchiveModal'
 import ConsiderationChooser from './ConsiderationChooser'
+import PhoneVerification from './PhoneVerification'
 
 const ModalConductor = () => {
 
@@ -22,9 +23,9 @@ const ModalConductor = () => {
   }
   return(
     <>
-      <AuthModal
+      {/* <AuthModal
         visible={isAuthenticated !== true} 
-        close={() => closeModal()} />
+        close={() => closeModal()} /> */}
       <AddNewAspect
         visible={modalType === 'ADD_NEW_ASPECT'} 
         close={() => closeModal()} />
@@ -46,6 +47,7 @@ const ModalConductor = () => {
       <ConsiderationChooser 
         visible={modalType === 'CHOOSE_CONSIDERATION_TYPE'}
       />
+      <PhoneVerification visible={modalType === 'GET_PHONE'} />
     </>
   )
 }

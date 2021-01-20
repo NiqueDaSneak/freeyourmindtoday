@@ -44,7 +44,7 @@ const AspectsContainer = () => {
           <CreatorCard
             onPress={() => {
               modalDispatch({
-                type: 'OPEN_MODAL',
+                type: 'OPEN',
                 modalType: 'ADD_NEW_ASPECT'
               })
             }} />
@@ -60,7 +60,9 @@ const AspectsContainer = () => {
         showsVerticalScrollIndicator={false} 
         showsHorizontalScrollIndicator={false}
       >
-        <AspectCard noMatch />
+        {aspects.length > 0 && (
+          <AspectCard noMatch />
+        )}
         <FlatList
           key={aspects.length}        
           keyExtractor={(

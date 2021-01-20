@@ -13,7 +13,7 @@ const showConsiderationsHelper = (modalDispatch, type) => {
       {
         text: 'Create A Consideration',
         onPress: () => modalDispatch({
-          type: 'OPEN_MODAL',
+          type: 'OPEN',
           modalType: 'ADD_NEW_ASPECT' 
         }),
       },

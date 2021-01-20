@@ -9,6 +9,7 @@ import Layout from './src/components/Layout'
 import Hub from './src/pages/Hub'
 import ModalConductor from './src/components/Modals/ModalConductor'
 import { ThemeContextProvider } from './src/state/theme.context'
+import Authentication from './src/components/Authentication'
 
 const App = () => (
   <AuthContextProvider>
@@ -17,9 +18,7 @@ const App = () => (
         <ConsiderationsContextProvider>
           <ExplainersContextProvider>
             <ThemeContextProvider>
-              <Layout>
-                <Hub />
-              </Layout>
+              <Layout />
               <ModalConductor />
             </ThemeContextProvider>
           </ExplainersContextProvider>

@@ -1,24 +1,30 @@
-import React, { useState, useContext } from 'react'
+import React, {
+  useState, useContext 
+} from 'react'
 import {
   TouchableOpacity, Text, View 
 } from 'react-native'
 import { theme } from '../assets/utils'
 import { ThemeContext } from '../state'
 
-const HelpDropdown = ({ text, close, visible, hidden }) => {
+const HelpDropdown = ({
+  text, close, visible, hidden 
+}) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const [themeState] = useContext(ThemeContext)
   const { colorScheme } = themeState
 
-  // eslint-disable-next-line react/prop-types
-  const renderText = () => isExpanded ? text : `${text?.substring(0, 100)}...`
+  const renderText = () => isExpanded ? text : `${text?.substring(
+    0, 100
+  )}...`
   return (
     <View style={{
-      display: visible && !hidden ? 'inherit' : 'none',
+      opacity: visible && !hidden ? 1 : 0,
+      height: visible && !hidden ? 80 : 0,
       zIndex: 1,
       flexDirection: 'row',
       alignItems: 'center',
-      paddingRight: 10
+      paddingRight: 10,
     }}>
       <TouchableOpacity
         onPress={() => {
@@ -47,7 +53,13 @@ const HelpDropdown = ({ text, close, visible, hidden }) => {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={close}
-        style={{backgroundColor: 'black', padding: 10, borderRadius: 15, borderColor: theme.layout.scheme[colorScheme].accentGrey, borderWidth:  1}}>
+        style={{
+          backgroundColor: 'black',
+          padding: 10,
+          borderRadius: 15,
+          borderColor: theme.layout.scheme[colorScheme].accentGrey,
+          borderWidth:  1
+        }}>
         <Text style={{
           fontSize: theme.fonts.sizes.medium,
           color: theme.layout.scheme[colorScheme].textColor 

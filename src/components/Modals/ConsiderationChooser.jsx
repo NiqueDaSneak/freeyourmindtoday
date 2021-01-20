@@ -15,7 +15,7 @@ import {theme} from '../../assets/utils'
 import { ModalContext } from '../../state';
 
 const ConsiderationChooser = ({visible}) => {
-  // const [menuOpen, setMenuOpen] = useState(false)
+
   const toggleSlide = useRef(new Animated.Value(-400)).current
 
   useEffect(
@@ -53,9 +53,8 @@ const ConsiderationChooser = ({visible}) => {
         style={{
           position: 'absolute',
           width: '100%',
-          height: '100%', 
+          height: visible ? '100%' : 0, 
           opacity: visible ? 1 : 0,
-          display: visible ? 'inherit' : 'none' 
         }} />
       <Animated.View style={{
         position: 'absolute',
@@ -107,10 +106,10 @@ const ConsiderationChooser = ({visible}) => {
         </View>
         <Button
           onPress={() => segmentIndex === 0 ? modalDispatch({
-            type: 'OPEN_MODAL',
+            type: 'OPEN',
             modalType: 'ADD_LONG_CONSIDERATION' 
           }): modalDispatch({
-            type: 'OPEN_MODAL',
+            type: 'OPEN',
             modalType: 'ADD_SHORT_CONSIDERATION' 
           })}
           title={`Create ${segmentIndex === 0 ? 'Long Term' : 'Short Term'} Consideraton`} />

@@ -16,7 +16,7 @@ const ArchiveToggle = ({
 
   return (    
     <TouchableOpacity onPress={() => modalDispatch({
-      type: 'OPEN_MODAL',
+      type: 'OPEN',
       modalType: 'ARCHIVE'
     })}>
       <View style={{

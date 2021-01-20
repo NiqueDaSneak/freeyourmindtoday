@@ -2,6 +2,17 @@ import { useEffect, useState } from 'react'
 import { Keyboard } from 'react-native'
 
 export const theme = { 
+  greyPalette: {
+    100: '#e1e1e1',
+    200: '#cfcfcf',
+    300: '#b1b1b1',
+    400: '#9e9e9e',
+    500: '#7e7e7e',
+    600: '#626262',
+    700: '#515151',
+    800: '#3b3b3b',
+    900: '#22222'
+  },
   layout: {
     scheme: {
       dark: {

@@ -67,13 +67,15 @@ const ConsiderationsContainer = ({
             </Text>
             {!hideActions && (
               <>
-                <ArchiveToggle
-                  total={considerations?.length}
-                  completed={considerations?.filter(el => el.completed).length} />
+                {considerations?.filter(el => el.completed).length !== 0 && (
+                  <ArchiveToggle
+                    total={considerations?.length}
+                    completed={considerations?.filter(el => el.completed).length} />
+                )}
                 <CreatorCard
                   onPress={() => {
                     modalDispatch({
-                      type: 'OPEN_MODAL',
+                      type: 'OPEN',
                       modalType: 'CHOOSE_CONSIDERATION_TYPE'
                     })
                   }} />

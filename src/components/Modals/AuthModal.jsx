@@ -1,4 +1,6 @@
-import React, { useState, useContext, useEffect, useRef } from 'react'
+import React, {
+  useState, useContext, useEffect, useRef 
+} from 'react'
 import { 
   StyleSheet, 
   Text, 
@@ -14,11 +16,15 @@ import { BlurView } from 'expo-blur'
 import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha'
 import fb from 'firebase'
 import firebase, { db } from '../../../firebase'
-import { theme, useKeyboard } from '../../assets/utils'
+import {
+  theme, useKeyboard 
+} from '../../assets/utils'
 import { AuthContext }  from '../../state'
 import PhoneLogin from '../PhoneLogin'
 
-const AuthModal = ({ visible, close }) => {
+const AuthModal = ({
+  visible, close 
+}) => {
   const recaptchaVerifier = useRef(null)
 
   const [keyboardHeight, keyboardOpen] = useKeyboard()
@@ -42,7 +48,9 @@ const AuthModal = ({ visible, close }) => {
   const sendVerification = () => {
     const phoneProvider = new fb.auth.PhoneAuthProvider()
     phoneProvider
-      .verifyPhoneNumber(`+1${phoneNumber}`, recaptchaVerifier.current)
+      .verifyPhoneNumber(
+        `+1${phoneNumber}`, recaptchaVerifier.current
+      )
       .then(val => setFirebaseVerificationResponse(val))
   }
 
@@ -50,41 +58,53 @@ const AuthModal = ({ visible, close }) => {
     firebaseVerificationResponse,
     verifyCode
   )
-  useEffect(() => {
-    if (phoneLoggingIn) {
-      Animated.timing(phoneNumberInputRefAnimation, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: false,
-        easing: Easing.ease,
-      }).start()
-      Animated.timing(signInOptionsRefAnimation, {
-        toValue: -400,
-        duration: 300,
-        useNativeDriver: false,
-        easing: Easing.ease,
-      }).start()
-      phoneNumberInputRef.current.focus()
-    }
-  }, [phoneLoggingIn])
+  useEffect(
+    () => {
+      if (phoneLoggingIn) {
+        Animated.timing(
+          phoneNumberInputRefAnimation, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: false,
+            easing: Easing.ease,
+          }
+        ).start()
+        Animated.timing(
+          signInOptionsRefAnimation, {
+            toValue: -400,
+            duration: 300,
+            useNativeDriver: false,
+            easing: Easing.ease,
+          }
+        ).start()
+        phoneNumberInputRef.current.focus()
+      }
+    }, [phoneLoggingIn]
+  )
 
-  useEffect(() => {
-    if (verifyNumber) {
-      verifyInputRef.current.focus()
-      Animated.timing(phoneNumberInputRefAnimation, {
-        toValue: -400,
-        duration: 300,
-        useNativeDriver: false,
-        easing: Easing.ease,
-      }).start()
-      Animated.timing(verifyInputRefAnimation, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: false,
-        easing: Easing.ease,
-      }).start()
-    }
-  }, [verifyNumber])
+  useEffect(
+    () => {
+      if (verifyNumber) {
+        verifyInputRef.current.focus()
+        Animated.timing(
+          phoneNumberInputRefAnimation, {
+            toValue: -400,
+            duration: 300,
+            useNativeDriver: false,
+            easing: Easing.ease,
+          }
+        ).start()
+        Animated.timing(
+          verifyInputRefAnimation, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: false,
+            easing: Easing.ease,
+          }
+        ).start()
+      }
+    }, [verifyNumber]
+  )
   
   const styles = StyleSheet.create({
     loginIcon: {
@@ -129,9 +149,7 @@ const AuthModal = ({ visible, close }) => {
       <BlurView
         tint='dark'
         intensity={100}
-        style={{
-          height: '100%',
-        }}>
+        style={{height: '100%',}}>
         <Animated.View 
           style={{
             bottom: keyboardHeight + 30,
@@ -255,9 +273,7 @@ const AuthModal = ({ visible, close }) => {
                 .signInWithCredential(credential)
                 .then((result) => {
                   if (result.additionalUserInfo.isNewUser) {
-                    const newUser = {
-                      firebaseId: result.user.uid,
-                    }
+                    const newUser = {firebaseId: result.user.uid,}
                     db.collection('Users').add(newUser)
                       .then(() => {
                         authDispatch({

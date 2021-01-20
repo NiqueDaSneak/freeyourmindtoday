@@ -1,13 +1,17 @@
-import React, { createContext, useReducer, useEffect } from 'react'
-import { AppearanceProvider, useColorScheme } from 'react-native-appearance'
+import React, {
+  createContext, useReducer, useEffect 
+} from 'react'
+import {
+  AppearanceProvider, useColorScheme 
+} from 'react-native-appearance'
 
 export const ThemeContext = createContext()
 
-const initialState = {
-  colorScheme: 'dark'
-}
+const initialState = {colorScheme: 'dark'}
 
-const reducer = (state, action) => {
+const reducer = (
+  state, action
+) => {
   switch (action.type) {
   case 'SET_COLOR_SCHEME':
     return {
@@ -21,16 +25,20 @@ const reducer = (state, action) => {
 
 
 export const ThemeContextProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const [state, dispatch] = useReducer(
+    reducer, initialState
+  )
 
   const colorScheme = useColorScheme()
 
-  useEffect(() => {
-    dispatch({
-      type: 'SET_COLOR_SCHEME',
-      colorScheme
-    })
-  }, [])
+  useEffect(
+    () => {
+      dispatch({
+        type: 'SET_COLOR_SCHEME',
+        colorScheme
+      })
+    }, [colorScheme]
+  )
 
   return (
     <ThemeContext.Provider value={[state,dispatch]}>
