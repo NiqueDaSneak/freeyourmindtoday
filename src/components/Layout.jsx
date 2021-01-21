@@ -1,12 +1,10 @@
 import React, { useContext } from 'react'
+import {View} from 'react-native'
 import {
-  View, SafeAreaView 
-} from 'react-native'
-import {
-  AuthContext, ThemeContext 
+  AuthContext,
+  ThemeContext 
 } from '../state'
 import { theme } from '../assets/utils'
-import Footer from './Footer'
 import Authentication from './Authentication'
 import Hub from '../pages/Hub'
 

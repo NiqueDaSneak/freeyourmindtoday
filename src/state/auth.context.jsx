@@ -81,14 +81,12 @@ export const AuthContextProvider = ({ children }) => {
   )
   const recaptchaVerifier = useRef(null)
 
-  // const sendVerification = useCallback(() => {
-  //   }, [state.phoneLogin.phoneNumber])
-
-  const confirmCode = useCallback(() => firebase.auth.PhoneAuthProvider.credential(
-    firebaseVerificationResponse,
-    state.phoneLogin?.verificationCode
-  ), [firebaseVerificationResponse, state.phoneLogin.verificationCode])
-
+  const confirmCode = useCallback(
+    () => firebase.auth.PhoneAuthProvider.credential(
+      firebaseVerificationResponse,
+      state.phoneLogin?.verificationCode
+    ), [firebaseVerificationResponse, state.phoneLogin.verificationCode]
+  )
 
   const onAuthStateChange = () => firebase.auth().onAuthStateChanged(user => {
     if (user) {
@@ -136,12 +134,6 @@ export const AuthContextProvider = ({ children }) => {
             if (result.additionalUserInfo.isNewUser) {
               const newUser = {firebaseId: result.user.uid,}
               db.collection('Users').add(newUser)
-                // .then(() => {
-                //   dispatch({
-                //     type: 'LOGIN_USER', 
-                //     id: result.user.uid
-                //   })
-                // })
             }
           })
       }

@@ -1,5 +1,8 @@
 import React, {
-  useReducer, createContext, useEffect, useContext 
+  useReducer,
+  createContext,
+  useEffect,
+  useContext 
 } from 'react'
 import { db } from '../../firebase'
 import { AuthContext } from './auth.context'

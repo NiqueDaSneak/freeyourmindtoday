@@ -1,6 +1,9 @@
 import { Alert } from 'react-native'
 
-const showConsiderationsHelper = (modalDispatch, type) => {
+const showConsiderationsHelper = (
+  modalDispatch,
+  type
+) => {
   const alertTitle = type === 'short' ? 'Short Term Considerations' : 'Long Term Considerations'
   const alertText = type === 'long' ? 
     'Once we understand who we are, we can ask questions, and create goals against the backdrop of what we already know about ourselves. \n\nLong term considerations should be questions we have; or answers to questions that have not revealed themselves.' 

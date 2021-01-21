@@ -19,7 +19,8 @@ import ArchiveToggle from './ArchiveToggle'
 import CreatorCard from './CreatorCard'
 
 const ConsiderationsContainer = ({
-  singleAspectId, hideHelper, hideActions
+  singleAspectId,
+  hideActions
 }) => {
   const [aspectsState] = useContext(AspectsContext)
   const {aspects} = aspectsState
@@ -53,7 +54,6 @@ const ConsiderationsContainer = ({
     }}>
       {!disabled && (
         <>
-          
           <View style={{
             display: 'flex',
             flexDirection: 'row', 

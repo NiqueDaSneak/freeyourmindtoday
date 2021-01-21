@@ -8,7 +8,8 @@ import {
 import {theme} from '../assets/utils'
 
 const ArchiveToggle = ({
-  completed, total
+  completed,
+  total
 }) => {
   const [themeState] = useContext(ThemeContext)
   const { colorScheme } = themeState

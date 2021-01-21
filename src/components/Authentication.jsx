@@ -1,13 +1,18 @@
-import React, {useContext, useRef} from 'react'
+import React, {useContext} from 'react'
 import {
-  View, Image, SafeAreaView, Text
+  View,
+  Image, 
+  SafeAreaView, 
+  Text
 } from 'react-native'
 import {
   theme, useKeyboard 
 } from '../assets/utils'
-import { ModalContext, ThemeContext } from '../state'
+import {
+  ModalContext,
+  ThemeContext 
+} from '../state'
 import PhoneLogin from './PhoneLogin'
-import firebase, { db } from '../../firebase'
 
 const Authentication = () => {
   const [themeState, themeDispatch] = useContext(ThemeContext)
@@ -54,13 +59,14 @@ const Authentication = () => {
         left: 'auto'
       }}>
         <PhoneLogin onPress={() => {
-          modalDispatch({ type: 'OPEN', modalType: 'GET_PHONE' })
-          // setPhoneLoggingIn(true)}
+          modalDispatch({
+            type: 'OPEN',
+            modalType: 'GET_PHONE' 
+          })
         }} />
       </View>
     </SafeAreaView>
   )
 }
-
 
 export default Authentication

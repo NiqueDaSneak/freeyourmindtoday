@@ -1,6 +1,11 @@
 import { Alert } from 'react-native'
 
-const showConsiderationActions = (modalDispatch, considerationDispatch, type, data ) => {
+const showConsiderationActions = (
+  modalDispatch, 
+  considerationDispatch, 
+  type, 
+  data 
+) => {
   const alertBodyText = type === 'long' ? `${data.title}` : `${data.title}\n\n${data.importanceStatement}`
   Alert.alert(
     'Consideration Details',

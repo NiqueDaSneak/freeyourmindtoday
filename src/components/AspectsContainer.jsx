@@ -1,17 +1,20 @@
 import React, {useContext} from 'react'
 import {
-  ScrollView, View, Text, FlatList 
+  ScrollView, 
+  View,
+  Text, 
+  FlatList 
 } from 'react-native'
 import {theme} from '../assets/utils'
 import AspectCard from './AspectCard'
 import {
-  AspectsContext, ModalContext, ExplainersContext, ThemeContext 
+  AspectsContext, 
+  ModalContext,
+  ExplainersContext, 
+  ThemeContext 
 } from '../state'
 import HelpDropdown from './HelpDropdown'
-// import ItemOptions from './ItemOptions'
-import ArchiveToggle from './ArchiveToggle'
 import CreatorCard from './CreatorCard'
-
 
 const AspectsContainer = () => {
 

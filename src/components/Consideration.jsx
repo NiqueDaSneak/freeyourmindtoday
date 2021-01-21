@@ -1,32 +1,24 @@
 import React, {useContext} from 'react'
 import {
-  View, TouchableOpacity, Text
+  View, 
+  TouchableOpacity, 
+  Text
 } from 'react-native'
 import moment from 'moment'
 import {theme} from '../assets/utils'
 import {
-  ConsiderationsContext, ModalContext, ThemeContext
+  ConsiderationsContext,
+  ModalContext
 } from '../state'
 import showConsiderationActions from './Modals/showConsiderationActions'
 
 const Consideration = ({
   style,
   data,
-  disabled
 }) => {
   const [modalDispatch] = useContext(ModalContext)
   const [considerationState, considerationDispatch] = useContext(ConsiderationsContext)
-  const [themeState] = useContext(ThemeContext)
-  const {colorScheme} = themeState
   
-  // const renderStatusColor = () => {
-  //   if (data?.completed) {
-  //     re
-  //   }
-  //   if (data?.priority) {
-  //     return 'gold'
-  //   }
-  // }
   return (
     <TouchableOpacity
       onPress={ () => showConsiderationActions(

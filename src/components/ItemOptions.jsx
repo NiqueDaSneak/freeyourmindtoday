@@ -3,11 +3,13 @@ import {View} from 'react-native'
 import  {ThemeContext} from '../state'
 import ArchiveToggle from './ArchiveToggle'
 import CreatorCard from './CreatorCard'
-import {
-  theme 
-} from '../assets/utils'
+import {theme} from '../assets/utils'
 
-const ItemOptions = ({creatorOnPress, archiveTotal, archiveCompleted}) => {
+const ItemOptions = ({
+  creatorOnPress,
+  archiveTotal,
+  archiveCompleted
+}) => {
   const [themeState] = useContext(ThemeContext)
   const { colorScheme } = themeState
 

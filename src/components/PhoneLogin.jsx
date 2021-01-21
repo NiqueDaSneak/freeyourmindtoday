@@ -1,8 +1,10 @@
 import React from 'react'
-import { TouchableOpacity,
+import {
+  TouchableOpacity,
   View,
   Image,
-  Text,StyleSheet } from 'react-native'
+  Text,StyleSheet 
+} from 'react-native'
 import { theme } from '../assets/utils'
 
 const styles = StyleSheet.create({
@@ -15,7 +17,6 @@ const styles = StyleSheet.create({
     width: 220,
     height:  45,
     borderRadius: 10,
-    // backgroundColor: 'black', 
     flexDirection: 'row',
     justifyContent: 'space-evenly', 
     alignItems: 'center',
@@ -31,9 +32,7 @@ const PhoneLogin = ({ onPress }) => (
         resizeMethod="resize"
         style={styles.loginIcon}
         source={require('../assets/phone.png')} />
-      <Text style={{
-        color: 'white' 
-      }}>Sign in with phone number</Text>
+      <Text style={{color: 'white'}}>Sign in with phone number</Text>
     </View>
   </TouchableOpacity>
 )

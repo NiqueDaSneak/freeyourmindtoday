@@ -1,5 +1,6 @@
 import React, {
-  useState, useContext 
+  useState,
+  useContext 
 } from 'react'
 import {
   TouchableOpacity, Text, View 
@@ -8,7 +9,10 @@ import { theme } from '../assets/utils'
 import { ThemeContext } from '../state'
 
 const HelpDropdown = ({
-  text, close, visible, hidden 
+  text, 
+  close, 
+  visible, 
+  hidden 
 }) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const [themeState] = useContext(ThemeContext)

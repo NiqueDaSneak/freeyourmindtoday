@@ -1,4 +1,6 @@
-import React, { createContext, useReducer } from 'react'
+import React, {
+  createContext, useReducer 
+} from 'react'
 
 export const ExplainersContext = createContext()
 
@@ -13,7 +15,9 @@ const initialState = {
   showArchiveHelper: true,
 }
 
-const reducer = (state, action) => {
+const reducer = (
+  state, action
+) => {
   switch (action.type) {
   case 'CLOSE_ASPECTS_HELPER':
     return {
@@ -36,7 +40,9 @@ const reducer = (state, action) => {
 }
 
 export const ExplainersContextProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const [state, dispatch] = useReducer(
+    reducer, initialState
+  )
 
   return (
     <ExplainersContext.Provider value={[state, dispatch]}>

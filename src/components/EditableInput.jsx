@@ -8,11 +8,14 @@ import {
 } from 'react-native'
 import { theme } from '../assets/utils'
 
-const EditableInput = ({ aspect, editableValue, size }) => {
+const EditableInput = ({
+  editableValue,
+  size 
+}) => {
   const [editable, setEditable] = useState(false)
   const [inputValue, setInputValue] = useState(editableValue)
 
-  const EditToggle = ({ type, editable }) => editable ? (
+  const EditToggle = ({editable}) => editable ? (
     <TouchableOpacity onPress={() => {
       setEditable(false)
     }}>
@@ -68,9 +71,7 @@ const EditableInput = ({ aspect, editableValue, size }) => {
           borderColor: 'gray', 
           borderWidth: 1 ,
           paddingLeft: '2%',
-          // marginBottom: '4%', 
           width: '75%',
-          // textAlign: 'center',
           padding: '2%',
           color: 'white',
         }, 
@@ -82,12 +83,9 @@ const EditableInput = ({ aspect, editableValue, size }) => {
         onChangeText={text => setInputValue(text)}
         onSubmitEditing={() => Keyboard.dismiss()}
       />
-
       <EditToggle editable={editable} />
     </View>
-
   )
-
 }
 
 export default EditableInput

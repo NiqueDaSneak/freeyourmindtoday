@@ -3,28 +3,25 @@ import React, {
 } from 'react'
 import {
   Text, 
-  View, 
   Animated, 
   Button, 
   Easing, 
-  Pressable,
-  Modal,
   TextInput,
   Keyboard,
   StyleSheet
 } from 'react-native'
 import { BlurView } from 'expo-blur'
-import SegmentedControl from '@react-native-community/segmented-control';
 import {
-  theme, useKeyboard
+  theme,
+  useKeyboard
 } from '../../assets/utils'
 import {
-  AuthContext, ModalContext 
+  AuthContext,
+  ModalContext 
 } from '../../state';
 
 const PhoneVerification = ({ visible }) => {
   const [authState, authDispatch] = useContext(AuthContext)
-  // const [menuOpen, setMenuOpen] = useState(false)
   const toggleSlide = useRef(new Animated.Value(-400)).current
   const [modalState, modalDispatch] = useContext(ModalContext)
   const [keyboardHeight, keyboardOpen] = useKeyboard()

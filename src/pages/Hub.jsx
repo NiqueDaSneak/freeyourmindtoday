@@ -1,5 +1,8 @@
 import React from 'react'
-import { SafeAreaView, ScrollView } from 'react-native'
+import {
+  SafeAreaView,
+  ScrollView
+} from 'react-native'
 import AspectsContainer from '../components/AspectsContainer'
 import ConsiderationsContainer from '../components/ConsiderationsContainer'
 

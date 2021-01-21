@@ -1,12 +1,10 @@
-import React, {
-  useContext
-} from 'react'
+import React, {useContext} from 'react'
 import {
-  Text, View, TouchableOpacity 
+  Text,
+  View,
+  TouchableOpacity 
 } from 'react-native'
-import {
-  theme 
-} from '../assets/utils'
+import {theme} from '../assets/utils'
 import { ThemeContext } from '../state'
 
 const CreatorCard = ({onPress}) => {
@@ -22,7 +20,6 @@ const CreatorCard = ({onPress}) => {
         alignItems: 'center',
         backgroundColor: theme.layout.scheme[colorScheme].third,
         borderRadius: 15,
-        // marginBottom: 10
       }}>
         <Text style={{
           fontSize: theme.fonts.sizes.large,
@@ -32,6 +29,5 @@ const CreatorCard = ({onPress}) => {
     </TouchableOpacity>
   )
 }
-  
 
 export default CreatorCard
