@@ -18,12 +18,12 @@ const CreatorCard = ({onPress}) => {
         width: 70,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: theme.layout.scheme[colorScheme].third,
+        backgroundColor: colorScheme === 'dark' ? theme.greyPalette[600] : theme.greyPalette[200],
         borderRadius: 15,
       }}>
         <Text style={{
           fontSize: theme.fonts.sizes.large,
-          color: theme.layout.scheme[colorScheme].black
+          color: colorScheme === 'dark' ? theme.greyPalette[300] : theme.greyPalette[500]
         }}>+</Text>
       </View>
     </TouchableOpacity>

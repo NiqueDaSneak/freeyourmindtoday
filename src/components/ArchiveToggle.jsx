@@ -21,14 +21,14 @@ const ArchiveToggle = ({
       modalType: 'ARCHIVE'
     })}>
       <View style={{
-        backgroundColor: theme.layout.scheme[colorScheme].third,
+        backgroundColor: colorScheme === 'dark' ? theme.greyPalette[600] : theme.greyPalette[200],
         height: 60,
         width: 70,
         borderRadius: 15,
         justifyContent: 'center',
         alignItems: 'center'
       }}>
-        <Image 
+        <Image
           resizeMode="contain"
           resizeMethod="resize"
           style={{
@@ -36,9 +36,12 @@ const ArchiveToggle = ({
             height: 20,
             width: 20,
             marginBottom: 4,
-          }} 
-          source={require('../assets/archive.png')} />
-        <Text style={{fontSize: theme.fonts.sizes.small}}>
+          }}
+          source={colorScheme === 'dark' ? require('../assets/archive-dark.png') : require('../assets/archive-light.png')} />
+        <Text style={{
+          fontSize: theme.fonts.sizes.small,
+          color: colorScheme === 'dark' ? theme.greyPalette[100] : theme.greyPalette[700]
+        }}>
           {completed !== undefined ? (
             <Text>{`${completed}/${total}`} </Text> 
           ): (

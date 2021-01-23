@@ -1,5 +1,5 @@
 import React, {
-  useContext, useRef 
+  useContext, useRef, useEffect 
 } from 'react'
 import {View} from 'react-native'
 import {
@@ -9,7 +9,8 @@ import {
 } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import {
-  StatusBar, setStatusBarBackgroundColor 
+  StatusBar, setStatusBarBackgroundColor,
+  setStatusBarStyle
 } from 'expo-status-bar'
 import {
   AuthContext,
@@ -28,13 +29,21 @@ const Layout =  ({ children }) => {
   
   const Stack = createStackNavigator();
   const navigationRef = useRef(null)
+
+  useEffect(
+    () => {
+      // colorScheme === 'dark' ? setStatusBarStyle('inverted') : setStatusBarStyle('auto')
+      // setStatusBarStyle('auto')
+    }, [colorScheme]
+  )
   return (
     <>
       {isAuthenticated ? (
         <>
           <NavigationContainer
             ref={navigationRef}
-            theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+            theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+          >
             <Stack.Navigator screenOptions={{
               headerShown: false,
               initialRouteName: 'Aspects'
@@ -48,6 +57,7 @@ const Layout =  ({ children }) => {
       ) : (
         <Authentication />
       )}
+      <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
     </>
   )
 }
