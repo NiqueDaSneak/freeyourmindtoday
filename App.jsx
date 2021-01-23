@@ -6,10 +6,8 @@ import { ConsiderationsContextProvider } from './src/state/considerations.contex
 import { ExplainersContextProvider } from './src/state/explainers.context'
 
 import Layout from './src/components/Layout'
-import Hub from './src/pages/Hub'
 import ModalConductor from './src/components/Modals/ModalConductor'
 import { ThemeContextProvider } from './src/state/theme.context'
-import Authentication from './src/components/Authentication'
 
 const App = () => (
   <AuthContextProvider>

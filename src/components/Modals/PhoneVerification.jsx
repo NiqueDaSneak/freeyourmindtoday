@@ -63,8 +63,6 @@ const PhoneVerification = ({ visible }) => {
   const styles = StyleSheet.create({
     animatedContainer: {
       bottom: keyboardHeight,
-      // left: 0,
-      // left: phoneNumberInputRefAnimation, 
       height: '100%',
       width: '100%',
       alignItems: 'center',
@@ -89,8 +87,6 @@ const PhoneVerification = ({ visible }) => {
       color: 'white' 
     }
   })
-  // const [segmentIndex, setSegmentIndex] = useState(0)
-  // const [modalState, modalDispatch] = useContext(ModalContext)
   return (
     <>
       <BlurView
@@ -104,18 +100,10 @@ const PhoneVerification = ({ visible }) => {
       <Animated.View style={{
         position: 'absolute',
         height: '30%',
-        // justifyContent: 'space-between',
         width: '100%',
         backgroundColor: 'black',
         bottom: toggleSlide,
-        // left: 0,
         zIndex: 1,
-        // paddingBottom: 40,
-        // paddingTop: 30,
-        // borderTopLeftRadius: 15,
-        // borderTopRightRadius: 15,
-        // alignItems: 'center'
-        // justifyContent: 'space-between',
 
       }}>
         <Animated.View 
@@ -167,9 +155,7 @@ const PhoneVerification = ({ visible }) => {
                   easing: Easing.ease,
                 }
               ).start()
-              phoneNumberInputRef.current.focus()
-              // setVerifyNumber(true)
-              // sendVerification()
+              verifyInputRef.current.focus()
             }} />
         </Animated.View>
         <Animated.View style={[

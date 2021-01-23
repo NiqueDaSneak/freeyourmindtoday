@@ -12,7 +12,7 @@ import {
   ModalContext,
   ThemeContext 
 } from '../state'
-import PhoneLogin from './PhoneLogin'
+import PhoneLogin from '../components/PhoneLogin'
 
 const Authentication = () => {
   const [themeState, themeDispatch] = useContext(ThemeContext)
