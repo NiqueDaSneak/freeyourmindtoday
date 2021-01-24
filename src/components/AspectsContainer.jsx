@@ -41,7 +41,7 @@ const AspectsContainer = () => {
           alignItems: 'center',
           justifyContent: 'space-between' 
         }}>
-          <Text style={[theme.fonts.types.heading, {color: theme.layout.scheme[colorScheme].textColor}]}>
+          <Text style={[theme.fonts.types.heading, {color: colorScheme === 'dark' ? theme.greyPalette[400] : theme.greyPalette[400]}]}>
             Aspects
           </Text>
           <CreatorCard
@@ -73,8 +73,8 @@ const AspectsContainer = () => {
           ) => `${index}`}
           numColumns={Math.ceil(aspects.length / 2)}
           data={aspects}
-          renderItem={({item: aspect}) => (
-            <AspectCard aspect={aspect} />
+          renderItem={({item: aspect, index}) => (
+            <AspectCard index={index} aspect={aspect} />
           )}
         />
       </ScrollView>

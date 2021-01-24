@@ -17,6 +17,7 @@ import {
 } from '../../state'
 import HelpDropdown from '../HelpDropdown'
 import Consideration from '../Consideration'
+import { color } from 'react-native-reanimated';
 
 const ArchiveModal = ({
   visible, close
@@ -53,7 +54,7 @@ const ArchiveModal = ({
       visible={visible}
     >
       <BlurView
-        tint='dark'
+        tint={colorScheme}
         intensity={100}
         style={{
           height: '100%',
@@ -94,7 +95,7 @@ const ArchiveModal = ({
           }}>
             <Text style={[theme.fonts.types.heading, {
               textAlign: 'center',
-              color: theme.layout.scheme[colorScheme].textColor,
+              color: colorScheme === 'dark' ? theme.greyPalette[100] : theme.greyPalette[700],
               // marginBottom: 10
             }]}>Archive</Text>
             {/* <HelpDropdown 
@@ -137,8 +138,8 @@ const ArchiveModal = ({
                   width: '100%',
                   // height: '100%'
                 }}
-                itemStyle={{color: 'white'}}
-                onValueChange={(itemValue) => {
+                itemStyle={{color: colorScheme === 'dark' ? theme.greyPalette[200] : theme.greyPalette[800]}}
+af                onValueChange={(itemValue) => {
                   setAspectPicker(itemValue)
                 }}
               >

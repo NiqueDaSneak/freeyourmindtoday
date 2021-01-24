@@ -62,7 +62,7 @@ const ConsiderationsContainer = ({
             justifyContent: 'space-between', 
             marginRight: 10,
           }}>
-            <Text style={[theme.fonts.types.subHeading, {color: theme.layout.scheme[colorScheme].textColor,}]}>
+            <Text style={[theme.fonts.types.subHeading, {color: colorScheme === 'dark' ? theme.greyPalette[400] : theme.greyPalette[400]}]}>
           Considerations
             </Text>
             {!hideActions && (

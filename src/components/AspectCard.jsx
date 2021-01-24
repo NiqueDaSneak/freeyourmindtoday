@@ -2,8 +2,10 @@ import React, {useContext} from 'react'
 import {
   Text, 
   View, 
-  TouchableOpacity 
+  TouchableOpacity, 
+  Touchable
 } from 'react-native'
+import { color } from 'react-native-reanimated'
 import {theme} from '../assets/utils'
 import {
   ModalContext,
@@ -12,41 +14,81 @@ import {
 
 const AspectCard = ({
   aspect,
-  noMatch 
+  noMatch,
+  index
 }) => {
   const [modalState, modalDispatch] = useContext(ModalContext)
   const [themeState] = useContext(ThemeContext)
   const { colorScheme } = themeState
+  console.log('index', index)
 
+  const renderGradientBackgrounds = () => {
+    // if (index + 1) {}
+    // console.log('index % 1', index % 1)
+    return theme.greyPalette[600]
+  }
   return (
     <TouchableOpacity
-      style={{
-        width: 180,
-        height: 130,
-        backgroundColor: theme.layout.scheme[colorScheme].secondary, 
-        borderRadius: 15,
-        marginRight: 20,
-        marginBottom: 30,
-      }}
       onPress={() => modalDispatch({
         type: 'OPEN',
         modalType: 'GET_ASPECT_DETAILS',
         modalData: noMatch ? 'No Match' : aspect
-      })}>
-      <View style={{height: '70%'}} />
-      <View style={{
-        backgroundColor: theme.layout.scheme[colorScheme].textContainer, 
-        color: 'white',
-        width: '100%', 
-        height: '30%',
-        borderBottomLeftRadius: 15, 
-        borderBottomRightRadius: 15,  
+      })}
+      style={{
+        marginRight: 10,
+        marginBottom: 20,
+        width: 200,
+        height: 160,
+        borderRadius: 12,
       }}>
-        <Text style={{
-          fontSize: theme.fonts.sizes.small,
-          color: theme.layout.scheme[colorScheme].textColor,
-          textAlign: 'center', 
-        }}>{noMatch ? 'No Match' : aspect?.title}</Text>
+      <View
+        style={{
+          backgroundColor: renderGradientBackgrounds(),
+          // backgroundColor: colorScheme === 'dark' ? theme.greyPalette[600] : theme.greyPalette[300],
+          width: '100%',
+          height: '70%',
+          borderTopLeftRadius: 12,
+          borderTopRightRadius: 12
+        }} />
+      <View style={{
+        borderColor: colorScheme === 'dark' ? theme.greyPalette[600] : theme.greyPalette[100],
+        borderTopWidth: 1,
+        width: '100%',
+        height: '30%',
+        borderBottomLeftRadius: 12,
+        borderBottomRightRadius: 12,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        backgroundColor: colorScheme === 'dark' ? theme.greyPalette[700] : theme.greyPalette[200],
+      }}>
+        <View style={{
+          width: '86%',
+          justifyContent: 'center',
+          borderBottomLeftRadius: 12
+        }}>
+          <Text style={{
+            paddingLeft: 10,
+            paddingRight: 10,
+            textAlign: 'left',
+            color: colorScheme === 'dark' ? theme.greyPalette[300]: theme.greyPalette[700],
+          }}>{noMatch ? 'No Match' : aspect?.title}</Text>
+        </View>
+        <View style={{
+          borderLeftWidth: 1,
+          borderColor: colorScheme === 'dark' ? theme.greyPalette[600] : theme.greyPalette[100],
+          paddingTop: 4,
+          paddingBottom: 4,
+          width: '14%',
+          justifyContent: 'center',
+          // backgroundColor:  colorScheme === 'dark' ? theme.greyPalette[800] : theme.greyPalette[300],
+          borderBottomRightRadius: 12
+        }}>
+          <Text style={{
+            textAlign: 'center',
+            fontSize: theme.fonts.sizes.medium,
+            color: colorScheme === 'dark' ? theme.greyPalette[300] : theme.greyPalette[500],
+          }}>7</Text>
+        </View>
       </View>
     </TouchableOpacity>
   )

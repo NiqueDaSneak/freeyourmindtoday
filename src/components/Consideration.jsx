@@ -8,7 +8,8 @@ import moment from 'moment'
 import {theme} from '../assets/utils'
 import {
   ConsiderationsContext,
-  ModalContext
+  ModalContext,
+  ThemeContext
 } from '../state'
 import showConsiderationActions from './Modals/showConsiderationActions'
 
@@ -18,7 +19,9 @@ const Consideration = ({
 }) => {
   const [modalDispatch] = useContext(ModalContext)
   const [considerationState, considerationDispatch] = useContext(ConsiderationsContext)
-  
+  const [themeState] = useContext(ThemeContext)
+  const {colorScheme} = themeState
+
   return (
     <TouchableOpacity
       onPress={ () => showConsiderationActions(
@@ -26,7 +29,7 @@ const Consideration = ({
       ) }
       style={{
         ...style,
-        backgroundColor: 'grey',
+        backgroundColor: colorScheme === 'dark' ? 'grey' : theme.greyPalette[200],
         marginRight: 10,
         marginBottom: 20,
         width: 150,
@@ -35,14 +38,20 @@ const Consideration = ({
         justifyContent: 'space-between'
       }}>
       <View style={{padding: 10,}}>
-        <Text style={{fontSize: theme.fonts.sizes.small}}>{data?.title}</Text>
+        <Text style={{
+          fontSize: theme.fonts.sizes.small,
+          color: colorScheme === 'dark' ? theme.greyPalette[200] : theme.greyPalette[800] 
+        }}>{data?.title}</Text>
       </View>
       <View style={{
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
       }}>
-        <Text style={{ fontSize: theme.fonts.sizes.xsmall }}>
+        <Text style={{
+          fontSize: theme.fonts.sizes.xsmall,
+          color: colorScheme === 'dark' ? theme.greyPalette[200] : theme.greyPalette[800] 
+        }}>
           {data?.type === 'long' && (
             `${moment(data?.createdAt).format("M/D/YYYY")}`
           )}
@@ -51,9 +60,10 @@ const Consideration = ({
           )}
         </Text>
         <View style={{
-          backgroundColor: data?.deleted ? 'red' : data?.completed ? 'green' : data?.priority ? 'gold' : 'white',
+          backgroundColor: data?.deleted ? 'red' : data?.completed ? 'green' : data?.priority ? 'gold' : colorScheme === 'dark' ? theme.greyPalette[900] : theme.greyPalette[100],
           borderLeftWidth: 1,
           borderTopWidth: 1,
+          borderColor: colorScheme === 'dark' ? theme.greyPalette[400] : theme.greyPalette[300],
           paddingLeft: 12,
           paddingRight: 12,
           paddingTop: 4,
@@ -62,7 +72,10 @@ const Consideration = ({
           borderBottomRightRadius: 10,
           borderTopLeftRadius: 10,
         }}>
-          <Text style={{fontSize: theme.fonts.sizes.medium}}>
+          <Text style={{
+            fontSize: theme.fonts.sizes.medium,
+            color: colorScheme === 'dark' ? theme.greyPalette[400] : theme.greyPalette[300]
+          }}>
             {data?.type === 'long' ? "L" : "S"}
           </Text>
         </View>

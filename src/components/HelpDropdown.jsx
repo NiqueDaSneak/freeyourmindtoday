@@ -36,21 +36,21 @@ const HelpDropdown = ({
         }}
         style={{
           maxWidth: '100%',
-          borderColor: theme.layout.scheme[colorScheme].accentGrey,
-          borderWidth:  1,
+          // borderColor: theme.layout.scheme[colorScheme].accentGrey,
+          // borderWidth:  1,
           display: 'flex',
           borderRadius: 15,
           flexDirection: 'row',
           alignItems: 'center', 
           padding: 10,
           justifyContent: 'space-around',
-          backgroundColor: theme.layout.scheme[colorScheme].textContainer,
+          backgroundColor: colorScheme === 'dark' ? theme.greyPalette[200] : theme.greyPalette[900],
           marginRight: 10
         }}>
         <Text style={{
           width: '90%',
           fontSize: theme.fonts.sizes.xsmall,
-          color: theme.layout.scheme[colorScheme].textColor 
+          color: colorScheme === 'dark' ? theme.greyPalette[900] : theme.greyPalette[200]
         }}>
           {renderText()}
         </Text>
@@ -58,15 +58,13 @@ const HelpDropdown = ({
       <TouchableOpacity
         onPress={close}
         style={{
-          backgroundColor: 'black',
+          backgroundColor: colorScheme === 'dark' ? theme.greyPalette[200] : theme.greyPalette[900],
           padding: 10,
           borderRadius: 15,
-          borderColor: theme.layout.scheme[colorScheme].accentGrey,
-          borderWidth:  1
         }}>
         <Text style={{
           fontSize: theme.fonts.sizes.medium,
-          color: theme.layout.scheme[colorScheme].textColor 
+          color: colorScheme === 'dark' ? theme.greyPalette[900] : theme.greyPalette[200]
         }}>X</Text>
       </TouchableOpacity>
     </View>

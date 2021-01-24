@@ -12,7 +12,7 @@ import {
 import { BlurView } from 'expo-blur'
 import SegmentedControl from '@react-native-community/segmented-control';
 import {theme} from '../../assets/utils'
-import { ModalContext } from '../../state';
+import { ModalContext, ThemeContext } from '../../state';
 
 const ConsiderationChooser = ({visible}) => {
 
@@ -41,15 +41,19 @@ const ConsiderationChooser = ({visible}) => {
           }
         ).start()
       }
-    }, [visible]
+    }, [toggleSlide, visible]
   )
 
   const [segmentIndex, setSegmentIndex] = useState(0)
   const [modalState, modalDispatch] = useContext(ModalContext)
+
+  const [themeState] = useContext(ThemeContext)
+  const {colorScheme} = themeState
+
   return (
     <>
       <BlurView
-        tint='dark'
+        tint={colorScheme}
         style={{
           position: 'absolute',
           width: '100%',
@@ -61,7 +65,7 @@ const ConsiderationChooser = ({visible}) => {
         height: '45%',
         justifyContent: 'space-between',
         width: '100%',
-        backgroundColor: 'black',
+        backgroundColor: colorScheme === 'dark' ? theme.greyPalette[800] : theme.greyPalette[300],
         bottom: toggleSlide,
         left: 0,
         zIndex: 1,
@@ -72,17 +76,18 @@ const ConsiderationChooser = ({visible}) => {
 
       }}>
         <Text style={[{...theme.fonts.types.heading}, {
-          color: 'white',
+          color: colorScheme === 'dark' ? theme.greyPalette[300] : theme.greyPalette[800],
           textAlign: 'center'        
         }]}>Create Considerations</Text>
         <Text style={[{...theme.fonts.types.subHeading}, {
           fontSize: theme.fonts.sizes.small,
-          color: 'white',
+          color: colorScheme === 'dark' ? theme.greyPalette[300] : theme.greyPalette[600],
           textAlign: 'center',
           width: '90%',
           marginLeft: '5%'
         }]}>Once we understand who we are, we can ask questions, and create goals against the backdrop of what we already know about ourselves.</Text>
         <SegmentedControl
+          tintColor={colorScheme === 'dark' ? theme.greyPalette[400] : theme.greyPalette[100]}
           values={['Long Term', 'Short Term']}
           selectedIndex={segmentIndex}
           onChange={(event) => {
@@ -91,7 +96,7 @@ const ConsiderationChooser = ({visible}) => {
         />
         <View style={{height: 70,}}>
           <Text style={{
-            color: 'white',
+          color: colorScheme === 'dark' ? theme.greyPalette[300] : theme.greyPalette[900],
             textAlign: 'center',
             width: '90%',
             marginLeft: '5%'
@@ -119,7 +124,6 @@ const ConsiderationChooser = ({visible}) => {
           onPress={() => {
             modalDispatch({ type: 'CLOSE_MODAL' })
           }} />
-
       </Animated.View>
     </>
   )

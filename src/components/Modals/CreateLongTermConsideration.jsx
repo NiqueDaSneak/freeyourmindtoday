@@ -15,7 +15,12 @@ import { BlurView } from 'expo-blur'
 import { Picker } from '@react-native-picker/picker'
 
 import { theme, useKeyboard } from '../../assets/utils'
-import { AspectsContext, ModalContext, AuthContext, ConsiderationsContext } from '../../state'
+import { AspectsContext, 
+  ModalContext, 
+  AuthContext, 
+  ConsiderationsContext, 
+  ThemeContext
+ } from '../../state'
 
 const CreateLongTermConsideration = ({ visible, close }) => {
   const [authState, authDispatch] = useContext(AuthContext)
@@ -31,6 +36,9 @@ const CreateLongTermConsideration = ({ visible, close }) => {
   const inputRef = useRef()
   const slideLeft = useRef(new Animated.Value(0)).current
   const slideLeft2 = useRef(new Animated.Value(400)).current
+
+  const [themeState] = useContext(ThemeContext)
+  const {colorScheme} = themeState
 
   useEffect(() => {
     if (visible) {
@@ -72,7 +80,7 @@ const CreateLongTermConsideration = ({ visible, close }) => {
         easing: Easing.ease,
       }).start()
     }
-  }, [questionIndex])
+  }, [questionIndex, slideLeft, slideLeft2])
 
   const resetForm = () => {
     setQuestionIndex(0)
@@ -133,7 +141,7 @@ const CreateLongTermConsideration = ({ visible, close }) => {
       borderColor: 'gray', 
       borderWidth: 1,
       padding: '4%',
-      color: 'white',
+      color: colorScheme === 'dark' ? theme.greyPalette[100] : theme.greyPalette[800],
     }
   })
   
@@ -147,7 +155,7 @@ const CreateLongTermConsideration = ({ visible, close }) => {
       }}
     >
       <BlurView
-        tint='dark'
+        tint={colorScheme}
         intensity={100}
         style={{
           height: '100%',
@@ -162,7 +170,7 @@ const CreateLongTermConsideration = ({ visible, close }) => {
           }>
           <Text style={{
             fontSize: theme.fonts.sizes.medium,
-            color: 'white',
+            color: colorScheme === 'dark' ? theme.greyPalette[100] : theme.greyPalette[800],
             width: '80%',
             marginBottom: '2%', 
           }}>{'What are the things you\'ve been wondering about, questioning or confused about? What isn\'t very clear about the future and how you see yourself in it? What questions have no answers yet?'}</Text>
@@ -215,18 +223,18 @@ const CreateLongTermConsideration = ({ visible, close }) => {
             <Text style={{
               fontSize: theme.fonts.sizes.medium,
               marginBottom: '4%', 
-              color: 'white',
+              color: colorScheme === 'dark' ? theme.greyPalette[100] : theme.greyPalette[800],
               width: '80%'
             }}>Does this correspond with any of your aspects?</Text>
             <Picker
               selectedValue={aspectPicker}
               style={{
-                width: '80%',
+                width: '100%',
               }}
               onValueChange={(itemValue) => {
                 setAspectPicker(itemValue)
-              }
-              }
+              }}
+              itemStyle={{color: colorScheme === 'dark' ? theme.greyPalette[200] : theme.greyPalette[800]}}
             >
               <Picker.Item
                 label='No Match'

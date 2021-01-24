@@ -57,10 +57,8 @@ const Footer = () => {
       borderColor: colorScheme === 'dark' ? theme.greyPalette[800]: theme.greyPalette[200]
     }}>
       {tabs.map(tab => (
-        <TouchableOpacity>
-
+        <TouchableOpacity key={tab.label}>
           <View
-            key={tab.label}
             style={{
               backgroundColor: getCurrentBackgroundColor(tab.label),
               height: '100%',

@@ -1,4 +1,6 @@
-import React, { useState, useContext, useEffect, useRef } from 'react'
+import React, {
+  useState, useContext, useEffect, useRef 
+} from 'react'
 import { 
   StyleSheet, 
   Text, 
@@ -14,10 +16,16 @@ import {
 import { BlurView } from 'expo-blur'
 import { Picker } from '@react-native-picker/picker'
 
-import { theme, useKeyboard } from '../../assets/utils'
-import { AspectsContext, ModalContext, AuthContext, ConsiderationsContext } from '../../state'
+import {
+  theme, useKeyboard 
+} from '../../assets/utils'
+import {
+  AspectsContext, ModalContext, AuthContext, ConsiderationsContext, ThemeContext 
+} from '../../state'
 
-const CreateShortTermConsideration = ({ visible, close }) => {
+const CreateShortTermConsideration = ({
+  visible, close 
+}) => {
   const [authState, authDispatch] = useContext(AuthContext)
   const { activeUser } = authState
   const [modalState, modalDispatch] = useContext(ModalContext)
@@ -36,73 +44,94 @@ const CreateShortTermConsideration = ({ visible, close }) => {
   const slideLeft2 = useRef(new Animated.Value(400)).current
   const slideLeft3 = useRef(new Animated.Value(400)).current
 
-  useEffect(() => {
-    if (visible) {
-      inputRef.current.focus()
-    }
-    if (questionIndex === 1) {
-      inputRef2.current.focus()
-    }
-    if (questionIndex > 1) {
-      Keyboard.dismiss()
-    }
-  }, [visible, questionIndex])
+  const [themeState] = useContext(ThemeContext)
+  const {colorScheme} = themeState
 
-  useEffect(() => {
-    if (questionIndex === 0) {
-      Animated.timing(slideLeft, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: false,
-        easing: Easing.ease,
-      }).start()
+  useEffect(
+    () => {
+      if (visible) {
+        inputRef.current.focus()
+      }
+      if (questionIndex === 1) {
+        inputRef2.current.focus()
+      }
+      if (questionIndex > 1) {
+        Keyboard.dismiss()
+      }
+    }, [visible, questionIndex]
+  )
+
+  useEffect(
+    () => {
+      if (questionIndex === 0) {
+        Animated.timing(
+          slideLeft, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: false,
+            easing: Easing.ease,
+          }
+        ).start()
       
-      Animated.timing(slideLeft2, {
-        toValue: 400,
-        duration: 300,
-        useNativeDriver: false,
-        easing: Easing.ease,
-      }).start()
-      Animated.timing(slideLeft3, {
-        toValue: 400,
-        duration: 300,
-        useNativeDriver: false,
-        easing: Easing.ease,
-      }).start()
-    }
-    // after first question move to next
-    if (questionIndex === 1) {
-      Animated.timing(slideLeft, {
-        toValue: -400,
-        duration: 300,
-        useNativeDriver: false,
-        easing: Easing.ease,
-      }).start()
+        Animated.timing(
+          slideLeft2, {
+            toValue: 400,
+            duration: 300,
+            useNativeDriver: false,
+            easing: Easing.ease,
+          }
+        ).start()
+        Animated.timing(
+          slideLeft3, {
+            toValue: 400,
+            duration: 300,
+            useNativeDriver: false,
+            easing: Easing.ease,
+          }
+        ).start()
+      }
+      // after first question move to next
+      if (questionIndex === 1) {
+        Animated.timing(
+          slideLeft, {
+            toValue: -400,
+            duration: 300,
+            useNativeDriver: false,
+            easing: Easing.ease,
+          }
+        ).start()
       
-      Animated.timing(slideLeft2, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: false,
-        easing: Easing.ease,
-      }).start()
-    }
-    // move on to the last question
-    if (questionIndex === 2) {
-      Animated.timing(slideLeft2, {
-        toValue: -400,
-        duration: 300,
-        useNativeDriver: false,
-        easing: Easing.ease,
-      }).start()
+        Animated.timing(
+          slideLeft2, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: false,
+            easing: Easing.ease,
+          }
+        ).start()
+      }
+      // move on to the last question
+      if (questionIndex === 2) {
+        Animated.timing(
+          slideLeft2, {
+            toValue: -400,
+            duration: 300,
+            useNativeDriver: false,
+            easing: Easing.ease,
+          }
+        ).start()
       
-      Animated.timing(slideLeft3, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: false,
-        easing: Easing.ease,
-      }).start()
-    }
-  }, [questionIndex])
+        Animated.timing(
+          slideLeft3, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: false,
+            easing: Easing.ease,
+          }
+        ).start()
+      }
+    }, [questionIndex]
+  )
   
   const resetForm = () => {
     setQuestionIndex(0)
@@ -122,9 +151,7 @@ const CreateShortTermConsideration = ({ visible, close }) => {
       newConsideration,
       user: activeUser
     })   
-    modalDispatch({
-      type: 'CLOSE_MODAL'
-    })
+    modalDispatch({type: 'CLOSE_MODAL'})
     resetForm()
 
   }
@@ -141,7 +168,7 @@ const CreateShortTermConsideration = ({ visible, close }) => {
     titleInput: { 
       borderRadius: 10, 
       fontSize: theme.fonts.sizes.medium, 
-      borderColor: 'gray', 
+      color: colorScheme === 'dark' ? theme.greyPalette[100] : theme.greyPalette[800],
       borderWidth: 1 ,
       paddingLeft: '2%',
       marginBottom: '4%', 
@@ -165,7 +192,7 @@ const CreateShortTermConsideration = ({ visible, close }) => {
       borderColor: 'gray', 
       borderWidth: 1,
       padding: '4%',
-      color: 'white',
+      color: colorScheme === 'dark' ? theme.greyPalette[100] : theme.greyPalette[800],
     }
   })
   
@@ -179,7 +206,7 @@ const CreateShortTermConsideration = ({ visible, close }) => {
       }}
     >
       <BlurView
-        tint='dark'
+        tint={colorScheme}
         intensity={100}
         style={{
           height: '100%',
@@ -194,13 +221,13 @@ const CreateShortTermConsideration = ({ visible, close }) => {
           }>
           <Text style={{
             fontSize: theme.fonts.sizes.medium,
-            color: 'white',
+            color: colorScheme === 'dark' ? theme.greyPalette[100] : theme.greyPalette[800],
             width: '80%',
             marginBottom: '2%', 
           }}>What is one specific thing you need to do now to either create or sustain your vision? </Text>
           <Text style={{
             fontSize: theme.fonts.sizes.small,
-            color: 'white',
+            color: colorScheme === 'dark' ? theme.greyPalette[100] : theme.greyPalette[800],
             width: '80%',
             marginBottom: '4%', 
           }}>Put another way; What is a step I can take to overcome an obstacle I am facing</Text>
@@ -227,9 +254,7 @@ const CreateShortTermConsideration = ({ visible, close }) => {
             color="red"
             title="Cancel"
             onPress={() => {
-              modalDispatch({
-                type: 'CLOSE_MODAL'
-              })
+              modalDispatch({type: 'CLOSE_MODAL'})
               resetForm()
             }} />
         </Animated.View>
@@ -241,7 +266,7 @@ const CreateShortTermConsideration = ({ visible, close }) => {
           <Text style={{
             fontSize: theme.fonts.sizes.medium,
             marginBottom: '4%', 
-            color: 'white',
+            color: colorScheme === 'dark' ? theme.greyPalette[300] : theme.greyPalette[800],
             width: '80%'
           }}>Why is this important to you?</Text>
           <TextInput
@@ -272,9 +297,7 @@ const CreateShortTermConsideration = ({ visible, close }) => {
             color="red"
             title="Cancel"
             onPress={() => {
-              modalDispatch({
-                type: 'CLOSE_MODAL'
-              })
+              modalDispatch({type: 'CLOSE_MODAL'})
               resetForm()
             }} />
         </Animated.View>
@@ -296,12 +319,11 @@ const CreateShortTermConsideration = ({ visible, close }) => {
             }}>Does this correspond with any of your aspects?</Text>
             <Picker
               selectedValue={aspectPicker}
-              style={{
-                width: '80%',
-              }}
+              style={{width: '100%',}}
               onValueChange={(itemValue) =>
                 setAspectPicker(itemValue)
               }
+              itemStyle={{color: colorScheme === 'dark' ? theme.greyPalette[200] : theme.greyPalette[800]}}
             >
               <Picker.Item
                 label='No Match'

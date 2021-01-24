@@ -1,4 +1,6 @@
-import React, { useState, useContext, useEffect, useRef } from 'react'
+import React, {
+  useState, useContext, useEffect, useRef 
+} from 'react'
 import { 
   StyleSheet, 
   Text, 
@@ -11,10 +13,16 @@ import {
 } from 'react-native'
 import { BlurView } from 'expo-blur'
 
-import { theme, useKeyboard } from '../../assets/utils'
-import { AspectsContext, ModalContext } from '../../state'
+import {
+  theme, useKeyboard 
+} from '../../assets/utils'
+import {
+  AspectsContext, ModalContext, ThemeContext 
+} from '../../state'
 
-const AddNewAspect = ({ visible, close }) => {
+const AddNewAspect = ({
+  visible, close 
+}) => {
   const [modalState, modalDispatch] = useContext(ModalContext)
   const [aspectsState, aspectsDispatch] = useContext(AspectsContext)
   const [keyboardHeight] = useKeyboard()
@@ -29,47 +37,62 @@ const AddNewAspect = ({ visible, close }) => {
   const slideLeft = useRef(new Animated.Value(0)).current
   const slideLeft2 = useRef(new Animated.Value(400)).current
 
-  useEffect(() => {
-    if (visible) {
-      inputRef.current.focus()
-    }
-    if (questionIndex === 1) {
-      inputRef2.current.focus()
-    }
-  }, [visible, questionIndex])
+  const [themeState] = useContext(ThemeContext)
+  const {colorScheme} = themeState
 
-  useEffect(() => {
-    if (questionIndex > 0) {
-      Animated.timing(slideLeft, {
-        toValue: -400,
-        duration: 300,
-        useNativeDriver: false,
-        easing: Easing.ease,
-      }).start()
+  useEffect(
+    () => {
+      if (visible) {
+        inputRef.current.focus()
+      }
+      if (questionIndex === 1) {
+        inputRef2.current.focus()
+      }
+    }, [visible, questionIndex]
+  )
+
+  useEffect(
+    () => {
+      if (questionIndex > 0) {
+        Animated.timing(
+          slideLeft, {
+            toValue: -400,
+            duration: 300,
+            useNativeDriver: false,
+            easing: Easing.ease,
+          }
+        ).start()
       
-      Animated.timing(slideLeft2, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: false,
-        easing: Easing.ease,
-      }).start()
-    }
-    if (questionIndex === 0) {
-      Animated.timing(slideLeft, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: false,
-        easing: Easing.ease,
-      }).start()
+        Animated.timing(
+          slideLeft2, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: false,
+            easing: Easing.ease,
+          }
+        ).start()
+      }
+      if (questionIndex === 0) {
+        Animated.timing(
+          slideLeft, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: false,
+            easing: Easing.ease,
+          }
+        ).start()
       
-      Animated.timing(slideLeft2, {
-        toValue: 400,
-        duration: 300,
-        useNativeDriver: false,
-        easing: Easing.ease,
-      }).start()
-    }
-  }, [questionIndex])
+        Animated.timing(
+          slideLeft2, {
+            toValue: 400,
+            duration: 300,
+            useNativeDriver: false,
+            easing: Easing.ease,
+          }
+        ).start()
+      }
+    }, [questionIndex]
+  )
 
   const resetForm = () => {
     setAspectTitle('')
@@ -85,9 +108,7 @@ const AddNewAspect = ({ visible, close }) => {
       type: 'NEEDS_SAVED',
       payload: newAspect
     })
-    modalDispatch({
-      type: 'CLOSE_MODAL'
-    })
+    modalDispatch({type: 'CLOSE_MODAL'})
     resetForm()
   }
   const styles = StyleSheet.create({
@@ -98,17 +119,18 @@ const AddNewAspect = ({ visible, close }) => {
       alignItems: 'center',
       position: 'absolute'
     },
-    titleInput: { 
-      borderRadius: 10, 
-      fontSize: theme.fonts.sizes.medium, 
-      borderColor: 'gray', 
-      borderWidth: 1 ,
-      paddingLeft: '2%',
-      marginBottom: '4%', 
-      width: '80%',
-      textAlign: 'center',
-      padding: '2%',
-    },
+    // titleInput: { 
+    //   borderRadius: 10, 
+    //   fontSize: theme.fonts.sizes.medium, 
+    //   borderColor: 'gray', 
+    //   borderWidth: 1 ,
+    //   paddingLeft: '2%',
+    //   marginBottom: '4%', 
+    //   width: '80%',
+    //   textAlign: 'center',
+    //   padding: '2%',
+    //   color: 
+    // },
     importanceContainer: {
       width: '100%',
       marginTop: 'auto',
@@ -138,6 +160,7 @@ const AddNewAspect = ({ visible, close }) => {
       }}
     >
       <BlurView
+        tint={colorScheme}
         intensity={100}
         style={{
           height: '100%',
@@ -153,6 +176,7 @@ const AddNewAspect = ({ visible, close }) => {
           <Text style={{
             fontSize: theme.fonts.sizes.large,
             marginBottom: '4%', 
+            color: colorScheme === 'dark' ? theme.greyPalette[100] : theme.greyPalette[700]
           }}>Give Your Aspect A Title</Text>
           <TextInput
             ref={inputRef}
@@ -161,7 +185,18 @@ const AddNewAspect = ({ visible, close }) => {
             keyboardAppearance="dark"
             returnKeyType="next"      
             enablesReturnKeyAutomatically    
-            style={styles.titleInput}
+            style={{ 
+              borderRadius: 10, 
+              fontSize: theme.fonts.sizes.medium, 
+              borderColor: 'gray', 
+              borderWidth: 1 ,
+              paddingLeft: '2%',
+              marginBottom: '4%', 
+              width: '80%',
+              textAlign: 'center',
+              padding: '2%',
+              color: colorScheme === 'dark' ? theme.greyPalette[100] : theme.greyPalette[700] 
+            }}
             onChangeText={text => setAspectTitle(text)}
             placeholder=""
             onSubmitEditing={() => setQuestionIndex(questionIndex + 1)}
@@ -175,9 +210,7 @@ const AddNewAspect = ({ visible, close }) => {
             color="red"
             title="Cancel"
             onPress={() => {
-              modalDispatch({
-                type: 'CLOSE_MODAL'
-              })
+              modalDispatch({type: 'CLOSE_MODAL'})
               resetForm()
             }} />
         </Animated.View>
@@ -189,6 +222,7 @@ const AddNewAspect = ({ visible, close }) => {
           <Text style={{
             fontSize: theme.fonts.sizes.large,
             marginBottom: '4%', 
+            color: colorScheme === 'dark' ? theme.greyPalette[100] : theme.greyPalette[700]
           }}>Why is this important to you?</Text>
           <TextInput
             ref={inputRef2}
@@ -198,7 +232,7 @@ const AddNewAspect = ({ visible, close }) => {
             enablesReturnKeyAutomatically      
             multiline
             numberOfLines={4}
-            style={styles.importanceInput}
+            style={[styles.importanceInput, {color: colorScheme === 'dark' ? theme.greyPalette[100] : theme.greyPalette[700]}]}
             onChangeText={text => setImportance(text)}
             onSubmitEditing={() => submitNewAspect()}
           />
