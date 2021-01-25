@@ -1,11 +1,12 @@
 import React, {
-  createContext, useReducer, useEffect, useRef, useState 
+  createContext, useReducer, useEffect, useRef, useState, useContext 
 } from 'react'
 import { Platform } from 'react-native'
 // import { Notifications } from 'expo'
 import * as Notifications from 'expo-notifications'
 import Constants from 'expo-constants'
 import * as Permissions from 'expo-permissions'
+import { AuthContext } from './auth.context'
 
 export const NotificationsContext = createContext()
 
@@ -30,18 +31,16 @@ export const NotificationsContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(
     reducer, initialState
   )
+  const [authState, authDispatch] = useContext(AuthContext)
+  const {isAuthenticated} = authState
   const [notification, setNotification] = useState(false)
 
   const registerForPushNotificationsAsync = async () => {
     if (Constants.isDevice) {
-      const { status: existingStatus } = await Permissions.getAsync(
-        Permissions.NOTIFICATIONS
-      )
+      const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS)
       let finalStatus = existingStatus
       if (existingStatus !== 'granted') {
-        const { status } = await Permissions.askAsync(
-          Permissions.NOTIFICATIONS
-        )
+        const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS)
         finalStatus = status
       }
       if (finalStatus !== 'granted') {
@@ -49,8 +48,10 @@ export const NotificationsContextProvider = ({ children }) => {
         return
       }
       console.log('work')
-      let token = await Notifications.getExpoPushTokenAsync()
-      console.log('token: ', token)
+      const token = await Notifications.getExpoPushTokenAsync()
+      console.log(
+        'token: ', token
+      )
       // this.setState({expoPushToken: token})
     } else {
       alert('Must use physical device for Push Notifications')
@@ -62,23 +63,25 @@ export const NotificationsContextProvider = ({ children }) => {
 
   useEffect(
     () => {
-      registerForPushNotificationsAsync()
-
-      // This listener is fired whenever a notification is received while the app is foregrounded
-      notificationListener.current = Notifications.addNotificationReceivedListener(notif => {
-        setNotification(notif)
-      })
-
-      // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
-      responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-        console.log(response)
-      })
-
-      return () => {
-        Notifications.removeNotificationSubscription(notificationListener)
-        Notifications.removeNotificationSubscription(responseListener)
+      if (isAuthenticated) {
+        registerForPushNotificationsAsync()
+  
+        // This listener is fired whenever a notification is received while the app is foregrounded
+        notificationListener.current = Notifications.addNotificationReceivedListener(notif => {
+          setNotification(notif)
+        })
+  
+        // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+          console.log(response)
+        })
+  
+        return () => {
+          Notifications.removeNotificationSubscription(notificationListener)
+          Notifications.removeNotificationSubscription(responseListener)
+        }
       }
-    }, []
+    }, [isAuthenticated]
   )
 
   return (

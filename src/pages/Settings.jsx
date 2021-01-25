@@ -9,12 +9,13 @@ import {
 import { theme } from '../assets/utils'
 import EditableInput from '../components/EditableInput'
 import Footer from '../components/Footer'
-import {ThemeContext} from '../state'
+import {AuthContext, ThemeContext} from '../state'
 
 const Settings = () => {
   const [themeState] = useContext(ThemeContext)
   const { colorScheme } = themeState
 
+  const [authState, authDispatch] = useContext(AuthContext)
   return (
     <SafeAreaView>
       <ScrollView 
@@ -35,11 +36,10 @@ const Settings = () => {
         <View
           style={{ marginTop: 90 }}>
           <Button
+            onPress={() => authDispatch({type: 'LOG_OUT'})}
             title='Log Out'
             color='red' />
         </View>
-        {/* <AspectsContainer />
-        <ConsiderationsContainer /> */}
       </ScrollView>
       <Footer />
     </SafeAreaView>

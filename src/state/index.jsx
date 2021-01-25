@@ -12,5 +12,6 @@ export {
   ConsiderationsContext,
   AuthContext,
   ExplainersContext,
-  ThemeContext 
+  ThemeContext,
+  NotificationsContext
 }

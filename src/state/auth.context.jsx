@@ -25,7 +25,8 @@ const initialState = {
   authenticating: false,
   newUserLogin: false,
   newUserData: null,
-  activeUser: {id: null,}
+  activeUser: { id: null },
+  loggingOut: false,
 }
 
 const reducer = (
@@ -68,6 +69,18 @@ const reducer = (
         verificationCode: action.verifyCode
       }
     }
+  case 'LOG_OUT':
+    return {
+      ...state,
+      loggingOut: true
+    }
+  case 'LOGGED_OUT':
+    return {
+      ...state,
+      isAuthenticated: false,
+      loggingOut: false,
+      activeUser: {id: null}
+    }
   default:
     throw new Error()
   }
@@ -97,8 +110,20 @@ export const AuthContextProvider = ({ children }) => {
       })
     } else {
       console.log('The user is not logged in')
+      dispatch({
+        type: 'LOGGED_OUT', 
+        // id: user.uid
+      })
     }
   })
+
+  useEffect(() => {
+    if (state.loggingOut) {
+      firebase.auth().signOut().then(() => {
+        console.log('inside log out')
+      })
+    }
+  }, [state.loggingOut])
   
   useEffect(
     () => {

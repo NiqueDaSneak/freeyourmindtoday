@@ -6,7 +6,7 @@ import { ConsiderationsContextProvider } from './src/state/considerations.contex
 import { ExplainersContextProvider } from './src/state/explainers.context'
 import { NotificationsContextProvider } from './src/state/notifications.context'
 
-import Layout from './src/components/Layout'
+import Layout from './src/components/Layout.jsx'
 import ModalConductor from './src/components/Modals/ModalConductor'
 import { ThemeContextProvider } from './src/state/theme.context'
 
