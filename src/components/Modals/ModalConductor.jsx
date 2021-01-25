@@ -4,7 +4,6 @@ import AspectDetails from './AspectDetails'
 import { ModalContext, AuthContext } from '../../state'
 import CreateShortTermConsideration from './CreateShortTermConsideration'
 import CreateLongTermConsideration from './CreateLongTermConsideration'
-import AuthModal from './AuthModal'
 import ExplainerModal from './ExplainerModal'
 import ArchiveModal from './ArchiveModal'
 import ConsiderationChooser from './ConsiderationChooser'
@@ -23,9 +22,6 @@ const ModalConductor = () => {
   }
   return(
     <>
-      {/* <AuthModal
-        visible={isAuthenticated !== true} 
-        close={() => closeModal()} /> */}
       <AddNewAspect
         visible={modalType === 'ADD_NEW_ASPECT'} 
         close={() => closeModal()} />

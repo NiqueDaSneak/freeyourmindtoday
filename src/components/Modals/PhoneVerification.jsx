@@ -22,6 +22,7 @@ import {
 
 const PhoneVerification = ({ visible }) => {
   const [authState, authDispatch] = useContext(AuthContext)
+  const {isAuthenticated} = authState
   const toggleSlide = useRef(new Animated.Value(-400)).current
   const [modalState, modalDispatch] = useContext(ModalContext)
   const [keyboardHeight, keyboardOpen] = useKeyboard()
@@ -31,6 +32,15 @@ const PhoneVerification = ({ visible }) => {
   const [phoneNumber, setPhoneNumber] = useState('')
   const phoneInputAnimationRef = useRef(new Animated.Value(0)).current
   const verifyInputAnimationRef = useRef(new Animated.Value(450)).current
+
+  const resetForm = () => {
+    phoneInputAnimationRef.resetAnimation()
+    verifyInputAnimationRef.resetAnimation()
+    setPhoneNumber('')
+    setVerifyCode('')
+    Keyboard.dismiss()
+
+  }
 
   useEffect(
     () => {
@@ -59,7 +69,13 @@ const PhoneVerification = ({ visible }) => {
       }
     }, [toggleSlide, visible]
   )
-
+  useEffect(
+    () => {
+      if (!isAuthenticated) {
+        resetForm()
+      }
+    }, [isAuthenticated, phoneInputAnimationRef, verifyInputAnimationRef]
+  )
   const styles = StyleSheet.create({
     animatedContainer: {
       bottom: keyboardHeight,
@@ -157,6 +173,13 @@ const PhoneVerification = ({ visible }) => {
               ).start()
               verifyInputRef.current.focus()
             }} />
+          <Button
+            title="Cancel"
+            color='red'
+            onPress={() => {
+              modalDispatch({ type: 'CLOSE_MODAL' })
+              resetForm()
+            }} />
         </Animated.View>
         <Animated.View style={[
           styles.animatedContainer,
@@ -191,6 +214,13 @@ const PhoneVerification = ({ visible }) => {
               })
             }
             } />
+          <Button
+            title="Cancel"
+            color='red'
+            onPress={() => {
+              modalDispatch({ type: 'CLOSE_MODAL' })
+              resetForm()
+            }} />
         </Animated.View>
         {/* <Button
           title='Cancel'
