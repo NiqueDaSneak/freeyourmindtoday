@@ -1,25 +1,20 @@
 import React, {
   useContext, useRef, useEffect 
 } from 'react'
-import {View} from 'react-native'
 import {
   NavigationContainer,
   DefaultTheme,
   DarkTheme,
 } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import {
-  StatusBar, setStatusBarBackgroundColor,
-  setStatusBarStyle
-} from 'expo-status-bar'
+import {StatusBar,} from 'expo-status-bar'
 import {
   AuthContext,
   ThemeContext 
 } from '../state'
-import { theme } from '../assets/utils'
 import Authentication from '../pages/Authentication'
 import Aspects from '../pages/Aspects'
-import Footer from './Footer'
+import Settings from '../pages/Settings'
 
 const Layout =  ({ children }) => {
   const [themeState] = useContext(ThemeContext)
@@ -30,12 +25,6 @@ const Layout =  ({ children }) => {
   const Stack = createStackNavigator();
   const navigationRef = useRef(null)
 
-  useEffect(
-    () => {
-      // colorScheme === 'dark' ? setStatusBarStyle('inverted') : setStatusBarStyle('auto')
-      // setStatusBarStyle('auto')
-    }, [colorScheme]
-  )
   return (
     <>
       {isAuthenticated ? (
@@ -51,6 +40,9 @@ const Layout =  ({ children }) => {
               <Stack.Screen
                 name="Aspects"
                 component={Aspects} />
+              <Stack.Screen
+                name="Settings"
+                component={Settings} />
             </Stack.Navigator>
           </NavigationContainer>
         </>

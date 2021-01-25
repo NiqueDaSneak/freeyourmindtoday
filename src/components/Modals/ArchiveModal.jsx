@@ -136,10 +136,9 @@ const ArchiveModal = ({
                 selectedValue={aspectPicker}
                 style={{
                   width: '100%',
-                  // height: '100%'
                 }}
                 itemStyle={{color: colorScheme === 'dark' ? theme.greyPalette[200] : theme.greyPalette[800]}}
-af                onValueChange={(itemValue) => {
+                onValueChange={(itemValue) => {
                   setAspectPicker(itemValue)
                 }}
               >

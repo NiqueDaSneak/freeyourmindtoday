@@ -3,7 +3,7 @@
     "name": "Free Your Mind Today",
     "description": "At my lowest, I wish I had a system to tap into; to get & keep my mind right, before reality catches up.\nPeople need support navigating the world. Our technology should help us in more than a directional sense.\nThe state of our culture has many people confused & disoriented. I belive to change the culture we all need to work and cultivate what is on the inside; if we can become better versions of ourselves, what we reflect out can create a better world.",
     "slug": "fymt",
-    "sdkVersion": "40.0.0", 
+    "sdkVersion": "39.0.0", 
     "platforms": [ "ios", "android" ],
     "version": "1.0.0",
     "orientation": "portrait",

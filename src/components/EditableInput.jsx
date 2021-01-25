@@ -4,13 +4,15 @@ import {
   TouchableOpacity, 
   TextInput,
   Keyboard,
-  Image
+  Image,
+  Text
 } from 'react-native'
 import { theme } from '../assets/utils'
 
 const EditableInput = ({
   editableValue,
-  size 
+  size,
+  label
 }) => {
   const [editable, setEditable] = useState(false)
   const [inputValue, setInputValue] = useState(editableValue)
@@ -27,7 +29,7 @@ const EditableInput = ({
           marginLeft: 30,
           height: 30,
           width: 30,
-          marginBottom: 20
+          // marginBottom: 20
         }} 
         // will be save button
         source={require('../assets/check.png')} />
@@ -44,47 +46,56 @@ const EditableInput = ({
           marginLeft: 30,
           height: 30,
           width: 30,
-          marginBottom: 20
+          // marginBottom: 20
         }} 
         source={require('../assets/edit.png')} />
     </TouchableOpacity> 
   )
-  return(
-    <View style={{
-      display: 'flex',
-      flexDirection: 'row', 
-      alignItems: 'center' 
-    }}>
-      <TextInput
-        editable={editable}
-        keyboardAppearance="dark"
-        blurOnSubmit
-        returnKeyType="done"          
-        maxLength={41}
-        value={inputValue}
-        multiline={size === 'large'}
-        numberOfLines={4}
-        style={[{ 
-          height: size === 'large' ? 150 : null,
-          borderRadius: 10, 
-          fontSize: theme.fonts.sizes.medium, 
-          borderColor: 'gray', 
-          borderWidth: 1 ,
-          paddingLeft: '2%',
-          width: '75%',
-          padding: '2%',
-          color: 'white',
-        }, 
-        !editable ? {
-          color: 'black',
-          backgroundColor: 'darkgrey' 
-        } : null
-        ]}
-        onChangeText={text => setInputValue(text)}
-        onSubmitEditing={() => Keyboard.dismiss()}
-      />
-      <EditToggle editable={editable} />
-    </View>
+  
+  return (
+    <>
+      <Text style={{
+        color: 'white',
+        fontSize: theme.fonts.sizes.medium,
+        marginBottom: '4%', 
+        textAlign: 'left'
+      }}>{label}</Text>
+      <View style={{
+        display: 'flex',
+        flexDirection: 'row', 
+        alignItems: 'center',
+      }}>
+        <TextInput
+          editable={editable}
+          keyboardAppearance="dark"
+          blurOnSubmit
+          returnKeyType="done"          
+          maxLength={41}
+          value={inputValue}
+          multiline={size === 'large'}
+          numberOfLines={4}
+          style={[{ 
+            height: size === 'large' ? 150 : null,
+            borderRadius: 10, 
+            fontSize: theme.fonts.sizes.medium, 
+            borderColor: 'gray', 
+            borderWidth: 1 ,
+            paddingLeft: '2%',
+            width: '75%',
+            padding: '2%',
+            color: 'white',
+          }, 
+          !editable ? {
+            color: 'black',
+            backgroundColor: 'darkgrey' 
+          } : null
+          ]}
+          onChangeText={text => setInputValue(text)}
+          onSubmitEditing={() => Keyboard.dismiss()}
+        />
+        <EditToggle editable={editable} />
+      </View>
+    </>
   )
 }
 

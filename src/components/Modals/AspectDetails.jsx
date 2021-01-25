@@ -53,31 +53,31 @@ const AspectDetails = ({
             }]}>No Match</Text>
           ) : (
             <>
-              <Text style={{
+              {/* <Text style={{
                 color: 'white',
                 fontSize: theme.fonts.sizes.medium,
                 marginBottom: '4%', 
                 textAlign: 'left'
-              }}>Aspect Title</Text>
-              <EditableInput
-                aspect={aspect}
+              }}>Aspect Title</Text> */}
+                <EditableInput
+                  label='Aspect Title'
                 editableValue={aspect?.title} />
-              <Text style={{
+              {/* <Text style={{
                 fontSize: theme.fonts.sizes.medium,
                 marginBottom: '4%', 
                 color: 'white',
-              }}>Why is this important to you?</Text>
-              <EditableInput
-                aspect={aspect}
+              }}></Text> */}
+                <EditableInput
+                  label='Why is this important to you?'
                 editableValue={aspect?.importanceStatement}
                 size="large" />
             </>
-            )}
+          )}
           <View style={{paddingTop: 10}}>
-          <ConsiderationsContainer
+            <ConsiderationsContainer
               hideHelper
               hideActions
-            singleAspectId={aspect?.id} />
+              singleAspectId={aspect?.id} />
           </View>
           <Button
             disabled={importanceEditable || titleEditable}

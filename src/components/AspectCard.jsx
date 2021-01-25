@@ -9,7 +9,8 @@ import { color } from 'react-native-reanimated'
 import {theme} from '../assets/utils'
 import {
   ModalContext,
-  ThemeContext 
+  ThemeContext,
+  ConsiderationsContext
 } from '../state'
 
 const AspectCard = ({
@@ -20,7 +21,10 @@ const AspectCard = ({
   const [modalState, modalDispatch] = useContext(ModalContext)
   const [themeState] = useContext(ThemeContext)
   const { colorScheme } = themeState
-  console.log('index', index)
+
+  const [considerationState, considerationDispatch] = useContext(ConsiderationsContext)
+  const {considerations} = considerationState
+  // console.log(' considerations.filter', )
 
   const renderGradientBackgrounds = () => {
     // if (index + 1) {}
@@ -87,7 +91,7 @@ const AspectCard = ({
             textAlign: 'center',
             fontSize: theme.fonts.sizes.medium,
             color: colorScheme === 'dark' ? theme.greyPalette[300] : theme.greyPalette[500],
-          }}>7</Text>
+          }}>{considerations.filter(el => el.aspectId === aspect?.id).length}</Text>
         </View>
       </View>
     </TouchableOpacity>

@@ -5,7 +5,7 @@ import {
   Text,
   Touchable
 } from 'react-native'
-import { useRoute } from '@react-navigation/native'
+import { useRoute, useNavigation } from '@react-navigation/native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { theme } from '../assets/utils'
 // import { theme } from '../assets/utils'
@@ -16,6 +16,7 @@ const Footer = () => {
   const { colorScheme } = themeState
 
   const route = useRoute()
+  const navigation = useNavigation()
 
   const tabs = [
     {
@@ -24,11 +25,13 @@ const Footer = () => {
     },
     {
       label: 'Aspects',
-      icon: colorScheme === 'dark' ? require('../assets/aspects-icon-dark.png')  : require('../assets/aspects-icon-light.png') 
+      icon: colorScheme === 'dark' ? require('../assets/aspects-icon-dark.png') : require('../assets/aspects-icon-light.png'),
+      onPress: () => navigation.navigate('Aspects')
     },
     {
       label: 'Settings',
-      icon: colorScheme === 'dark' ? require('../assets/settings-dark.png') : require('../assets/settings-light.png') 
+      icon: colorScheme === 'dark' ? require('../assets/settings-dark.png') : require('../assets/settings-light.png'),
+      onPress: () => navigation.navigate('Settings')
     },
   ]
 
@@ -57,7 +60,7 @@ const Footer = () => {
       borderColor: colorScheme === 'dark' ? theme.greyPalette[800]: theme.greyPalette[200]
     }}>
       {tabs.map(tab => (
-        <TouchableOpacity key={tab.label}>
+        <TouchableOpacity onPress={tab.onPress} key={tab.label}>
           <View
             style={{
               backgroundColor: getCurrentBackgroundColor(tab.label),
