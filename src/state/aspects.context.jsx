@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useContext 
 } from 'react'
+import {Alert} from 'react-native'
 import { db } from '../../firebase'
 import { AuthContext } from './auth.context'
 
@@ -107,10 +108,20 @@ export const AspectsContextProvider = ({ children }) => {
           db.collection('Aspects').doc(state.needsUpdatedTitle.id).update({ title:  state.needsUpdatedTitle.title}).then(() => {
             dispatch({ type: 'UPDATED' })
           })
-        } catch (error) {
+        } catch (err) {
           console.log(
-            'err in update: ', error
+            'err in update: ', err
           )
+          Alert.alert(
+            'Error updating title',
+            `${err}`
+              [
+                {
+                  text: 'Go Back',
+                  style: 'destructive'
+                }
+              ],
+          )        
         }
       }
     }, [state.needsUpdatedTitle]
@@ -123,10 +134,20 @@ export const AspectsContextProvider = ({ children }) => {
           db.collection('Aspects').doc(state.needsUpdatedImportance.id).update({ importanceStatement:  state.needsUpdatedImportance.importance}).then(() => {
             dispatch({ type: 'UPDATED' })
           })
-        } catch (error) {
+        } catch (err) {
           console.log(
-            'err in update: ', error
+            'err in update: ', err
           )
+          Alert.alert(
+            'Error updating importance',
+            `${err}`
+              [
+                {
+                  text: 'Go Back',
+                  style: 'destructive'
+                }
+              ],
+          )        
         }
       }
     }, [state.needsUpdatedImportance]
@@ -134,22 +155,37 @@ export const AspectsContextProvider = ({ children }) => {
   
   useEffect(
     () => {
-      const subscriber = db.collection('Aspects').where(
-        'userId', '==', activeUser.id
-      ).onSnapshot(querySnapshot => {
-        const aspectData = []
-        querySnapshot.forEach((doc) => {
-          const withId = {
-            id: doc.id,
-            ...doc.data()
-          }
-          aspectData.push(withId)
+      let subscriber 
+      try {
+        subscriber = db.collection('Aspects').where(
+          'userId', '==', activeUser.id
+        ).onSnapshot(querySnapshot => {
+          const aspectData = []
+          querySnapshot.forEach((doc) => {
+            const withId = {
+              id: doc.id,
+              ...doc.data()
+            }
+            aspectData.push(withId)
+          })
+          dispatch({
+            type: 'SET_ASPECTS',
+            data: aspectData
+          })
         })
-        dispatch({
-          type: 'SET_ASPECTS',
-          data: aspectData
-        })
-      })
+      } catch (err) {
+        Alert.alert(
+          'Error Creating Aspect',
+          `${err}`
+            [
+              {
+                text: 'Go Back',
+                style: 'destructive'
+              }
+            ],
+        )        
+        console.log('err')
+      }
       return () => subscriber()
     }, [activeUser.id]
   )
@@ -157,18 +193,33 @@ export const AspectsContextProvider = ({ children }) => {
   useEffect(
     () => {
       if (state.needsSaved.value) {
+        try {
+          const newAspect = {
+            userId: activeUser.id,
+            createdAt: Date.now(),
+            deleted: false,
+            ...state.needsSaved.data
+          }
+  
+          db.collection('Aspects').add(newAspect)
+            .then(() => {
+              dispatch({type: 'SAVED_NEW'})
+            })
+          
+        } catch (err) {
+          console.log(err)
+          Alert.alert(
+            'Error saving aspect',
+            `${err}`
+              [
+                {
+                  text: 'Go Back',
+                  style: 'destructive'
+                }
+              ],
+          )        
 
-        const newAspect = {
-          userId: activeUser.id,
-          createdAt: Date.now(),
-          deleted: false,
-          ...state.needsSaved.data
         }
-
-        db.collection('Aspects').add(newAspect)
-          .then(() => {
-            dispatch({type: 'SAVED_NEW'})
-          })
       }
     }, [activeUser.id, state.needsSaved]
   )

@@ -91,15 +91,13 @@ const AspectCard = ({
             textAlign: 'center',
             fontSize: theme.fonts.sizes.medium,
             color: 'green',
-          }}> {noMatch ? considerations.filter(el => el.aspectId === 'No Match').filter(ele => ele.completed === false).length : considerations.filter(el => el.aspectId === aspect?.id).filter(ele => ele.completed === false).length}
+          }}>{noMatch ? considerations.filter(el => el.aspectId === 'No Match').filter(ele => ele.completed === false).length : considerations.filter(el => el.aspectId === aspect?.id).filter(ele => ele.completed === false).length}
           </Text>
           <Text style={{
             textAlign: 'center',
             fontSize: theme.fonts.sizes.medium,
             color: 'red',
-          }}>
-            {noMatch ? considerations.filter(el => el.aspectId === 'No Match').filter(ele => ele.completed === true).length : considerations.filter(el => el.aspectId === aspect?.id).filter(ele => ele.completed === true).length}
-          </Text>
+          }}>{noMatch ? considerations.filter(el => el.aspectId === 'No Match').filter(ele => ele.completed === true).length : considerations.filter(el => el.aspectId === aspect?.id).filter(ele => ele.completed === true).length}</Text>
         </View>
       </View>
     </TouchableOpacity>

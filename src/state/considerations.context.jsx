@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useContext 
 } from 'react'
+import {Alert} from 'react-native'
 import { db } from '../../firebase'
 import { AuthContext } from './auth.context'
 
@@ -95,22 +96,37 @@ export const ConsiderationsContextProvider = ({ children }) => {
   
   useEffect(
     () => {
-      const subscriber = db.collection('Considerations').where(
-        'userId', '==', activeUser.id
-      ).onSnapshot(querySnapshot => {
-        const considerationData = []
-        querySnapshot.forEach((doc) => {
-          const withId = {
-            id: doc.id,
-            ...doc.data()
-          }
-          considerationData.push(withId)
+      let subscriber
+      try {
+        subscriber = db.collection('Considerations').where(
+          'userId', '==', activeUser.id
+        ).onSnapshot(querySnapshot => {
+          const considerationData = []
+          querySnapshot.forEach((doc) => {
+            const withId = {
+              id: doc.id,
+              ...doc.data()
+            }
+            considerationData.push(withId)
+          })
+          dispatch({
+            type: 'SET_CONSIDERATIONS',
+            considerationData
+          })
         })
-        dispatch({
-          type: 'SET_CONSIDERATIONS',
-          considerationData
-        })
-      })
+      } catch (err) {
+        Alert.alert(
+          'Error Creating Aspect',
+          `${err}`
+            [
+              {
+                text: 'Go Back',
+                style: 'destructive'
+              }
+            ],
+        )        
+        console.log('err')
+      }
       return () => subscriber()
     }, [activeUser.id]
   )
@@ -118,21 +134,35 @@ export const ConsiderationsContextProvider = ({ children }) => {
   useEffect(
     () => {
       if (state.needsSaved.value) {
-        const { considerationData } = state.needsSaved
-        const newConsideration = {
-          userId: activeUser.id,
-          createdAt: Date.now(),
-          completed: false,
-          completedAt: null,
-          deleted: false,
-          deletedAt: null,
-          priority: false,
-          prioritizedAt: null,
-          ...considerationData
+        try {
+          const { considerationData } = state.needsSaved
+          const newConsideration = {
+            userId: activeUser.id,
+            createdAt: Date.now(),
+            completed: false,
+            completedAt: null,
+            deleted: false,
+            deletedAt: null,
+            priority: false,
+            prioritizedAt: null,
+            ...considerationData
+          }
+          db.collection('Considerations').add(newConsideration).then(() => {
+            dispatch({type: 'SAVED_NEW'})
+          })
+        } catch (err) {
+          Alert.alert(
+            'Error Creating Aspect',
+            `${err}`
+              [
+                {
+                  text: 'Go Back',
+                  style: 'destructive'
+                }
+              ],
+          )        
+          console.log('err')
         }
-        db.collection('Considerations').add(newConsideration).then(() => {
-          dispatch({type: 'SAVED_NEW'})
-        })
       }
     }, [activeUser.id, state.needsSaved]
   )
@@ -140,9 +170,23 @@ export const ConsiderationsContextProvider = ({ children }) => {
   useEffect(
     () => {
       if (state.needsCompleted.value) {
-        db.collection('Considerations').doc(state.needsCompleted.id).update({ completed: true }).then(() => {
-          dispatch({type: 'COMPLETED'})
-        })
+        try {
+          db.collection('Considerations').doc(state.needsCompleted.id).update({ completed: true }).then(() => {
+            dispatch({type: 'COMPLETED'})
+          })
+        } catch (err) {
+          Alert.alert(
+            'Error Creating Aspect',
+            `${err}`
+              [
+                {
+                  text: 'Go Back',
+                  style: 'destructive'
+                }
+              ],
+          )        
+          console.log('err')
+        }
       }
     }, [state.needsCompleted]
   )
@@ -150,9 +194,23 @@ export const ConsiderationsContextProvider = ({ children }) => {
   useEffect(
     () => {
       if (state.needsSetPriority.value) {
-        db.collection('Considerations').doc(state.needsSetPriority.id).update({ priority: true }).then(() => {
-          dispatch({type: 'PRIORITIZED'})
-        })
+        try {
+          db.collection('Considerations').doc(state.needsSetPriority.id).update({ priority: true }).then(() => {
+            dispatch({type: 'PRIORITIZED'})
+          })
+        } catch (err) {
+          Alert.alert(
+            'Error Creating Aspect',
+            `${err}`
+              [
+                {
+                  text: 'Go Back',
+                  style: 'destructive'
+                }
+              ],
+          )        
+          console.log('err')
+        }
       }
     }, [state.needsSetPriority]
   )
