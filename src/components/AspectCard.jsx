@@ -24,13 +24,14 @@ const AspectCard = ({
 
   const [considerationState, considerationDispatch] = useContext(ConsiderationsContext)
   const {considerations} = considerationState
-  // console.log(' considerations.filter', )
 
   const renderGradientBackgrounds = () => {
-    // if (index + 1) {}
-    // console.log('index % 1', index % 1)
-    return theme.greyPalette[600]
+    if (index % 2 === 0) {
+      return colorScheme === 'dark' ? theme.greyPalette[600] : theme.greyPalette[400]
+    } 
+    return colorScheme === 'dark' ? theme.greyPalette[800] : theme.greyPalette[300]
   }
+  
   return (
     <TouchableOpacity
       onPress={() => modalDispatch({
@@ -84,14 +85,21 @@ const AspectCard = ({
           paddingBottom: 4,
           width: '14%',
           justifyContent: 'center',
-          // backgroundColor:  colorScheme === 'dark' ? theme.greyPalette[800] : theme.greyPalette[300],
           borderBottomRightRadius: 12
         }}>
           <Text style={{
             textAlign: 'center',
             fontSize: theme.fonts.sizes.medium,
-            color: colorScheme === 'dark' ? theme.greyPalette[300] : theme.greyPalette[500],
-          }}>{considerations.filter(el => el.aspectId === aspect?.id).length}</Text>
+            color: 'green',
+          }}> {noMatch ? considerations.filter(el => el.aspectId === 'No Match').filter(ele => ele.completed === false).length : considerations.filter(el => el.aspectId === aspect?.id).filter(ele => ele.completed === false).length}
+          </Text>
+          <Text style={{
+            textAlign: 'center',
+            fontSize: theme.fonts.sizes.medium,
+            color: 'red',
+          }}>
+            {noMatch ? considerations.filter(el => el.aspectId === 'No Match').filter(ele => ele.completed === true).length : considerations.filter(el => el.aspectId === aspect?.id).filter(ele => ele.completed === true).length}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>

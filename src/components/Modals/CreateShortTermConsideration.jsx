@@ -36,7 +36,7 @@ const CreateShortTermConsideration = ({
   const [considerationTitle, setConsiderationTitle] = useState('')
   const [questionIndex, setQuestionIndex] = useState(0)
   const [importance, setImportance] = useState('')
-  const [aspectPicker, setAspectPicker] = useState('No')
+  const [aspectPicker, setAspectPicker] = useState('No Match')
   const inputRef = useRef()
   const inputRef2 = useRef()
 
