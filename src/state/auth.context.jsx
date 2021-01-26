@@ -42,7 +42,10 @@ const reducer = (
         phoneNumber: null,
         verificationCode: ''
       },
-      activeUser: {id: action.id},
+      activeUser: {
+        id: action.id,
+        phone: action.phone
+      },
       isAuthenticated: true,
       newUserData: null,
       creatingNewUser: false
@@ -103,10 +106,13 @@ export const AuthContextProvider = ({ children }) => {
 
   const onAuthStateChange = () => firebase.auth().onAuthStateChanged(user => {
     if (user) {
-      console.log('The user is logged in')
+      console.log(
+        'The user is logged in', user.phoneNumber
+      )
       dispatch({
         type: 'LOGIN_USER', 
-        id: user.uid
+        id: user.uid,
+        phone: user.phoneNumber
       })
     } else {
       console.log('The user is not logged in')
@@ -117,13 +123,16 @@ export const AuthContextProvider = ({ children }) => {
     }
   })
 
-  useEffect(() => {
-    if (state.loggingOut) {
-      firebase.auth().signOut().then(() => {
-        console.log('inside log out')
-      })
-    }
-  }, [state.loggingOut])
+  useEffect(
+    () => {
+      if (state.loggingOut) {
+        firebase.auth().signOut().then(() => {
+          console.log('inside log out')
+        })
+        // (firebase.auth().currentUser())
+      }
+    }, [state.loggingOut]
+  )
   
   useEffect(
     () => {

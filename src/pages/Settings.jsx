@@ -16,6 +16,7 @@ const Settings = () => {
   const { colorScheme } = themeState
 
   const [authState, authDispatch] = useContext(AuthContext)
+  const {phone} = authState.activeUser
   return (
     <SafeAreaView>
       <ScrollView 
@@ -27,12 +28,15 @@ const Settings = () => {
         }}>
         <Text style={{
           ...theme.fonts.types.heading,
+          color: colorScheme === 'dark' ? theme.greyPalette[400] : theme.greyPalette[400],
           marginTop: 20,
           marginBottom: 20 
         }}>Settings</Text>
-        <EditableInput
+        {/* <EditableInput
           label="Change Phone Number to Log In:"
-          editableValue="5132917758" />
+          editableValue={phone.replace('+1', '')}
+          onSave={(val) => console.log(`+1${val}`)}        
+        /> */}
         <View
           style={{ marginTop: 90 }}>
           <Button

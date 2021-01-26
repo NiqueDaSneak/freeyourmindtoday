@@ -21,7 +21,7 @@ const initialState = {
   needsCompleted: {
     value: null,
     id: null
-  },
+  }
 }
 
 const reducer = (
@@ -91,8 +91,8 @@ export const ConsiderationsContextProvider = ({ children }) => {
     reducer, initialState
   )
   const [authState, authDispatch] = useContext(AuthContext)
-  const {activeUser} = authState
-
+  const { activeUser } = authState
+  
   useEffect(
     () => {
       const subscriber = db.collection('Considerations').where(

@@ -10,11 +10,22 @@ import { AuthContext } from './auth.context'
 export const AspectsContext = createContext()
 
 const initialState = {
+  loading: false,
   aspects: [],
   needsSaved: {
-    value: null,
+    value: false,
     data: null
   },
+  needsUpdatedTitle: {
+    value: false,
+    title: null,
+    id: null    
+  },
+  needsUpdatedImportance: {
+    value: false,
+    importance: null,
+    id: null    
+  }
 }
 
 const reducer = (
@@ -42,6 +53,41 @@ const reducer = (
         data: null
       }
     }
+  case 'UPDATE_TITLE':
+    return {
+      ...state,
+      loading: true,
+      needsUpdatedTitle: {
+        value: true,
+        title: action.newTitle,
+        id: action.id    
+      }
+    }
+  case 'UPDATE_IMPORT':
+    return {
+      ...state,
+      loading: true,
+      needsUpdatedImportance: {
+        value: true,
+        importance: action.newImport,
+        id: action.id    
+      }
+    }
+  case 'UPDATED':
+    return {
+      ...state,
+      loading: false,
+      needsUpdatedImportance: {
+        value: false,
+        importance: null,
+        id: null  
+      },
+      needsUpdatedTitle: {
+        value: false,
+        title: null,
+        id: null  
+      }
+    }
   default:
     throw new Error()
   }
@@ -52,8 +98,40 @@ export const AspectsContextProvider = ({ children }) => {
     reducer, initialState
   )
   const [authState, authDispatch] = useContext(AuthContext)
-  const {activeUser} = authState
+  const { activeUser } = authState
+  
+  useEffect(
+    () => {
+      if (state.needsUpdatedTitle.value) { 
+        try {
+          db.collection('Aspects').doc(state.needsUpdatedTitle.id).update({ title:  state.needsUpdatedTitle.title}).then(() => {
+            dispatch({ type: 'UPDATED' })
+          })
+        } catch (error) {
+          console.log(
+            'err in update: ', error
+          )
+        }
+      }
+    }, [state.needsUpdatedTitle]
+  )
 
+  useEffect(
+    () => {
+      if (state.needsUpdatedImportance.value) { 
+        try {
+          db.collection('Aspects').doc(state.needsUpdatedImportance.id).update({ importanceStatement:  state.needsUpdatedImportance.importance}).then(() => {
+            dispatch({ type: 'UPDATED' })
+          })
+        } catch (error) {
+          console.log(
+            'err in update: ', error
+          )
+        }
+      }
+    }, [state.needsUpdatedImportance]
+  )
+  
   useEffect(
     () => {
       const subscriber = db.collection('Aspects').where(

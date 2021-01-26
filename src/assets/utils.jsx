@@ -43,7 +43,7 @@ export const theme = {
     types: {
       heading: {
         fontSize: 30, 
-        fontWeight: 'bold'
+        fontWeight: 'bold',
       },
       subHeading: {
         fontSize: 20, 

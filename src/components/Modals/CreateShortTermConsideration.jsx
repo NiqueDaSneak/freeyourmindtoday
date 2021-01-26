@@ -314,7 +314,7 @@ const CreateShortTermConsideration = ({
             <Text style={{
               fontSize: theme.fonts.sizes.medium,
               marginBottom: '4%', 
-              color: 'white',
+              color: colorScheme === 'dark' ? theme.greyPalette[200] : theme.greyPalette[800],
               width: '80%'
             }}>Does this correspond with any of your aspects?</Text>
             <Picker

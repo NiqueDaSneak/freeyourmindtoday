@@ -1,4 +1,6 @@
-import React, { useState, useContext, useEffect, useRef } from 'react'
+import React, {
+  useState, useContext, useEffect, useRef 
+} from 'react'
 import { 
   StyleSheet, 
   Text, 
@@ -14,15 +16,20 @@ import {
 import { BlurView } from 'expo-blur'
 import { Picker } from '@react-native-picker/picker'
 
-import { theme, useKeyboard } from '../../assets/utils'
-import { AspectsContext, 
+import {
+  theme, useKeyboard 
+} from '../../assets/utils'
+import {
+  AspectsContext, 
   ModalContext, 
   AuthContext, 
   ConsiderationsContext, 
   ThemeContext
- } from '../../state'
+} from '../../state'
 
-const CreateLongTermConsideration = ({ visible, close }) => {
+const CreateLongTermConsideration = ({
+  visible, close 
+}) => {
   const [authState, authDispatch] = useContext(AuthContext)
   const { activeUser } = authState
   const [modalState, modalDispatch] = useContext(ModalContext)
@@ -40,47 +47,59 @@ const CreateLongTermConsideration = ({ visible, close }) => {
   const [themeState] = useContext(ThemeContext)
   const {colorScheme} = themeState
 
-  useEffect(() => {
-    if (visible) {
-      inputRef.current.focus()
-    }
-  }, [visible])
+  useEffect(
+    () => {
+      if (visible) {
+        inputRef.current.focus()
+      }
+    }, [visible]
+  )
 
-  useEffect(() => {
-    if (questionIndex === 0) {
-      Animated.timing(slideLeft, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: false,
-        easing: Easing.ease,
-      }).start()
+  useEffect(
+    () => {
+      if (questionIndex === 0) {
+        Animated.timing(
+          slideLeft, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: false,
+            easing: Easing.ease,
+          }
+        ).start()
       
-      Animated.timing(slideLeft2, {
-        toValue: 400,
-        duration: 300,
-        useNativeDriver: false,
-        easing: Easing.ease,
-      }).start()
+        Animated.timing(
+          slideLeft2, {
+            toValue: 400,
+            duration: 300,
+            useNativeDriver: false,
+            easing: Easing.ease,
+          }
+        ).start()
 
-    }
+      }
 
-    // after first question move to next
-    if (questionIndex === 1) {
-      Animated.timing(slideLeft, {
-        toValue: -400,
-        duration: 300,
-        useNativeDriver: false,
-        easing: Easing.ease,
-      }).start()
+      // after first question move to next
+      if (questionIndex === 1) {
+        Animated.timing(
+          slideLeft, {
+            toValue: -400,
+            duration: 300,
+            useNativeDriver: false,
+            easing: Easing.ease,
+          }
+        ).start()
       
-      Animated.timing(slideLeft2, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: false,
-        easing: Easing.ease,
-      }).start()
-    }
-  }, [questionIndex, slideLeft, slideLeft2])
+        Animated.timing(
+          slideLeft2, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: false,
+            easing: Easing.ease,
+          }
+        ).start()
+      }
+    }, [questionIndex, slideLeft, slideLeft2]
+  )
 
   const resetForm = () => {
     setQuestionIndex(0)
@@ -99,9 +118,7 @@ const CreateLongTermConsideration = ({ visible, close }) => {
       newConsideration,
       user: activeUser
     })   
-    modalDispatch({
-      type: 'CLOSE_MODAL'
-    })
+    modalDispatch({type: 'CLOSE_MODAL'})
     resetForm()
   }
   
@@ -204,9 +221,7 @@ const CreateLongTermConsideration = ({ visible, close }) => {
             color="red"
             title="Cancel"
             onPress={() => {
-              modalDispatch({
-                type: 'CLOSE_MODAL'
-              })
+              modalDispatch({type: 'CLOSE_MODAL'})
               resetForm()
             }} />
         </Animated.View>
@@ -223,14 +238,12 @@ const CreateLongTermConsideration = ({ visible, close }) => {
             <Text style={{
               fontSize: theme.fonts.sizes.medium,
               marginBottom: '4%', 
-              color: colorScheme === 'dark' ? theme.greyPalette[100] : theme.greyPalette[800],
+              color: colorScheme === 'dark' ? theme.greyPalette[200] : theme.greyPalette[800],
               width: '80%'
             }}>Does this correspond with any of your aspects?</Text>
             <Picker
               selectedValue={aspectPicker}
-              style={{
-                width: '100%',
-              }}
+              style={{width: '100%',}}
               onValueChange={(itemValue) => {
                 setAspectPicker(itemValue)
               }}

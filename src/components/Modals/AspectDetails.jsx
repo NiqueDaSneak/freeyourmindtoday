@@ -14,17 +14,21 @@ import {
   theme, useKeyboard 
 } from '../../assets/utils'
 import {
-  AspectsContext, ModalContext 
+  AspectsContext, ModalContext, ThemeContext 
 } from '../../state'
 import ConsiderationsContainer from '../ConsiderationsContainer'
 
 const AspectDetails = ({
   visible, close 
 }) => {
+  const [aspectsState, aspectsDispatch] = useContext(AspectsContext)
+
   const [modalState, modalDispatch] = useContext(ModalContext)
   const aspect = modalState.modalData
   const [titleEditable, setTitleEditable] = useState(false)
   const [importanceEditable, setImportanceEditable] = useState(false)
+  const [themeState] = useContext(ThemeContext)
+  const {colorScheme} = themeState
 
   return(
     <Modal
@@ -33,7 +37,7 @@ const AspectDetails = ({
       visible={visible}
     >
       <BlurView
-        tint='dark'
+        tint={colorScheme}
         intensity={100}
         style={{
           height: '100%',
@@ -49,29 +53,35 @@ const AspectDetails = ({
             <Text style={[theme.fonts.types.heading, {
               fontSize: theme.fonts.sizes.medium,
               marginBottom: '4%', 
-              color: 'white',
+              color: colorScheme === 'dark' ? theme.greyPalette[400] : theme.greyPalette[400],
             }]}>No Match</Text>
           ) : (
-            <>
-              {/* <Text style={{
-                color: 'white',
-                fontSize: theme.fonts.sizes.medium,
-                marginBottom: '4%', 
-                textAlign: 'left'
-              }}>Aspect Title</Text> */}
-                <EditableInput
-                  label='Aspect Title'
-                editableValue={aspect?.title} />
-              {/* <Text style={{
-                fontSize: theme.fonts.sizes.medium,
-                marginBottom: '4%', 
-                color: 'white',
-              }}></Text> */}
-                <EditableInput
-                  label='Why is this important to you?'
+            <View style={{
+              height: 300,
+              justifyContent: 'space-evenly',
+            }}>
+              <EditableInput
+                label='Aspect Title'
+                editableValue={aspect?.title} 
+                onSave={(val) => {
+                  aspectsDispatch({
+                    type: 'UPDATE_TITLE',
+                    id: aspect?.id,
+                    newTitle: val
+                  })
+                } 
+                }                  
+              />
+              <EditableInput
+                label='Why is this important to you?'
                 editableValue={aspect?.importanceStatement}
-                size="large" />
-            </>
+                size="large"
+                onSave={(val) => aspectsDispatch({
+                  type: 'UPDATE_IMPORT',
+                  id: aspect?.id,
+                  newImport: val
+                })} />
+            </View>
           )}
           <View style={{paddingTop: 10}}>
             <ConsiderationsContainer
