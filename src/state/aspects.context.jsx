@@ -2,7 +2,8 @@ import React, {
   useReducer,
   createContext,
   useEffect,
-  useContext 
+  useContext, 
+  useState
 } from 'react'
 import {Alert} from 'react-native'
 import { db } from '../../firebase'
@@ -36,7 +37,7 @@ const reducer = (
   case 'SET_ASPECTS':
     return {
       ...state,
-      aspects: [...action.data]
+      aspects: [...state.aspects, ...action.data]
     }
   case 'NEEDS_SAVED':
     return {
@@ -89,6 +90,11 @@ const reducer = (
         id: null  
       }
     }
+  case 'SET_PRECREATED':
+    return {
+      ...state,
+      aspects: [...action.payload]
+    }
   default:
     throw new Error()
   }
@@ -99,8 +105,60 @@ export const AspectsContextProvider = ({ children }) => {
     reducer, initialState
   )
   const [authState, authDispatch] = useContext(AuthContext)
-  const { activeUser } = authState
+  const {
+    activeUser, newUserLogin 
+  } = authState
   
+  const [precreatedAspects, setPrecreatedAspects] = useState([
+    {
+      importanceStatement: "",
+      title: "Health",
+      precreated: true,
+    },
+    {
+      importanceStatement: "",
+      title: "Career",
+      precreated: true,
+    },
+    {
+      importanceStatement: "",
+      title: "Relationships",
+      precreated: true,
+    }
+  ])
+  
+  useEffect(
+    () => {
+      if (newUserLogin) {
+        try {
+          precreatedAspects.forEach(aspect => {
+            const precreatedAspect = {
+              userId: activeUser.id,
+              createdAt: Date.now(),
+              deleted: false,
+              ...aspect
+            }
+            db.collection('Aspects').add(precreatedAspect)
+          })  
+        } catch (err) {
+          console.log(err)
+          Alert.alert(
+            'Error saving aspect',
+            `${err}`
+              [
+                {
+                  text: 'Go Back',
+                  style: 'destructive'
+                }
+              ],
+          )        
+        } finally {
+          authDispatch({type: 'NEW_USER_LOGGED_IN'})
+        }
+      }
+    }, [activeUser.id, authDispatch, newUserLogin, precreatedAspects]
+  )
+
   useEffect(
     () => {
       if (state.needsUpdatedTitle.value) { 

@@ -63,9 +63,9 @@ const AspectsContainer = () => {
         showsVerticalScrollIndicator={false} 
         showsHorizontalScrollIndicator={false}
       >
-        {aspects.length > 0 && (
+        {/* {aspects.length > 0 && (
           <AspectCard noMatch />
-        )}
+        )} */}
         <FlatList
           key={aspects.length}        
           keyExtractor={(

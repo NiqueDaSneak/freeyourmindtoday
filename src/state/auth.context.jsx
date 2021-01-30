@@ -50,12 +50,6 @@ const reducer = (
       newUserData: null,
       creatingNewUser: false
     }
-  case 'AUTHENTICATING':
-    return {
-      ...state,
-      authenticating: action.value,
-      newUserLogin: action.newUserLogin,
-    }
   case 'PHONE_VERIFICATION':
     return {
       ...state,
@@ -83,6 +77,17 @@ const reducer = (
       isAuthenticated: false,
       loggingOut: false,
       activeUser: {id: null}
+    }
+  case 'NEW_USER_LOGIN':
+    return {
+      ...state,
+      newUserLogin: true,
+      activeUser: {id: action.id,}
+    }
+  case 'NEW_USER_LOGGED_IN':
+    return {
+      ...state,
+      newUserLogin: false
     }
   default:
     throw new Error()
@@ -168,6 +173,10 @@ export const AuthContextProvider = ({ children }) => {
             if (result.additionalUserInfo.isNewUser) {
               const newUser = {firebaseId: result.user.uid,}
               db.collection('Users').add(newUser)
+              dispatch({
+                type: 'NEW_USER_LOGIN',
+                id: result.user.uid
+              })
             }
           })
       }

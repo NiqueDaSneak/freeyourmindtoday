@@ -22,8 +22,11 @@ const ModalConductor = () => {
   }
   return(
     <>
-      <AddNewAspect
+      {/* <AddNewAspect
         visible={modalType === 'ADD_NEW_ASPECT'} 
+        close={() => closeModal()} /> */}
+        <AspectDetails
+        visible={modalType === 'GET_ASPECT_DETAILS'} 
         close={() => closeModal()} />
       <AspectDetails
         visible={modalType === 'GET_ASPECT_DETAILS'} 

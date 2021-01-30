@@ -94,6 +94,7 @@ export const ConsiderationsContextProvider = ({ children }) => {
   const [authState, authDispatch] = useContext(AuthContext)
   const { activeUser } = authState
   
+
   useEffect(
     () => {
       let subscriber

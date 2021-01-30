@@ -25,7 +25,7 @@ const Aspects = () => {
           backgroundColor: colorScheme === 'dark' ? theme.greyPalette[900] : theme.greyPalette[100],
         }}>
         <AspectsContainer />
-        <ConsiderationsContainer />
+        {/* <ConsiderationsContainer /> */}
       </ScrollView>
       <Footer />
     </SafeAreaView>
