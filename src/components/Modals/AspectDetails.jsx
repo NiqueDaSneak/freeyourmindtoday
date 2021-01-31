@@ -22,7 +22,6 @@ const AspectDetails = ({
   visible, close 
 }) => {
   const [aspectsState, aspectsDispatch] = useContext(AspectsContext)
-
   const [modalState, modalDispatch] = useContext(ModalContext)
   const aspect = modalState.modalData
   const [titleEditable, setTitleEditable] = useState(false)

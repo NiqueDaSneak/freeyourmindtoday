@@ -2,14 +2,12 @@ import React, {
   useState, useContext, useEffect, useRef 
 } from 'react'
 import { 
-  StyleSheet, 
   Text, 
   TextInput,
   Button,
   Modal,
   Alert,
   Animated,
-  Easing
 } from 'react-native'
 import { BlurView } from 'expo-blur'
 
@@ -20,22 +18,15 @@ import {
   AspectsContext, ModalContext, ThemeContext 
 } from '../../state'
 
-const AddNewAspect = ({
-  visible, close 
-}) => {
+const AddNewAspect = ({visible}) => {
   const [modalState, modalDispatch] = useContext(ModalContext)
   const [aspectsState, aspectsDispatch] = useContext(AspectsContext)
   const [keyboardHeight] = useKeyboard()
 
   const [aspectTitle, setAspectTitle] = useState('')
   const [questionIndex, setQuestionIndex] = useState(0)
-  const [importance, setImportance] = useState('')
   
   const inputRef = useRef()
-  const inputRef2 = useRef()
-
-  const slideLeft = useRef(new Animated.Value(0)).current
-  const slideLeft2 = useRef(new Animated.Value(400)).current
 
   const [themeState] = useContext(ThemeContext)
   const {colorScheme} = themeState
@@ -45,110 +36,24 @@ const AddNewAspect = ({
       if (visible) {
         inputRef.current.focus()
       }
-      if (questionIndex === 1) {
-        inputRef2.current.focus()
-      }
     }, [visible, questionIndex]
-  )
-
-  useEffect(
-    () => {
-      if (questionIndex > 0) {
-        Animated.timing(
-          slideLeft, {
-            toValue: -400,
-            duration: 300,
-            useNativeDriver: false,
-            easing: Easing.ease,
-          }
-        ).start()
-      
-        Animated.timing(
-          slideLeft2, {
-            toValue: 0,
-            duration: 300,
-            useNativeDriver: false,
-            easing: Easing.ease,
-          }
-        ).start()
-      }
-      if (questionIndex === 0) {
-        Animated.timing(
-          slideLeft, {
-            toValue: 0,
-            duration: 300,
-            useNativeDriver: false,
-            easing: Easing.ease,
-          }
-        ).start()
-      
-        Animated.timing(
-          slideLeft2, {
-            toValue: 400,
-            duration: 300,
-            useNativeDriver: false,
-            easing: Easing.ease,
-          }
-        ).start()
-      }
-    }, [questionIndex]
   )
 
   const resetForm = () => {
     setAspectTitle('')
     setQuestionIndex(0)
-    setImportance('')
   }
   const submitNewAspect = () => {
     const newAspect = {
       title: aspectTitle,
-      importanceStatement: importance,
+      importanceStatement: '',
     }
     aspectsDispatch({
       type: 'NEEDS_SAVED',
       payload: newAspect
     })
-    modalDispatch({type: 'CLOSE_MODAL'})
     resetForm()
   }
-  const styles = StyleSheet.create({
-    titleContainer: {
-      width: '100%',
-      marginTop: 'auto',
-      display: 'flex',
-      alignItems: 'center',
-      position: 'absolute'
-    },
-    // titleInput: { 
-    //   borderRadius: 10, 
-    //   fontSize: theme.fonts.sizes.medium, 
-    //   borderColor: 'gray', 
-    //   borderWidth: 1 ,
-    //   paddingLeft: '2%',
-    //   marginBottom: '4%', 
-    //   width: '80%',
-    //   textAlign: 'center',
-    //   padding: '2%',
-    //   color: 
-    // },
-    importanceContainer: {
-      width: '100%',
-      marginTop: 'auto',
-      display: 'flex',
-      alignItems: 'center',
-      position: 'absolute'
-    },
-    importanceInput: { 
-      borderRadius: 10, 
-      height: 80, 
-      width: '80%',
-      marginBottom: '4%', 
-      fontSize: theme.fonts.sizes.small, 
-      borderColor: 'gray', 
-      borderWidth: 1,
-      padding: '4%',
-    }
-  })
   
   return(
     <Modal
@@ -167,12 +72,14 @@ const AddNewAspect = ({
           width: '100%' 
         }}>
         <Animated.View 
-          style={[styles.titleContainer, {
+          style={ {
             bottom: keyboardHeight + 30,
-            left: slideLeft 
-          }]
-            
-          }>
+            width: '100%',
+            marginTop: 'auto',
+            display: 'flex',
+            alignItems: 'center',
+            position: 'absolute'
+          }}>
           <Text style={{
             fontSize: theme.fonts.sizes.large,
             marginBottom: '4%', 
@@ -205,47 +112,13 @@ const AddNewAspect = ({
             disabled={!(aspectTitle.length > 0)}
             color="green"
             title="Next"
-            onPress={() => setQuestionIndex(questionIndex + 1)} />
+            onPress={() => submitNewAspect()}
+          />
           <Button
             color="red"
             title="Cancel"
             onPress={() => {
               modalDispatch({type: 'CLOSE_MODAL'})
-              resetForm()
-            }} />
-        </Animated.View>
-        <Animated.View 
-          style={[styles.importanceContainer, {
-            bottom: keyboardHeight + 30,
-            left: slideLeft2,
-          }]}>
-          <Text style={{
-            fontSize: theme.fonts.sizes.large,
-            marginBottom: '4%', 
-            color: colorScheme === 'dark' ? theme.greyPalette[100] : theme.greyPalette[700]
-          }}>Why is this important to you?</Text>
-          <TextInput
-            ref={inputRef2}
-            keyboardAppearance="dark"
-            blurOnSubmit
-            returnKeyType="done"   
-            enablesReturnKeyAutomatically      
-            multiline
-            numberOfLines={4}
-            style={[styles.importanceInput, {color: colorScheme === 'dark' ? theme.greyPalette[100] : theme.greyPalette[700]}]}
-            onChangeText={text => setImportance(text)}
-            onSubmitEditing={() => submitNewAspect()}
-          />
-          <Button
-            disabled={!(importance.length > 25)}
-            color="green"
-            title="Create"
-            onPress={() => submitNewAspect()} />
-          <Button
-            color="red"
-            title="Cancel"
-            onPress={() => {
-              close()
               resetForm()
             }} />
         </Animated.View>

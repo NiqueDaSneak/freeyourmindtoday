@@ -6,8 +6,6 @@ import React, {
   useCallback, 
   useState 
 } from 'react'
-// import useThunkReducer from 'react-hook-thunk-reducer'
-// import { ModalContext } from '../state/modal.context'
 import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha'
 import fb from 'firebase'
 import firebase, {db} from '../../firebase'

@@ -6,6 +6,7 @@ import React, {
   useState
 } from 'react'
 import {Alert} from 'react-native'
+import { ModalContext } from './modal.context'
 import { db } from '../../firebase'
 import { AuthContext } from './auth.context'
 
@@ -37,7 +38,7 @@ const reducer = (
   case 'SET_ASPECTS':
     return {
       ...state,
-      aspects: [...state.aspects, ...action.data]
+      aspects: action.data
     }
   case 'NEEDS_SAVED':
     return {
@@ -105,6 +106,8 @@ export const AspectsContextProvider = ({ children }) => {
     reducer, initialState
   )
   const [authState, authDispatch] = useContext(AuthContext)
+  const [modalState, modalDispatch] = useContext(ModalContext)
+
   const {
     activeUser, newUserLogin 
   } = authState
@@ -260,8 +263,15 @@ export const AspectsContextProvider = ({ children }) => {
           }
   
           db.collection('Aspects').add(newAspect)
-            .then(() => {
-              dispatch({type: 'SAVED_NEW'})
+            .then((doc) => {
+              modalDispatch({
+                type: 'OPEN',
+                modalType: 'GET_ASPECT_DETAILS',
+                modalData: {
+                  id: doc.id,
+                  ...newAspect
+                }
+              })
             })
           
         } catch (err) {
@@ -279,7 +289,7 @@ export const AspectsContextProvider = ({ children }) => {
 
         }
       }
-    }, [activeUser.id, state.needsSaved]
+    }, [activeUser.id, modalDispatch, state.needsSaved]
   )
 
   return (

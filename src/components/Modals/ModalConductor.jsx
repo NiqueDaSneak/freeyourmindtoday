@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import AddNewAspect from './AddNewAspect'
 import AspectDetails from './AspectDetails'
-import { ModalContext, AuthContext } from '../../state'
+import {ModalContext} from '../../state'
 import CreateShortTermConsideration from './CreateShortTermConsideration'
 import CreateLongTermConsideration from './CreateLongTermConsideration'
 import ExplainerModal from './ExplainerModal'
@@ -12,21 +12,15 @@ import PhoneVerification from './PhoneVerification'
 const ModalConductor = () => {
 
   const [state, dispatch] = useContext(ModalContext)
-  const { modalVisible, modalType } = state
-
-  const [authState, authDispatch] = useContext(AuthContext)
-  const { isAuthenticated } = authState
+  const {modalType} = state
 
   const closeModal = () => {
     dispatch({type: 'CLOSE_MODAL'})
   }
   return(
     <>
-      {/* <AddNewAspect
+      <AddNewAspect
         visible={modalType === 'ADD_NEW_ASPECT'} 
-        close={() => closeModal()} /> */}
-        <AspectDetails
-        visible={modalType === 'GET_ASPECT_DETAILS'} 
         close={() => closeModal()} />
       <AspectDetails
         visible={modalType === 'GET_ASPECT_DETAILS'} 
