@@ -84,8 +84,8 @@ const AspectDetails = ({
           )}
           <View style={{paddingTop: 10}}>
             <ConsiderationsContainer
-              hideHelper
-              hideActions
+              // hideHelper 
+              // hideActions
               singleAspectId={aspect?.id} />
           </View>
           <Button
