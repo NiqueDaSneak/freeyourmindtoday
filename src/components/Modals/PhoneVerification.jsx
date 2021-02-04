@@ -8,7 +8,8 @@ import {
   Easing, 
   TextInput,
   Keyboard,
-  StyleSheet
+  StyleSheet,
+  View
 } from 'react-native'
 import { BlurView } from 'expo-blur'
 import {
@@ -23,7 +24,7 @@ import {
 const PhoneVerification = ({ visible }) => {
   const [authState, authDispatch] = useContext(AuthContext)
   const {isAuthenticated} = authState
-  const toggleSlide = useRef(new Animated.Value(-400)).current
+  const toggleSlide = useRef(new Animated.Value(-900)).current
   const [modalState, modalDispatch] = useContext(ModalContext)
   const [keyboardHeight, keyboardOpen] = useKeyboard()
   const phoneNumberInputRef = useRef()
@@ -59,7 +60,7 @@ const PhoneVerification = ({ visible }) => {
       if (!visible) {
         Animated.timing(
           toggleSlide, {
-            toValue: -400,
+            toValue: -900,
             duration: 300,
             useNativeDriver: false,
             easing: Easing.ease,
@@ -79,7 +80,7 @@ const PhoneVerification = ({ visible }) => {
   const styles = StyleSheet.create({
     animatedContainer: {
       bottom: keyboardHeight,
-      height: '100%',
+      height: 300,
       width: '100%',
       alignItems: 'center',
       position: 'absolute',
@@ -105,23 +106,24 @@ const PhoneVerification = ({ visible }) => {
   })
   return (
     <>
-      <BlurView
-        tint='dark'
-        style={{
-          position: 'absolute',
-          width: '100%',
-          height: visible ? '100%' : 0, 
-          opacity: visible ? 1 : 0,
-        }} />
+      
       <Animated.View style={{
         position: 'absolute',
-        height: '30%',
+        height: '100%',
         width: '100%',
         backgroundColor: 'black',
         bottom: toggleSlide,
+        // bottom: ,
         zIndex: 1,
-
       }}>
+        <BlurView
+          tint='dark'
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: visible ? '100%' : 0, 
+            opacity: visible ? 1 : 0,
+          }} />
         <Animated.View 
           style={[
             styles.animatedContainer,
@@ -148,38 +150,44 @@ const PhoneVerification = ({ visible }) => {
             autoCompleteType="tel"
             onChangeText={text => setPhoneNumber(text)}
           /> 
-          <Button
-            title="Send Code"
-            onPress={() => {
-              authDispatch({
-                type: 'PHONE_VERIFICATION',
-                phoneNumber
-              })
-              Animated.timing(
-                phoneInputAnimationRef, {
-                  toValue: -450,
-                  duration: 300,
-                  useNativeDriver: false,
-                  easing: Easing.ease,
-                }
-              ).start()
-              Animated.timing(
-                verifyInputAnimationRef, {
-                  toValue: 0,
-                  duration: 300,
-                  useNativeDriver: false,
-                  easing: Easing.ease,
-                }
-              ).start()
-              verifyInputRef.current.focus()
-            }} />
-          <Button
-            title="Cancel"
-            color='red'
-            onPress={() => {
-              modalDispatch({ type: 'CLOSE_MODAL' })
-              resetForm()
-            }} />
+          <View style={{
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-evenly' 
+          }}>
+            <Button
+              title="Send Code"
+              onPress={() => {
+                authDispatch({
+                  type: 'PHONE_VERIFICATION',
+                  phoneNumber
+                })
+                Animated.timing(
+                  phoneInputAnimationRef, {
+                    toValue: -450,
+                    duration: 300,
+                    useNativeDriver: false,
+                    easing: Easing.ease,
+                  }
+                ).start()
+                Animated.timing(
+                  verifyInputAnimationRef, {
+                    toValue: 0,
+                    duration: 300,
+                    useNativeDriver: false,
+                    easing: Easing.ease,
+                  }
+                ).start()
+                verifyInputRef.current.focus()
+              }} />
+            <Button
+              title="Cancel"
+              color='red'
+              onPress={() => {
+                modalDispatch({ type: 'CLOSE_MODAL' })
+                resetForm()
+              }} />
+          </View>
         </Animated.View>
         <Animated.View style={[
           styles.animatedContainer,
@@ -204,31 +212,29 @@ const PhoneVerification = ({ visible }) => {
             keyboardType="phone-pad"
             autoCompleteType="tel"
             onChangeText={text => setVerifyCode(text)}
-          /> 
-          <Button
-            title="Verify Code"
-            onPress={() => {
-              authDispatch({
-                type: 'VERIFY_PHONE',
-                verifyCode
-              })
-            }
-            } />
-          <Button
-            title="Cancel"
-            color='red'
-            onPress={() => {
-              modalDispatch({ type: 'CLOSE_MODAL' })
-              resetForm()
-            }} />
+          />
+          <View style={{
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-evenly' 
+          }}>
+            <Button
+              title="Verify Code"
+              onPress={() => {
+                authDispatch({
+                  type: 'VERIFY_PHONE',
+                  verifyCode
+                })
+              }} />
+            <Button
+              title="Cancel"
+              color='red'
+              onPress={() => {
+                modalDispatch({ type: 'CLOSE_MODAL' })
+                resetForm()
+              }} />
+          </View>
         </Animated.View>
-        {/* <Button
-          title='Cancel'
-          color='red'
-          onPress={() => {
-            modalDispatch({ type: 'CLOSE_MODAL' })
-          }} /> */}
-
       </Animated.View>
     </>
   )
