@@ -3,9 +3,12 @@ import {
   Image,
   View, 
   Text,
-  Touchable
+  Touchable,
+  Platform
 } from 'react-native'
-import { useRoute, useNavigation } from '@react-navigation/native'
+import {
+  useRoute, useNavigation 
+} from '@react-navigation/native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { theme } from '../assets/utils'
 // import { theme } from '../assets/utils'
@@ -47,7 +50,6 @@ const Footer = () => {
   }
   return (
     <View style={{
-      height: '10%',
       width: '100%',
       backgroundColor: colorScheme === 'dark' ? theme.greyPalette[700]: theme.greyPalette[200],
       position: 'absolute',
@@ -60,7 +62,9 @@ const Footer = () => {
       borderColor: colorScheme === 'dark' ? theme.greyPalette[800]: theme.greyPalette[200]
     }}>
       {tabs.map(tab => (
-        <TouchableOpacity onPress={tab.onPress} key={tab.label}>
+        <TouchableOpacity
+          onPress={tab.onPress}
+          key={tab.label}>
           <View
             style={{
               backgroundColor: getCurrentBackgroundColor(tab.label),
@@ -68,7 +72,8 @@ const Footer = () => {
               alignItems: 'center',
               justifyContent: 'center',
               minWidth: `${100 / tabs.length}%`,
-              paddingBottom: 20,
+              paddingBottom: Platform.OS === 'android' ? 10 : 20,
+              paddingTop: 10,
             }}>
             <Image 
               resizeMode="contain"

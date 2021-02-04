@@ -7,7 +7,8 @@ import {
   Button,
   Modal,
   ScrollView,
-  Platform
+  Platform,
+  SafeAreaView
 } from 'react-native'
 import { BlurView } from 'expo-blur'
 import EditableInput from '../EditableInput'
@@ -34,8 +35,7 @@ const AspectDetails = ({
     <Modal
       animationType='slide'
       transparent={Platform.OS !== 'android'}
-      visible={visible}
-    >
+      visible={visible}>
       <BlurView
         tint={colorScheme}
         intensity={100}
@@ -44,56 +44,60 @@ const AspectDetails = ({
           width: '100%', 
         }}>
         <ScrollView
-          contentContainerStyle={{
-            marginTop: 50,
+          contentContainerStyle={[{
+            // paddingTop: 50,
             paddingLeft: '4%',
             paddingRight: '4%',
-          }}>
-          {aspect === 'No Match' ? (
-            <Text style={[theme.fonts.types.heading, {
-              fontSize: theme.fonts.sizes.medium,
-              marginBottom: '4%', 
-              color: colorScheme === 'dark' ? theme.greyPalette[400] : theme.greyPalette[400],
-            }]}>No Match</Text>
-          ) : (
-            <View style={{
-              height: 300,
-              justifyContent: 'space-evenly',
-            }}>
-              <EditableInput
-                label='Aspect Title'
-                editableValue={aspect?.title} 
-                onSave={(val) => {
-                  aspectsDispatch({
-                    type: 'UPDATE_TITLE',
+            // backgroundColor: 'pink',
+            minHeight: '100%'
+          }, { backgroundColor: Platform.OS === 'android' ? colorScheme === 'dark' ? theme.greyPalette[900] : theme.greyPalette[100] : null }]}>
+          <SafeAreaView>
+            {aspect === 'No Match' ? (
+              <Text style={[theme.fonts.types.heading, {
+                fontSize: theme.fonts.sizes.medium,
+                marginBottom: '4%', 
+                color: colorScheme === 'dark' ? theme.greyPalette[400] : theme.greyPalette[400],
+              }]}>No Match</Text>
+            ) : (
+              <View style={{
+                height: 300,
+                justifyContent: 'space-evenly',
+              }}>
+                <EditableInput
+                  label='Aspect Title'
+                  editableValue={aspect?.title} 
+                  onSave={(val) => {
+                    aspectsDispatch({
+                      type: 'UPDATE_TITLE',
+                      id: aspect?.id,
+                      newTitle: val
+                    })
+                  } 
+                  }                  
+                />
+                <EditableInput
+                  label='Why is this important to you?'
+                  editableValue={aspect?.importanceStatement}
+                  size="large"
+                  onSave={(val) => aspectsDispatch({
+                    type: 'UPDATE_IMPORT',
                     id: aspect?.id,
-                    newTitle: val
-                  })
-                } 
-                }                  
-              />
-              <EditableInput
-                label='Why is this important to you?'
-                editableValue={aspect?.importanceStatement}
-                size="large"
-                onSave={(val) => aspectsDispatch({
-                  type: 'UPDATE_IMPORT',
-                  id: aspect?.id,
-                  newImport: val
-                })} />
-            </View>
-          )}
-          <View style={{paddingTop: 10}}>
-            <ConsiderationsContainer
+                    newImport: val
+                  })} />
+              </View>
+            )}
+            <View style={{paddingTop: 10}}>
+              <ConsiderationsContainer
               // hideHelper 
               // hideActions
-              singleAspectId={aspect?.id} />
-          </View>
-          <Button
-            disabled={importanceEditable || titleEditable}
-            color="red"
-            title="Go Back"
-            onPress={close} />
+                singleAspectId={aspect?.id} />
+            </View>
+            <Button
+              disabled={importanceEditable || titleEditable}
+              color="red"
+              title="Go Back"
+              onPress={close} />
+          </SafeAreaView>
         </ScrollView>
       </BlurView>
     </Modal>
