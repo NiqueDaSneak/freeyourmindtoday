@@ -2,7 +2,12 @@ import React, {
   useState, useContext
 } from 'react'
 import {
-  Modal, View, Text, Button, ScrollView,
+  Modal, 
+  View, 
+  Text, 
+  Button, 
+  ScrollView,
+  Platform,
   FlatList 
 } from 'react-native'
 import { BlurView } from 'expo-blur'
@@ -50,7 +55,7 @@ const ArchiveModal = ({
   return (
     <Modal
       animationType='slide'
-      transparent
+      transparent={Platform.OS !== 'android'}
       visible={visible}
     >
       <BlurView

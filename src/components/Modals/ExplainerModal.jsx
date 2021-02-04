@@ -1,12 +1,12 @@
 import React from 'react'
-import { Modal } from 'react-native'
+import { Modal, Platform } from 'react-native'
 import { BlurView } from 'expo-blur'
 import Carousel from '../Carousel/index.tsx'
 
 const ExplainerModal = ({ visible, close }) => (
     <Modal
       animationType='fade'
-      transparent
+      transparent={Platform.OS !== 'android'}
       visible={visible}
     >
       <BlurView tint='dark' intensity={100}  style={{

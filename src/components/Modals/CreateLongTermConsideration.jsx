@@ -11,7 +11,8 @@ import {
   Alert,
   Keyboard,
   Animated,
-  Easing
+  Easing,
+  Platform
 } from 'react-native'
 import { BlurView } from 'expo-blur'
 import { Picker } from '@react-native-picker/picker'
@@ -165,7 +166,7 @@ const CreateLongTermConsideration = ({
   return(
     <Modal
       animationType='slide'
-      transparent
+      transparent={Platform.OS !== 'android'}
       visible={visible}
       onRequestClose={() => {
         Alert.alert('Modal has been closed.')

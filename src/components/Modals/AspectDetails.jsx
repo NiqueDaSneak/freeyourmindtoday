@@ -6,7 +6,8 @@ import {
   View, 
   Button,
   Modal,
-  ScrollView
+  ScrollView,
+  Platform
 } from 'react-native'
 import { BlurView } from 'expo-blur'
 import EditableInput from '../EditableInput'
@@ -32,7 +33,7 @@ const AspectDetails = ({
   return(
     <Modal
       animationType='slide'
-      transparent
+      transparent={Platform.OS !== 'android'}
       visible={visible}
     >
       <BlurView

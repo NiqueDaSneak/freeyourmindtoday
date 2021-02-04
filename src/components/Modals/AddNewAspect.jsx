@@ -8,6 +8,8 @@ import {
   Modal,
   Alert,
   Animated,
+  Platform,
+  View
 } from 'react-native'
 import { BlurView } from 'expo-blur'
 
@@ -58,11 +60,8 @@ const AddNewAspect = ({visible}) => {
   return(
     <Modal
       animationType='slide'
-      transparent
+      transparent={Platform.OS !== 'android'}
       visible={visible}
-      onRequestClose={() => {
-        Alert.alert('Modal has been closed.')
-      }}
     >
       <BlurView
         tint={colorScheme}
@@ -72,7 +71,7 @@ const AddNewAspect = ({visible}) => {
           width: '100%' 
         }}>
         <Animated.View 
-          style={ {
+          style={{
             bottom: keyboardHeight + 30,
             width: '100%',
             marginTop: 'auto',
@@ -108,19 +107,26 @@ const AddNewAspect = ({visible}) => {
             placeholder=""
             onSubmitEditing={() => setQuestionIndex(questionIndex + 1)}
           /> 
-          <Button
-            disabled={!(aspectTitle.length > 0)}
-            color="green"
-            title="Next"
-            onPress={() => submitNewAspect()}
-          />
-          <Button
-            color="red"
-            title="Cancel"
-            onPress={() => {
-              modalDispatch({type: 'CLOSE_MODAL'})
-              resetForm()
-            }} />
+          <View style={{
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-evenly' 
+          }}>
+            <Button
+              disabled={!(aspectTitle.length > 0)}
+              color="green"
+              title="Next"
+              onPress={() => submitNewAspect()}
+            />
+            <Button
+              color="red"
+              title="Cancel"
+              onPress={() => {
+                modalDispatch({type: 'CLOSE_MODAL'})
+                resetForm()
+              }} />
+
+          </View>
         </Animated.View>
       </BlurView>
     </Modal>
