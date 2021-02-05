@@ -21,7 +21,7 @@ const reducer = (
       modalType: action.modalType,
       modalData: action.modalData
     }
-  case 'CLOSE_MODAL':
+  case 'CLOSE':
     return {modalVisible: false}
   default:
     throw new Error()
@@ -37,7 +37,7 @@ export const ModalContextProvider = ({ children }) => {
   useEffect(
     () => {
       if (isAuthenticated) {
-        dispatch({type: 'CLOSE_MODAL'})
+        dispatch({type: 'CLOSE'})
       }
     }, [isAuthenticated]
   )

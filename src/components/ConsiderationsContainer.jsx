@@ -19,7 +19,7 @@ import ArchiveToggle from './ArchiveToggle'
 import CreatorCard from './CreatorCard'
 
 const ConsiderationsContainer = ({
-  singleAspectId,
+  singleAspect,
   hideActions
 }) => {
   const [aspectsState] = useContext(AspectsContext)
@@ -42,8 +42,8 @@ const ConsiderationsContainer = ({
   )
   
   const renderData = () => {
-    if (singleAspectId) {
-      return considerations.filter(consideration => !consideration.completed && consideration.aspectId === singleAspectId) 
+    if (singleAspect.id) {
+      return considerations.filter(consideration => !consideration.completed && consideration.aspectId === singleAspect.id) 
     } 
     return considerations.filter(consideration => !consideration.completed)
   }
@@ -76,7 +76,8 @@ const ConsiderationsContainer = ({
                   onPress={() => {
                     modalDispatch({
                       type: 'OPEN',
-                      modalType: 'CHOOSE_CONSIDERATION_TYPE'
+                      modalType: 'CHOOSE_CONSIDERATION_TYPE',
+                      modalData: singleAspect
                     })
                   }} />
               </>

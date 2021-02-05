@@ -152,7 +152,7 @@ const CreateShortTermConsideration = ({
       newConsideration,
       user: activeUser
     })   
-    modalDispatch({type: 'CLOSE_MODAL'})
+    modalDispatch({type: 'CLOSE'})
     resetForm()
 
   }
@@ -255,7 +255,7 @@ const CreateShortTermConsideration = ({
             color="red"
             title="Cancel"
             onPress={() => {
-              modalDispatch({type: 'CLOSE_MODAL'})
+              modalDispatch({type: 'CLOSE'})
               resetForm()
             }} />
         </Animated.View>
@@ -298,7 +298,7 @@ const CreateShortTermConsideration = ({
             color="red"
             title="Cancel"
             onPress={() => {
-              modalDispatch({type: 'CLOSE_MODAL'})
+              modalDispatch({type: 'CLOSE'})
               resetForm()
             }} />
         </Animated.View>

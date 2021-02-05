@@ -184,7 +184,7 @@ const PhoneVerification = ({ visible }) => {
               title="Cancel"
               color='red'
               onPress={() => {
-                modalDispatch({ type: 'CLOSE_MODAL' })
+                modalDispatch({ type: 'CLOSE' })
                 resetForm()
               }} />
           </View>
@@ -230,7 +230,7 @@ const PhoneVerification = ({ visible }) => {
               title="Cancel"
               color='red'
               onPress={() => {
-                modalDispatch({ type: 'CLOSE_MODAL' })
+                modalDispatch({ type: 'CLOSE' })
                 resetForm()
               }} />
           </View>

@@ -15,7 +15,7 @@ const ModalConductor = () => {
   const {modalType} = state
 
   const closeModal = () => {
-    dispatch({type: 'CLOSE_MODAL'})
+    dispatch({type: 'CLOSE'})
   }
   return(
     <>

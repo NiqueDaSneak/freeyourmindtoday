@@ -45,10 +45,8 @@ const AspectDetails = ({
         }}>
         <ScrollView
           contentContainerStyle={[{
-            // paddingTop: 50,
             paddingLeft: '4%',
             paddingRight: '4%',
-            // backgroundColor: 'pink',
             minHeight: '100%'
           }, { backgroundColor: Platform.OS === 'android' ? colorScheme === 'dark' ? theme.greyPalette[900] : theme.greyPalette[100] : null }]}>
           <SafeAreaView>
@@ -72,8 +70,7 @@ const AspectDetails = ({
                       id: aspect?.id,
                       newTitle: val
                     })
-                  } 
-                  }                  
+                  }}                  
                 />
                 <EditableInput
                   label='Why is this important to you?'
@@ -88,9 +85,7 @@ const AspectDetails = ({
             )}
             <View style={{paddingTop: 10}}>
               <ConsiderationsContainer
-              // hideHelper 
-              // hideActions
-                singleAspectId={aspect?.id} />
+                singleAspect={aspect} />
             </View>
             <Button
               disabled={importanceEditable || titleEditable}
