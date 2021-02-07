@@ -144,8 +144,6 @@ export const ConsiderationsContextProvider = ({ children }) => {
             completedAt: null,
             deleted: false,
             deletedAt: null,
-            priority: false,
-            prioritizedAt: null,
             ...considerationData
           }
           db.collection('Considerations').add(newConsideration).then(() => {

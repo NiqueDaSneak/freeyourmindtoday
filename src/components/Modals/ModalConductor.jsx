@@ -8,6 +8,7 @@ import ExplainerModal from './ExplainerModal'
 import ArchiveModal from './ArchiveModal'
 import ConsiderationChooser from './ConsiderationChooser'
 import PhoneVerification from './PhoneVerification'
+import SharedConsiderationCreation from './SharedConsiderationCreation'
 
 const ModalConductor = () => {
 
@@ -38,9 +39,10 @@ const ModalConductor = () => {
         visible={modalType === 'ARCHIVE'}
         close={() => closeModal()} />
       <ConsiderationChooser 
-        visible={modalType === 'CHOOSE_CONSIDERATION_TYPE'}
+        visible={modalType === 'CHOOSE_TYPE'}
       />
       <PhoneVerification visible={modalType === 'GET_PHONE'} />
+      <SharedConsiderationCreation visible={modalType === 'CREATE_SHARED'} />
     </>
   )
 }

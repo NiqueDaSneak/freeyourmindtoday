@@ -76,7 +76,7 @@ const ConsiderationsContainer = ({
                   onPress={() => {
                     modalDispatch({
                       type: 'OPEN',
-                      modalType: 'CHOOSE_CONSIDERATION_TYPE',
+                      modalType: 'CHOOSE_TYPE',
                       modalData: singleAspect
                     })
                   }} />

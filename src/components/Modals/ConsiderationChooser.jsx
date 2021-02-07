@@ -13,11 +13,10 @@ import {
 } from 'react-native'
 import { BlurView } from 'expo-blur'
 import SegmentedControl from '@react-native-community/segmented-control';
-import { color } from 'react-native-reanimated';
 import {theme} from '../../assets/utils'
 import {
   ModalContext, ThemeContext 
-} from '../../state';
+} from '../../state'
 
 const ConsiderationChooser = ({ visible }) => {
   const [modalState, modalDispatch] = useContext(ModalContext)
@@ -78,6 +77,13 @@ const ConsiderationChooser = ({ visible }) => {
       }
     },
     'Shared': {
+      onClick: () => {
+        modalDispatch({
+          type: 'OPEN',
+          modalType: 'CREATE_SHARED',
+          modalData: aspect
+        })
+      },
       icon: {
         dark: require('../../assets/share-dark.png'),
         light: require('../../assets/share-light.png')
@@ -125,7 +131,7 @@ const ConsiderationChooser = ({ visible }) => {
         }}>
           {considerationTypes.types.map(type => (
             <TouchableOpacity
-              onPress={() => console.log('pressed')}
+              onPress={() => considerationTypes[type].onClick()}
               style={{
                 width: '50%',
                 alignItems: 'center',
