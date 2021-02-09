@@ -83,29 +83,45 @@ const ConsiderationsContainer = ({
               </>
             )}
           </View>
-          <ScrollView 
-            horizontal 
-            showsVerticalScrollIndicator={false} 
-            showsHorizontalScrollIndicator={false}
-          >
-            <FlatList 
-              contentContainerStyle={{
-                display: 'flex',
-                justifyContent: 'space-between' 
-              }}
-              key={considerations?.length || [].length}
-              keyExtractor={(
-                item, index
-              ) => `${index}`}
-              numColumns={Math.ceil(considerations?.length / 3) || [].length}
-              data={renderData()}
-              renderItem={({item: consideration}) => (
+          
+          {renderData().length <= 5 ? (
+            <ScrollView 
+              contentContainerStyle={{marginTop: 10}}
+              horizontal 
+              showsVerticalScrollIndicator={false} 
+              showsHorizontalScrollIndicator={false}
+            >
+              {renderData().map(consideration => (
                 <Consideration
                   type={consideration.type}
                   data={consideration} />
-              )}
-            />
-          </ScrollView>
+              ))}
+            </ScrollView>
+          ) : (
+            <ScrollView 
+              horizontal 
+              showsVerticalScrollIndicator={false} 
+              showsHorizontalScrollIndicator={false}
+            >
+              <FlatList 
+                contentContainerStyle={{
+                  display: 'flex',
+                  justifyContent: 'space-between' 
+                }}
+                key={considerations?.length}
+                keyExtractor={(
+                  item, index
+                ) => `${index}`}
+                numColumns={Math.ceil(considerations?.length / 3)}
+                data={renderData()}
+                renderItem={({item: consideration}) => (
+                  <Consideration
+                    type={consideration.type}
+                    data={consideration} />
+                )}
+              />
+            </ScrollView>
+          )}
         </>
       )}
     </View>
