@@ -17,16 +17,20 @@ const Consideration = ({
   style,
   data,
 }) => {
-  const [modalDispatch] = useContext(ModalContext)
+  const [modalState,modalDispatch] = useContext(ModalContext)
   const [considerationState, considerationDispatch] = useContext(ConsiderationsContext)
   const [themeState] = useContext(ThemeContext)
   const {colorScheme} = themeState
 
   return (
     <TouchableOpacity
-      onPress={ () => showConsiderationActions(
-        modalDispatch, considerationDispatch, data?.type, data 
-      ) }
+      onPress={() => modalDispatch({
+        type: 'OPEN',
+        modalType: 'CONSIDERATION_DETAILS'
+      })}
+      // onPress={ () => showConsiderationActions(
+      //   modalDispatch, considerationDispatch, data?.type, data 
+      // ) }
       style={{
         ...style,
         backgroundColor: colorScheme === 'dark' ? 'grey' : theme.greyPalette[200],
