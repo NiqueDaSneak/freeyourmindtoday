@@ -34,7 +34,7 @@ const Layout =  ({ children }) => {
             theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
           >
             <Stack.Navigator screenOptions={{
-              headerShown: false,
+              header: () => null,
               initialRouteName: 'Aspects'
             }}>
               <Stack.Screen

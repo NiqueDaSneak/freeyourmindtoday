@@ -8,9 +8,9 @@ import {
   Modal,
   ScrollView,
   Platform,
-  SafeAreaView
 } from 'react-native'
 import { BlurView } from 'expo-blur'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import EditableInput from '../EditableInput'
 import {
   theme, useKeyboard 

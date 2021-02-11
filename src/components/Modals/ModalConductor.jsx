@@ -14,7 +14,7 @@ import ConsiderationDetails from './ConsiderationDetails'
 const ModalConductor = () => {
 
   const [state, dispatch] = useContext(ModalContext)
-  const {modalType} = state
+  const {modalType, modalData} = state
 
   const closeModal = () => {
     dispatch({type: 'CLOSE'})
@@ -47,6 +47,8 @@ const ModalConductor = () => {
         close={() => closeModal()}
         visible={modalType === 'CREATE_SHARED'} />
       <ConsiderationDetails
+        aspect={modalData?.aspect}
+        consideration={modalData?.consideration}
         visible={modalType === 'CONSIDERATION_DETAILS'}
         close={() => closeModal()}
         

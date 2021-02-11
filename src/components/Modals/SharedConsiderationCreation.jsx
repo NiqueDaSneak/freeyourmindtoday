@@ -11,6 +11,7 @@ import {
   Keyboard
 } from "react-native"
 import { BlurView } from 'expo-blur'
+import { BarCodeScanner } from 'expo-barcode-scanner'
 import {
   ModalContext, 
   ThemeContext, 
@@ -38,8 +39,27 @@ const SharedConsiderationCreation = ({
   const [title, setTitle] = useState('')
   const [createActive, setCreateActive] = useState(false)
   const [joinActive, setJoinActive] = useState(false)
+  const [scanned, setScanned] = useState(false)
+  const [hasPermission, setHasPermission] = useState(null);
 
   const [keyboardHeight, keyboardOpen] = useKeyboard()
+
+  const handleBarCodeScanned = ({
+    type, data 
+  }) => {
+    setScanned(true);
+    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+  }
+  useEffect(
+    () => {
+      (async () => {
+        if (visible) {
+          const { status } = await BarCodeScanner.requestPermissionsAsync()
+          setHasPermission(status === 'granted')
+        }
+      })()
+    }, [visible]
+  )
 
   useEffect(
     () => {
@@ -115,7 +135,7 @@ const SharedConsiderationCreation = ({
         position: 'absolute',
         width: '100%',
         backgroundColor: colorScheme === 'dark' ? theme.greyPalette[800] : theme.greyPalette[300],
-        bottom: keyboardOpen ? keyboardHeight : toggleSlide,
+        bottom: visible && keyboardOpen ? keyboardHeight : toggleSlide,
         zIndex: 1,
         paddingTop: 30,
         borderTopLeftRadius: 15,
@@ -221,10 +241,17 @@ const SharedConsiderationCreation = ({
         )}
         {joinActive && (
           <View style={{
-            height: 100,
+            height: '50%',
             width: '100%',
-            backgroundColor: 'blue'
-          }} />
+            backgroundColor: 'blue',
+            // zIndex: 1
+          }}>
+            <BarCodeScanner
+              onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+              // style={StyleSheet.absoluteFillObject}
+              style={{height: 300, width: 300}}
+            />
+          </View>
         )}
       </Animated.View>
     </>

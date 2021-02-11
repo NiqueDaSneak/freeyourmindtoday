@@ -117,7 +117,9 @@ const ConsiderationsContainer = ({
                 renderItem={({item: consideration}) => (
                   <Consideration
                     type={consideration.type}
-                    data={consideration} />
+                    data={consideration} 
+                    parent={singleAspect}
+                  />
                 )}
               />
             </ScrollView>
