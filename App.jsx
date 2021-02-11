@@ -1,4 +1,7 @@
 import React from 'react'
+import {
+  SafeAreaProvider 
+} from 'react-native-safe-area-context'
 import { AuthContextProvider } from './src/state/auth.context'
 import { ModalContextProvider } from './src/state/modal.context'
 import { AspectsContextProvider } from './src/state/aspects.context'
@@ -17,10 +20,12 @@ const App = () => (
         <AspectsContextProvider>
           <ConsiderationsContextProvider>
             <ExplainersContextProvider>
-              <ThemeContextProvider>
-                <Layout />
-                <ModalConductor />
-              </ThemeContextProvider>
+              <SafeAreaProvider>
+                <ThemeContextProvider>
+                  <Layout />
+                  <ModalConductor />
+                </ThemeContextProvider>
+              </SafeAreaProvider>
             </ExplainersContextProvider>
           </ConsiderationsContextProvider>
         </AspectsContextProvider>

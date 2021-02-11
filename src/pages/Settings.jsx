@@ -1,7 +1,7 @@
 import React, {useContext} from 'react'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import {
   Button,
-  SafeAreaView,
   ScrollView,
   Text,
   View

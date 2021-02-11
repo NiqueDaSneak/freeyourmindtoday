@@ -2,9 +2,9 @@ import React, {useContext} from 'react'
 import {
   View,
   Image, 
-  SafeAreaView, 
   Text
 } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import {
   theme, useKeyboard 
 } from '../assets/utils'

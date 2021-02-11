@@ -1,6 +1,6 @@
 import React, {useContext} from 'react'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import {
-  SafeAreaView,
   ScrollView
 } from 'react-native'
 import { theme } from '../assets/utils'
