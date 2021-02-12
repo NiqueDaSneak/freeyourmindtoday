@@ -93,6 +93,7 @@ const ConsiderationsContainer = ({
             >
               {renderData().map(consideration => (
                 <Consideration
+                  key={consideration.type}
                   type={consideration.type}
                   data={consideration} />
               ))}
