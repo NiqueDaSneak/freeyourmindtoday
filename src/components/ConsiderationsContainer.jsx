@@ -42,7 +42,7 @@ const ConsiderationsContainer = ({
   )
   
   const renderData = () => {
-    if (singleAspect.id) {
+    if (singleAspect?.id) {
       return considerations.filter(consideration => !consideration.completed && consideration.aspectId === singleAspect.id) 
     } 
     return considerations.filter(consideration => !consideration.completed)

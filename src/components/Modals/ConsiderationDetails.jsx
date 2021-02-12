@@ -15,6 +15,7 @@ import {
 import { BlurView } from 'expo-blur'
 import { QRCode } from 'react-native-custom-qr-codes-expo'
 import {
+  AuthContext,
   ModalContext,
   ThemeContext 
 } from '../../state'
@@ -26,12 +27,19 @@ const ConsiderationDetails = ({
   visible, 
   close, 
   aspect,
-  consideration 
+  consideration = {} 
 }) => {
+  const [authState, authDispatch] = useContext(AuthContext)
+  const {activeUser} = authState
   const [themeState] = useContext(ThemeContext)
   const { colorScheme } = themeState
   const [shareActive, setShareActive] = useState(false)
   const [modalState, modalDispatch] = useContext(ModalContext)
+  const {
+    participants, admin
+  } = consideration
+
+  const selfParticipant = participants?.find(person => person.id === activeUser.id)
 
   return (
     <Modal
@@ -133,7 +141,7 @@ const ConsiderationDetails = ({
                 <Text style={{
                   color: colorScheme === 'dark' ? theme.greyPalette[400] : theme.greyPalette[400],
                   fontSize: theme.fonts.sizes.small,
-                }}>Count: 10</Text>
+                }}>Count: {selfParticipant?.count}</Text>
                 <Text style={{
                   color: colorScheme === 'dark' ? theme.greyPalette[400] : theme.greyPalette[400],
                   fontSize: theme.fonts.sizes.small,
