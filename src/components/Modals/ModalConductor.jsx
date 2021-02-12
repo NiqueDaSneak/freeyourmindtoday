@@ -10,15 +10,19 @@ import ConsiderationChooser from './ConsiderationChooser'
 import PhoneVerification from './PhoneVerification'
 import SharedConsiderationCreation from './SharedConsiderationCreation'
 import ConsiderationDetails from './ConsiderationDetails'
+import GetUsername from './GetUsername'
 
 const ModalConductor = () => {
 
   const [state, dispatch] = useContext(ModalContext)
-  const {modalType, modalData} = state
+  const {
+    modalType, modalData
+  } = state
 
   const closeModal = () => {
     dispatch({type: 'CLOSE'})
   }
+  
   return(
     <>
       <AddNewAspect
@@ -51,8 +55,10 @@ const ModalConductor = () => {
         consideration={modalData?.consideration}
         visible={modalType === 'CONSIDERATION_DETAILS'}
         close={() => closeModal()}
-        
       />
+      <GetUsername
+        close={() => closeModal()}
+        visible={modalType === 'GET_USERNAME'} />
     </>
   )
 }

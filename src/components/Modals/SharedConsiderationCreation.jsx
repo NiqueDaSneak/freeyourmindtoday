@@ -103,7 +103,17 @@ const SharedConsiderationCreation = ({
     const newConsideration = {
       title,
       aspectId: aspect.id,
-      type: 'shared'
+      type: 'shared',
+      admin: activeUser.id,
+      whys: [],
+      participants: [
+        {
+          username: activeUser?.username,
+          id: activeUser.id,
+          count: 0,
+          weeklyAvg: 0,
+        }
+      ]
     }
     considerationsDispatch({
       type: 'ADD_NEW',
@@ -159,7 +169,6 @@ const SharedConsiderationCreation = ({
               <Button
                 title='Create'
                 onPress={() => {
-                  console.log('here...')
                   setCreateActive(true)
                 }} />
               <Button

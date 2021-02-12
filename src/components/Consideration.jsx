@@ -33,9 +33,7 @@ const Consideration = ({
 
   const growHeight = useRef(new Animated.Value(150)).current
   const growWidth = useRef(new Animated.Value(150)).current
-  console.log(
-    'useWindowDimensions().width: ',useWindowDimensions().width
-  )
+
   const renderIcon = () => {
     switch (data.type) {
     case 'shared':

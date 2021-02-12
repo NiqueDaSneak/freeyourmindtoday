@@ -4,7 +4,8 @@ import React, {
   useEffect, 
   useRef,
   useCallback, 
-  useState 
+  useState,
+  Alert
 } from 'react'
 import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha'
 import fb from 'firebase'
@@ -23,8 +24,16 @@ const initialState = {
   authenticating: false,
   newUserLogin: false,
   newUserData: null,
-  activeUser: { id: null },
+  activeUser: {
+    id: null,
+    phone: null,
+    username: null
+  },
   loggingOut: false,
+  needSaveUsername: {
+    value: false,
+    username: null
+  }
 }
 
 const reducer = (
@@ -40,10 +49,7 @@ const reducer = (
         phoneNumber: null,
         verificationCode: ''
       },
-      activeUser: {
-        id: action.id,
-        phone: action.phone
-      },
+      activeUser: action.user,
       isAuthenticated: true,
       newUserData: null,
       creatingNewUser: false
@@ -80,12 +86,28 @@ const reducer = (
     return {
       ...state,
       newUserLogin: true,
-      activeUser: {id: action.id,}
+      activeUser: {id: action.id}
     }
   case 'NEW_USER_LOGGED_IN':
     return {
       ...state,
       newUserLogin: false
+    }
+  case 'SAVE_USERNAME':
+    return {
+      ...state,
+      needSaveUsername: {
+        value: true,
+        username: action.username 
+      }
+    }
+  case 'SAVED_USERNAME':
+    return {
+      ...state,
+      needSaveUsername: {
+        value: false,
+        username: null
+      }
     }
   default:
     throw new Error()
@@ -112,27 +134,40 @@ export const AuthContextProvider = ({ children }) => {
       console.log(
         'The user is logged in', user.phoneNumber
       )
-      dispatch({
-        type: 'LOGIN_USER', 
-        id: user.uid,
-        phone: user.phoneNumber
+      db.collection('Users').where(
+        'firebaseId', '==', user.uid
+      ).get().then(snapshot => {
+        snapshot.forEach(userDoc => {
+          dispatch({
+            type: 'LOGIN_USER', 
+            user: userDoc.data()
+          })
+        })
       })
     } else {
       console.log('The user is not logged in')
-      dispatch({
-        type: 'LOGGED_OUT', 
-        // id: user.uid
-      })
+      dispatch({type: 'LOGGED_OUT'})
     }
   })
 
   useEffect(
     () => {
+      if (state.needSaveUsername.value) {
+        try {
+          db.collection('Users').doc(state.activeUser.id).update({ username: state.needSaveUsername.username }).then(() => {
+            dispatch({ type: 'SAVED_USERNAME' })
+          })
+        } catch (err) {
+          console.log('err: ', err)
+        }
+      }
+    }, [state.activeUser.id, state.needSaveUsername]
+  )
+  
+  useEffect(
+    () => {
       if (state.loggingOut) {
-        firebase.auth().signOut().then(() => {
-          console.log('inside log out')
-        })
-        // (firebase.auth().currentUser())
+        firebase.auth().signOut()
       }
     }, [state.loggingOut]
   )
@@ -169,11 +204,17 @@ export const AuthContextProvider = ({ children }) => {
           .signInWithCredential(credential)
           .then((result) => {
             if (result.additionalUserInfo.isNewUser) {
-              const newUser = {firebaseId: result.user.uid,}
-              db.collection('Users').add(newUser)
-              dispatch({
-                type: 'NEW_USER_LOGIN',
-                id: result.user.uid
+              const newUser = {
+                firebaseId: result.user.uid,
+                phone: result.user.phoneNumber,
+              }
+              db.collection('Users').add(newUser).then(docRef => {
+                db.collection('Users').doc(docRef.id).update({id: docRef.id}).then(() => {
+                  dispatch({
+                    type: 'NEW_USER_LOGIN',
+                    id: docRef.id
+                  })
+                })
               })
             }
           })

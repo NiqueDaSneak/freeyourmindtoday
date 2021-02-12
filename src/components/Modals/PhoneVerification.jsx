@@ -1,5 +1,5 @@
 import React, {
-  useState, useRef, useContext, useEffect
+  useState, useRef, useContext, useEffect, useCallback
 } from 'react'
 import {
   Text, 
@@ -18,7 +18,8 @@ import {
 } from '../../assets/utils'
 import {
   AuthContext,
-  ModalContext 
+  ModalContext,
+  ThemeContext
 } from '../../state';
 
 const PhoneVerification = ({ visible }) => {
@@ -33,15 +34,18 @@ const PhoneVerification = ({ visible }) => {
   const [phoneNumber, setPhoneNumber] = useState('')
   const phoneInputAnimationRef = useRef(new Animated.Value(0)).current
   const verifyInputAnimationRef = useRef(new Animated.Value(450)).current
+  const [themeState] = useContext(ThemeContext)
+  const {colorScheme} = themeState
 
-  const resetForm = () => {
-    phoneInputAnimationRef.resetAnimation()
-    verifyInputAnimationRef.resetAnimation()
-    setPhoneNumber('')
-    setVerifyCode('')
-    Keyboard.dismiss()
-
-  }
+  const resetForm = useCallback(
+    () => {
+      phoneInputAnimationRef.resetAnimation()
+      verifyInputAnimationRef.resetAnimation()
+      setPhoneNumber('')
+      setVerifyCode('')
+      Keyboard.dismiss()
+    }, [phoneInputAnimationRef, verifyInputAnimationRef]
+  )
 
   useEffect(
     () => {
@@ -75,7 +79,7 @@ const PhoneVerification = ({ visible }) => {
       if (!isAuthenticated) {
         resetForm()
       }
-    }, [isAuthenticated, phoneInputAnimationRef, verifyInputAnimationRef]
+    }, [isAuthenticated, phoneInputAnimationRef, resetForm, verifyInputAnimationRef]
   )
   const styles = StyleSheet.create({
     animatedContainer: {
@@ -84,7 +88,7 @@ const PhoneVerification = ({ visible }) => {
       width: '100%',
       alignItems: 'center',
       position: 'absolute',
-      backgroundColor: theme.greyPalette[700],
+      backgroundColor: colorScheme === 'dark' ? theme.greyPalette[900] : theme.greyPalette[300],
       borderTopLeftRadius: 15,
       borderTopRightRadius: 15,
       justifyContent: 'space-between',
@@ -94,14 +98,14 @@ const PhoneVerification = ({ visible }) => {
     input: { 
       borderRadius: 10, 
       fontSize: theme.fonts.sizes.medium, 
-      borderColor: 'gray', 
+      borderColor: colorScheme === 'dark' ? theme.greyPalette[800] : theme.greyPalette[100], 
       borderWidth: 1 ,
       paddingLeft: '2%',
       marginBottom: '4%', 
       width: '80%',
       textAlign: 'center',
       padding: '2%',
-      color: 'white' 
+      color: colorScheme === 'dark' ? theme.greyPalette[300] : theme.greyPalette[600], 
     }
   })
   return (
@@ -111,13 +115,13 @@ const PhoneVerification = ({ visible }) => {
         position: 'absolute',
         height: '100%',
         width: '100%',
-        backgroundColor: 'black',
+        // backgroundColor: 'black',
         bottom: toggleSlide,
         // bottom: ,
         zIndex: 1,
       }}>
         <BlurView
-          tint='dark'
+          tint={colorScheme}
           style={{
             position: 'absolute',
             width: '100%',
@@ -131,21 +135,21 @@ const PhoneVerification = ({ visible }) => {
           ]}>
           <Text style={{
             fontSize: theme.fonts.sizes.large,
-            color: 'white' 
+            color: colorScheme === 'dark' ? theme.greyPalette[300] : theme.greyPalette[600], 
           }}>What is your number?</Text>
           <Text style={{
             textAlign: 'center',
             fontSize: theme.fonts.sizes.small,
-            color: 'white' 
+            color: colorScheme === 'dark' ? theme.greyPalette[300] : theme.greyPalette[600], 
           }}>Your security is paramount. We make sure only you can access this sensitive personal information.</Text>
           <TextInput
             ref={phoneNumberInputRef}
             value={phoneNumber}
-            keyboardAppearance="dark"
+            keyboardAppearance={colorScheme}
             returnKeyType="next"      
             enablesReturnKeyAutomatically    
             style={styles.input}
-            placeholder=""
+            placeholder="111-867-5309"
             keyboardType="phone-pad"
             autoCompleteType="tel"
             onChangeText={text => setPhoneNumber(text)}
@@ -195,16 +199,16 @@ const PhoneVerification = ({ visible }) => {
         ]}>
           <Text style={{
             fontSize: theme.fonts.sizes.large,
-            color: 'white' 
+            color: colorScheme === 'dark' ? theme.greyPalette[300] : theme.greyPalette[600], 
           }}>Verify your number?</Text>
           <Text style={{
             fontSize: theme.fonts.sizes.small,
-            color: 'white' 
+            color: colorScheme === 'dark' ? theme.greyPalette[300] : theme.greyPalette[600], 
           }}>Enter the code we just sent via text to {phoneNumber}</Text>
           <TextInput
             ref={verifyInputRef}
             value={verifyCode}
-            keyboardAppearance="dark"
+            keyboardAppearance={colorScheme}
             returnKeyType="next"      
             enablesReturnKeyAutomatically    
             style={styles.input}

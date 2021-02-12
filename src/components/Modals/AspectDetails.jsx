@@ -43,13 +43,13 @@ const AspectDetails = ({
           height: '100%',
           width: '100%', 
         }}>
-        <ScrollView
-          contentContainerStyle={[{
-            paddingLeft: '4%',
-            paddingRight: '4%',
-            minHeight: '100%'
-          }, { backgroundColor: Platform.OS === 'android' ? colorScheme === 'dark' ? theme.greyPalette[900] : theme.greyPalette[100] : null }]}>
-          <SafeAreaView>
+        <SafeAreaView>
+          <ScrollView
+            contentContainerStyle={[{
+              paddingLeft: '4%',
+              paddingRight: '4%',
+              minHeight: '100%'
+            }, { backgroundColor: Platform.OS === 'android' ? colorScheme === 'dark' ? theme.greyPalette[900] : theme.greyPalette[100] : null }]}>
             {aspect === 'No Match' ? (
               <Text style={[theme.fonts.types.heading, {
                 fontSize: theme.fonts.sizes.medium,
@@ -92,8 +92,8 @@ const AspectDetails = ({
               color="red"
               title="Go Back"
               onPress={close} />
-          </SafeAreaView>
-        </ScrollView>
+          </ScrollView>
+        </SafeAreaView>
       </BlurView>
     </Modal>
   )

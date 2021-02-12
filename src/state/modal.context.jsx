@@ -33,13 +33,26 @@ export const ModalContextProvider = ({ children }) => {
     reducer, initialState
   )
   const [authState, authDispatch] = useContext(AuthContext)
-  const { isAuthenticated } = authState
+  const {
+    isAuthenticated, activeUser 
+  } = authState
   useEffect(
     () => {
       if (isAuthenticated) {
-        dispatch({type: 'CLOSE'})
+        dispatch({ type: 'CLOSE' })
       }
     }, [isAuthenticated]
+  )
+
+  useEffect(
+    () => {
+      if (isAuthenticated && !activeUser.username) {
+        dispatch({
+          type: 'OPEN',
+          modalType: 'GET_USERNAME'
+        })
+      }
+    }, [activeUser.username, isAuthenticated]
   )
   return (
     <ModalContext.Provider value={[state, dispatch]}>

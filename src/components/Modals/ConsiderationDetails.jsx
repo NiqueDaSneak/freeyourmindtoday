@@ -15,7 +15,8 @@ import {
 import { BlurView } from 'expo-blur'
 import { QRCode } from 'react-native-custom-qr-codes-expo'
 import {
-  ModalContext, ThemeContext 
+  ModalContext,
+  ThemeContext 
 } from '../../state'
 import EditableInput from '../EditableInput'
 import { theme } from '../../assets/utils'
@@ -32,13 +33,6 @@ const ConsiderationDetails = ({
   const [shareActive, setShareActive] = useState(false)
   const [modalState, modalDispatch] = useContext(ModalContext)
 
-  // const {
-  //   aspect, consideration 
-  // } = modalState?.modalData
-  
-  console.log(
-    'modalState: ', modalState.modalData
-  )
   return (
     <Modal
       animationType='slide'
@@ -123,14 +117,12 @@ const ConsiderationDetails = ({
             </ScrollView>
             <View style={{
               flexDirection: 'row',
-              // backgroundColor: 'green',
               width: '100%',
               height: '14%',
               marginBottom: '4%'
             }}>
 
               <View style={{
-                // backgroundColor: 'red',
                 justifyContent: 'space-evenly',
                 width: '50%'
               }}>
@@ -165,28 +157,12 @@ const ConsiderationDetails = ({
                 />
               </View>
             </View>
-            {/* <View style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-              <Text>Increase Count for Today: </Text>
-              <CreatorCard
-              // onPress={() => {
-              //   modalDispatch({
-              //     type: 'OPEN',
-              //     modalType: 'CHOOSE_TYPE',
-              //     modalData: singleAspect
-              //   })
-              // }} 
-              />
-            </View> */}
             <View style={{
               display: 'flex',
               flexDirection: 'row', 
               marginBottom: 20,  
               alignItems: 'center',
               justifyContent: 'space-between', 
-              // marginRight: 10,
             }}>
               <Text style={[theme.fonts.types.subHeading, {color: colorScheme === 'dark' ? theme.greyPalette[400] : theme.greyPalette[400]}]}>
               Participants
@@ -267,15 +243,7 @@ const ConsiderationDetails = ({
               </View>
             )}
             <View>
-              {[{
-                username: 'kc',
-                activityCount: 10,
-                avgWeek: 4.7
-              }, {
-                username: 'thisisasuperlongname',
-                activityCount: 10,
-                avgWeek: 4.7
-              }].map((participant) => (
+              {consideration?.participants?.map((participant) => (
                 <View
                   key={participant.username}
                   style={{
@@ -301,11 +269,11 @@ const ConsiderationDetails = ({
                   <Text style={{
                     color: colorScheme === 'dark' ? theme.greyPalette[800] : theme.greyPalette[100],
                     fontSize: theme.fonts.sizes.small 
-                  }}>Count: {participant.activityCount}</Text>
+                  }}>Count: {participant.count}</Text>
                   <Text style={{
                     color: colorScheme === 'dark' ? theme.greyPalette[800] : theme.greyPalette[100],
                     fontSize: theme.fonts.sizes.small 
-                  }}>{participant.avgWeek}/week</Text>
+                  }}>{participant.weeklyAvg}/week</Text>
                   <Image
                     resizeMode="contain"
                     resizeMethod="resize"

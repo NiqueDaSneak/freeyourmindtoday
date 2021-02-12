@@ -160,7 +160,7 @@ export const ConsiderationsContextProvider = ({ children }) => {
                 }
               ],
           )        
-          console.log('err')
+          console.log('err: ', err)
         }
       }
     }, [activeUser.id, state.needsSaved]
