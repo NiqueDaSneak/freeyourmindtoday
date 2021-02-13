@@ -52,7 +52,7 @@ const ModalConductor = () => {
         visible={modalType === 'CREATE_SHARED'} />
       <ConsiderationDetails
         aspect={modalData?.aspect}
-        consideration={modalData?.consideration}
+        considerationId={modalData?.considerationId}
         visible={modalType === 'CONSIDERATION_DETAILS'}
         close={() => closeModal()}
       />

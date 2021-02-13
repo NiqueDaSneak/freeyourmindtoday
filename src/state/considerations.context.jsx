@@ -5,23 +5,29 @@ import React, {
   useContext 
 } from 'react'
 import {Alert} from 'react-native'
-import { db } from '../../firebase'
 import { AuthContext } from './auth.context'
+import firebase, { db } from '../../firebase'
 
 export const ConsiderationsContext = createContext()
 const initialState = {
   considerations: [],
   needsSaved: {
-    value: null,
+    value: false,
     considerationData: null
   },
   needsSetPriority: {
-    value: null,
+    value: false,
     id: null
   },
   needsCompleted: {
-    value: null,
+    value: false,
     id: null
+  },
+  needsUpdatedSharedAddWhy: {
+    value: false,
+    text: null,
+    id: null,
+    oldWhys: []
   }
 }
 
@@ -82,6 +88,26 @@ const reducer = (
         considerationData: null
       }
     }
+  case 'UPDATE_SHARED_ADD_WHY':
+    return {
+      ...state,
+      needsUpdatedSharedAddWhy: {
+        value: true,
+        id: action.id,
+        text: action.text,
+        oldWhys: action.oldWhys,
+      }
+    }
+  case 'UPDATED_SHARED_ADD_WHY':
+    return {
+      ...state,
+      needsUpdatedSharedAddWhy: {
+        value: false,
+        text: null,
+        id: null,
+        oldWhys: []
+      }
+    }
   default:
     throw new Error()
   }
@@ -94,6 +120,31 @@ export const ConsiderationsContextProvider = ({ children }) => {
   const [authState, authDispatch] = useContext(AuthContext)
   const { activeUser } = authState
   
+  useEffect(() => {
+    if (state.needsUpdatedSharedAddWhy.value) {
+      try {
+        const newWhy = {
+          text: state.needsUpdatedSharedAddWhy.text,
+          username: activeUser.username
+        }
+        db.collection('Considerations').doc(state.needsUpdatedSharedAddWhy.id).update({ whys: firebase.firestore.FieldValue.arrayUnion(newWhy) }).then(() => { 
+          dispatch({type: 'UPDATED_SHARED_ADD_WHY'})
+        })
+      } catch (err) {
+        Alert.alert(
+          'Error Creating Aspect',
+          `${err}`
+            [
+              {
+                text: 'Go Back',
+                style: 'destructive'
+              }
+            ],
+        )        
+        console.log('err: ', err)
+      }
+    }
+  })
 
   useEffect(
     () => {
@@ -160,7 +211,9 @@ export const ConsiderationsContextProvider = ({ children }) => {
                 }
               ],
           )        
-          console.log('err: ', err)
+          console.log(
+            'err: ', err
+          )
         }
       }
     }, [activeUser.id, state.needsSaved]

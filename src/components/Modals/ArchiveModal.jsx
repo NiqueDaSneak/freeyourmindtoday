@@ -48,7 +48,7 @@ const ArchiveModal = ({
        
     // } 
     if (segmentIndex === 0) {
-      return considerations.filter(consideration => consideration.completed && consideration.aspectId === aspectPicker)
+      return considerations?.filter(consideration => consideration?.completed && consideration?.aspectId === aspectPicker)
     } 
   }
 

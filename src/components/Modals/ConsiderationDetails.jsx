@@ -1,5 +1,8 @@
 import React, {
-  useContext, useState
+  useContext,
+  useState,
+  useRef,
+  useEffect
 } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import {
@@ -10,12 +13,15 @@ import {
   View, 
   ScrollView, 
   TouchableOpacity, 
-  Image
+  Image,
+  TextInput,
+  Keyboard
 } from 'react-native'
 import { BlurView } from 'expo-blur'
 import { QRCode } from 'react-native-custom-qr-codes-expo'
 import {
   AuthContext,
+  ConsiderationsContext,
   ModalContext,
   ThemeContext 
 } from '../../state'
@@ -27,7 +33,7 @@ const ConsiderationDetails = ({
   visible, 
   close, 
   aspect,
-  consideration = {} 
+  considerationId
 }) => {
   const [authState, authDispatch] = useContext(AuthContext)
   const {activeUser} = authState
@@ -35,12 +41,31 @@ const ConsiderationDetails = ({
   const { colorScheme } = themeState
   const [shareActive, setShareActive] = useState(false)
   const [modalState, modalDispatch] = useContext(ModalContext)
+
+  const [considerationState, considerationDispatch] = useContext(ConsiderationsContext)
+  const { considerations } = considerationState
+  const consideration = considerations.find(el => el.id === considerationId) || {}
+  const [whyInputActive, setWhyInputActive] = useState(false)
+
+  const [whyInput, setWhyInput] = useState('')
+  const whyInputRef = useRef()
+
   const {
-    participants, admin
+    participants, admin, whys
   } = consideration
 
   const selfParticipant = participants?.find(person => person.id === activeUser.id)
 
+  useEffect(
+    () => {
+      if (whyInputActive) {
+        whyInputRef.current.focus()
+      } else {
+        setWhyInputActive(false)
+        Keyboard.dismiss()
+      }
+    }, [whyInputActive]
+  )
   return (
     <Modal
       animationType='slide'
@@ -75,20 +100,103 @@ const ConsiderationDetails = ({
               marginBottom: 20,  
               alignItems: 'center',
               justifyContent: 'space-between', 
-              // marginRight: 10,
             }}>
-              <Text style={[theme.fonts.types.subHeading, {color: colorScheme === 'dark' ? theme.greyPalette[400] : theme.greyPalette[400]}]}>
-              Why is this important to us?
-              </Text>
-              <CreatorCard
-              // onPress={() => {
-              //   modalDispatch({
-              //     type: 'OPEN',
-              //     modalType: 'CHOOSE_TYPE',
-              //     modalData: singleAspect
-              //   })
-              // }} 
-              />
+              <View style={{ width: '100%' }}>
+                <Text style={[theme.fonts.types.subHeading, {
+                  marginBottom: 20,
+                  color: colorScheme === 'dark' ? theme.greyPalette[400] : theme.greyPalette[400]
+                }]}>Why is this important to us?</Text>
+                <View style={{
+                  display: 'flex',
+                  flexDirection: 'row', 
+                  alignItems: 'center',
+                  justifyContent: 'space-between', 
+                }}>
+                  <TextInput
+                    ref={whyInputRef}
+                    editable={whyInputActive}
+                    placeholder='...whats your why'
+                    keyboardAppearance={colorScheme}
+                    blurOnSubmit
+                    returnKeyType="done"          
+                    maxLength={41}
+                    value={whyInput}
+                    style={{ 
+                      borderRadius: 10, 
+                      fontSize: theme.fonts.sizes.medium, 
+                      borderColor: colorScheme === 'dark' ?  theme.greyPalette[400] : theme.greyPalette[800], 
+                      borderWidth: 1 ,
+                      paddingLeft: '2%',
+                      width: '70%',
+                      padding: '2%',
+                      color: colorScheme === 'dark' ?  theme.greyPalette[100] : theme.greyPalette[800],
+                    }}
+                    onChangeText={text => setWhyInput(text)}
+                  />
+                  {whyInputActive && (
+                    <TouchableOpacity onPress={() => {
+                      considerationDispatch({
+                        type: 'UPDATE_SHARED_ADD_WHY',
+                        id: consideration?.id,
+                        text: whyInput,
+                        oldWhys: whys 
+                      })
+                      setWhyInputActive(false)
+                      setWhyInput('')
+                      Keyboard.dismiss()
+                    }}>
+                      <Image
+                        resizeMode="contain"
+                        resizeMethod="resize"
+                        style={{
+                          resizeMode: 'contain',
+                          height: 34,
+                          width: 34,
+                        }}
+                        source={require('../../assets/check.png')} 
+                      />
+                    </TouchableOpacity>
+                  )}
+                  <TouchableOpacity onPress={() => {
+                    if (!whyInputActive) {
+                      setWhyInputActive(true)
+                    }
+                    
+                    if (whyInputActive){
+                      setWhyInputActive(false)
+                      setWhyInput('')
+                    }
+                  }}>
+                    <View style={[{
+                      width: 44,
+                      height: 44,
+                      backgroundColor: colorScheme === 'dark' ? theme.greyPalette[600] : theme.greyPalette[200],
+                      borderRadius: 30,
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    },
+                    whyInputActive && (
+                      {
+                        transform: [{ rotate: "45deg" }],
+                        backgroundColor: 'red'
+                      }
+                    ),
+                    !whyInputActive && (
+                      {
+                        transform: [{ rotate: "0deg" }],
+                        backgroundColor: colorScheme === 'dark' ? theme.greyPalette[600] : theme.greyPalette[200],
+                      }
+                    )
+                    ]}>
+                      <Text style={[theme.fonts.types.heading, {
+                        color: 'white',
+                        textAlign: 'center'
+                      }]}>+</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+                <View style={{ display: whyInputActive ? 'flex' : 'none' }} />
+              </View>
             </View>
             <ScrollView 
               contentContainerStyle={{marginTop: 10}}
@@ -96,10 +204,7 @@ const ConsiderationDetails = ({
               showsVerticalScrollIndicator={false} 
               showsHorizontalScrollIndicator={false}
             >
-              {[{
-                text: 'Proin tellus mauris, sodales nec mollis at, mollis tincidunt ligula.',
-                username: '@niquedasneak'
-              }].map(el => (
+              {consideration?.whys?.map(el => (
                 <View
                   key={el.text}
                   style={{
@@ -119,7 +224,7 @@ const ConsiderationDetails = ({
                   <Text style={{
                     fontSize: theme.fonts.sizes.xsmall,
                     color: colorScheme === 'dark' ? theme.greyPalette[200] : theme.greyPalette[800] 
-                  }}>{el.username}</Text>
+                  }}>@{el.username}</Text>
                 </View>
               ))}
             </ScrollView>
@@ -149,8 +254,6 @@ const ConsiderationDetails = ({
               </View>
               <View style={{
                 width: '50%',
-                // backgroundColor: 'blue',
-                // alignContent: 'center',
                 alignItems: 'flex-end',
                 justifyContent: 'center'
               }}>
@@ -253,7 +356,7 @@ const ConsiderationDetails = ({
             <View>
               {consideration?.participants?.map((participant) => (
                 <View
-                  key={participant.username}
+                  key={participant?.username}
                   style={{
                     borderRadius: 12,
                     backgroundColor: colorScheme === 'dark' ? theme.greyPalette[200] : theme.greyPalette[800],
@@ -273,15 +376,15 @@ const ConsiderationDetails = ({
                     width: '24%',
                     color: colorScheme === 'dark' ? theme.greyPalette[800] : theme.greyPalette[100],
                     fontSize: theme.fonts.sizes.small 
-                  }}>@{participant.username}</Text>
+                  }}>@{participant?.username}</Text>
                   <Text style={{
                     color: colorScheme === 'dark' ? theme.greyPalette[800] : theme.greyPalette[100],
                     fontSize: theme.fonts.sizes.small 
-                  }}>Count: {participant.count}</Text>
+                  }}>Count: {participant?.count}</Text>
                   <Text style={{
                     color: colorScheme === 'dark' ? theme.greyPalette[800] : theme.greyPalette[100],
                     fontSize: theme.fonts.sizes.small 
-                  }}>{participant.weeklyAvg}/week</Text>
+                  }}>{participant?.weeklyAvg}/week</Text>
                   <Image
                     resizeMode="contain"
                     resizeMethod="resize"
@@ -299,14 +402,11 @@ const ConsiderationDetails = ({
               color="red"
               title="Go Back"
               onPress={() => {
-                // close()
                 modalDispatch({
                   type: 'OPEN',
                   modalType: 'GET_ASPECT_DETAILS',
                   modalData: aspect
                 })
-                // modalDispatch({type: 'CLOSE'})
-                // resetForm()
               }} />
           </SafeAreaView>
         </ScrollView>

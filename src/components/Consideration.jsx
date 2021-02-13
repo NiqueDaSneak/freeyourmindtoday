@@ -85,14 +85,13 @@ const Consideration = ({
       }
     }, [expanded, growHeight, growWidth, screenHeight, screenWidth]
   )
-  
   return (
     <TouchableOpacity
       onPress={() => modalDispatch({
         type: 'OPEN',
         modalType: 'CONSIDERATION_DETAILS',
         modalData: {
-          consideration: data,
+          considerationId: data?.id,
           aspect: parent
         }
       })
