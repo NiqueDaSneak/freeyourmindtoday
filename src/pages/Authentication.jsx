@@ -31,7 +31,9 @@ const Authentication = () => {
       <View style={{
         marginTop: '60%',
         height: 210,
-        justifyContent: 'space-evenly'
+        // width: '80%',
+        justifyContent: 'space-evenly',
+        // backgroundColor: 'pink'
       }}>
         <Image 
           resizeMode="contain"
@@ -46,12 +48,12 @@ const Authentication = () => {
         <Text style={{
           ...theme.fonts.types.heading,
           color: 'white'
-        }}>Free Your Mind Today</Text>
+        }}>For</Text>
         <Text style={{
           fontSize: 16,
           color: 'white',
           fontStyle: 'italic'
-        }}>What are you here for?</Text>
+        }}>Why are you here?</Text>
       </View>
       <View style={{
         position: 'absolute',
