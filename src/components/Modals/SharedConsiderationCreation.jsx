@@ -8,7 +8,8 @@ import {
   Animated,
   TextInput,
   Easing,
-  Keyboard
+  Keyboard,
+  Alert
 } from "react-native"
 import { BlurView } from 'expo-blur'
 import { BarCodeScanner } from 'expo-barcode-scanner'
@@ -44,12 +45,59 @@ const SharedConsiderationCreation = ({
 
   const [keyboardHeight, keyboardOpen] = useKeyboard()
 
+  const submitNewConsideration = (considerationTitle, refId) => {
+    const newConsideration = {
+      title: considerationTitle,
+      aspectId: aspect.id,
+      type: 'shared',
+    }
+    considerationsDispatch({
+      type: 'ADD_NEW',
+      newConsideration,
+      refId
+    })   
+    modalDispatch({
+      type: 'OPEN',
+      modalType: 'GET_ASPECT_DETAILS',
+      modalData:  aspect
+    })
+    setTitle('')
+    Keyboard.dismiss()
+    setCreateActive(false)
+    setJoinActive(false)
+  }
+
   const handleBarCodeScanned = ({
     type, data 
   }) => {
-    setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    const {
+      adminId,
+      refId,
+      title,
+      inviter 
+    } = JSON.parse(data)
+
+    setScanned(true)
+
+    Alert.alert(
+      `You have been invited to join the shared consideration, ${title}.`,
+      'Are you sure you want to join?',
+      [
+        {
+          text: 'Yes, join',
+          onPress: () => {
+            submitNewConsideration(title, refId)
+          }
+        },
+        {
+          text: 'Cancel',
+          style: 'destructive'
+        }
+      ],
+    )
+  
   }
+  
   useEffect(
     () => {
       (async () => {
@@ -97,37 +145,6 @@ const SharedConsiderationCreation = ({
       return 'Join Consideration'
     }
     return 'Shared Consideration'
-  }
-
-  const submitNewConsideration = () => {
-    const newConsideration = {
-      title,
-      aspectId: aspect.id,
-      type: 'shared',
-      admin: activeUser.id,
-      whys: [],
-      participants: [
-        {
-          username: activeUser?.username,
-          id: activeUser.id,
-          count: 0,
-          weeklyAvg: 0,
-        }
-      ]
-    }
-    considerationsDispatch({
-      type: 'ADD_NEW',
-      newConsideration,
-    })   
-    modalDispatch({
-      type: 'OPEN',
-      modalType: 'GET_ASPECT_DETAILS',
-      modalData:  aspect
-    })
-    setTitle('')
-    Keyboard.dismiss()
-    setCreateActive(false)
-    setJoinActive(false)
   }
 
   return(
@@ -243,7 +260,7 @@ const SharedConsiderationCreation = ({
               <Button
                 color='green'
                 title='Create'
-                onPress={() => submitNewConsideration()} 
+                onPress={() => submitNewConsideration(title)} 
               />
             </View>
           </View>
@@ -252,14 +269,48 @@ const SharedConsiderationCreation = ({
           <View style={{
             height: '50%',
             width: '100%',
-            backgroundColor: 'blue',
+            // marginLeft: '10%',
+            // backgroundColor: 'blue',
+            marginBottom: 20
             // zIndex: 1
           }}>
-            <BarCodeScanner
-              onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-              // style={StyleSheet.absoluteFillObject}
-              style={{height: 300, width: 300}}
+            <Text style={{
+              color: colorScheme === 'dark' ? theme.greyPalette[200] : theme.greyPalette[800],
+              fontSize: theme.fonts.sizes.medium,
+              marginBottom: 40,
+              textAlign: 'center',
+              width: '80%',
+              marginLeft: '10%',
+            }}>Join other considerations by scanning the QR code in the screen below:</Text>
+            {!scanned && (
+              <BarCodeScanner
+                onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+                style={{
+                  height: 300,
+                  width: '100%'
+                }}
+              />
+            )}
+            <Button
+              color='red'
+              title='Go Back'
+              onPress={() => { 
+                modalDispatch({
+                  type: 'OPEN',
+                  modalType: 'CHOOSE_TYPE',
+                  modalData: aspect
+                })
+                Keyboard.dismiss()
+              }} 
             />
+            <Button
+              color='green'
+              title='Scan Again'
+              onPress={() => { 
+                setScanned(false)
+              }} 
+            />
+
           </View>
         )}
       </Animated.View>

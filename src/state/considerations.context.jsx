@@ -2,7 +2,8 @@ import React, {
   useReducer,
   createContext,
   useEffect,
-  useContext 
+  useContext,
+  useState
 } from 'react'
 import {Alert} from 'react-native'
 import { AuthContext } from './auth.context'
@@ -13,7 +14,8 @@ const initialState = {
   considerations: [],
   needsSaved: {
     value: false,
-    considerationData: null
+    considerationData: null,
+    refId: null
   },
   needsSetPriority: {
     value: false,
@@ -28,7 +30,8 @@ const initialState = {
     text: null,
     id: null,
     oldWhys: []
-  }
+  },
+  referenceConsideration: {}
 }
 
 const reducer = (
@@ -78,6 +81,7 @@ const reducer = (
       needsSaved: {
         value: true,
         considerationData: action.newConsideration,
+        refId: action.refId
       }
     }
   case 'SAVED_NEW':
@@ -113,12 +117,49 @@ const reducer = (
   }
 }
 
+export const useReference = (referenceId) => {
+  const [reference, setReference] = useState()
+  useEffect(
+    () => {
+      if (referenceId) {
+        db.collection('Considerations').doc(referenceId).get().then(doc => setReference(doc.data()))
+      }
+    }, [referenceId]
+  )
+  return reference
+}
+
+// useEffect(
+//   () => {
+//     const subscriber = db.collection('Considerations').where(
+//       'userId', '==', activeUser?.id
+//     ).onSnapshot(querySnapshot => {
+//       const considerationData = []
+//       querySnapshot.forEach((doc) => {
+//         const withId = {
+//           id: doc.id,
+//           ...doc.data()
+//         }
+//         considerationData.push(withId)
+//       })
+//       dispatch({
+//         type: 'SET_CONSIDERATIONS',
+//         considerationData
+//       })
+//     })
+//     return () => subscriber()
+//   }, [activeUser.id, isAuthenticated]
+// )
+
+
 export const ConsiderationsContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(
     reducer, initialState
   )
   const [authState, authDispatch] = useContext(AuthContext)
-  const { activeUser } = authState
+  const {
+    activeUser, isAuthenticated 
+  } = authState
   
   useEffect(() => {
     if (state.needsUpdatedSharedAddWhy.value) {
@@ -141,65 +182,113 @@ export const ConsiderationsContextProvider = ({ children }) => {
               }
             ],
         )        
-        console.log('err: ', err)
+        console.log(
+          'err: ', err
+        )
       }
     }
   })
 
   useEffect(
     () => {
-      let subscriber
-      try {
-        subscriber = db.collection('Considerations').where(
-          'userId', '==', activeUser.id
-        ).onSnapshot(querySnapshot => {
-          const considerationData = []
-          querySnapshot.forEach((doc) => {
-            const withId = {
-              id: doc.id,
-              ...doc.data()
-            }
-            considerationData.push(withId)
-          })
-          dispatch({
-            type: 'SET_CONSIDERATIONS',
-            considerationData
-          })
+      const subscriber = db.collection('Considerations').where(
+        'userId', '==', activeUser?.id
+      ).onSnapshot(querySnapshot => {
+        const considerationData = []
+        querySnapshot.forEach((doc) => {
+          const withId = {
+            id: doc.id,
+            ...doc.data()
+          }
+          considerationData.push(withId)
         })
-      } catch (err) {
-        Alert.alert(
-          'Error Creating Aspect',
-          `${err}`
-            [
-              {
-                text: 'Go Back',
-                style: 'destructive'
-              }
-            ],
-        )        
-        console.log('err')
-      }
+        dispatch({
+          type: 'SET_CONSIDERATIONS',
+          considerationData
+        })
+      })
       return () => subscriber()
-    }, [activeUser.id]
+    }, [activeUser.id, isAuthenticated]
   )
+
+  const handleShared = (
+    considerationData, refId
+  ) => {
+    if (refId) { 
+      const newConsideration = {
+        refId,
+        userId: activeUser.id,
+        createdAt: Date.now(),
+        completed: false,
+        completedAt: null,
+        deleted: false,
+        deletedAt: null,
+        ...considerationData
+      }
+
+      db.collection('Considerations').add(newConsideration).then(() => {
+        db.collection('Considerations').doc(refId).update({
+          participants: firebase.firestore.FieldValue.arrayUnion({
+            username: activeUser?.username,
+            id: activeUser?.id,
+            count: 0,
+            weeklyAvg: 0,
+          }) 
+        }).then(() => {
+          dispatch({type: 'SAVED_NEW'})
+        })
+      })
+    } else {
+      const referenceShared = {
+        type: 'reference',
+        subType: 'shared',
+        adminId: activeUser?.id,
+        createdAt: Date.now(),
+        deleted: false,
+        deletedAt: null,
+        whys: [],
+        participants: [
+          {
+            username: activeUser?.username,
+            id: activeUser?.id,
+            count: 0,
+            weeklyAvg: 0,
+          }
+        ]
+      }
+  
+      db.collection('Considerations').add(referenceShared).then(docRef => {
+        const newConsideration = {
+          refId: docRef.id,
+          userId: activeUser.id,
+          createdAt: Date.now(),
+          completed: false,
+          completedAt: null,
+          deleted: false,
+          deletedAt: null,
+          ...considerationData
+        }
+        db.collection('Considerations').add(newConsideration).then(() => {
+          dispatch({type: 'SAVED_NEW'})
+        })
+      })
+    }
+    
+  }
 
   useEffect(
     () => {
       if (state.needsSaved.value) {
+        // HERE I NEED TO CHECK IF IT IS SHARED AND CREATE A REFERENCE CONSIDERATION AS WELL AS THE ONE TIED TO THE USER
+
+        const { considerationData } = state.needsSaved 
         try {
-          const { considerationData } = state.needsSaved
-          const newConsideration = {
-            userId: activeUser.id,
-            createdAt: Date.now(),
-            completed: false,
-            completedAt: null,
-            deleted: false,
-            deletedAt: null,
-            ...considerationData
+          if (considerationData.type === 'shared') {
+            handleShared(
+              considerationData, state.needsSaved.refId
+            )
           }
-          db.collection('Considerations').add(newConsideration).then(() => {
-            dispatch({type: 'SAVED_NEW'})
-          })
+
         } catch (err) {
           Alert.alert(
             'Error Creating Aspect',
@@ -237,7 +326,9 @@ export const ConsiderationsContextProvider = ({ children }) => {
                 }
               ],
           )        
-          console.log('err')
+          console.log(
+            'err: ', err
+          )
         }
       }
     }, [state.needsCompleted]
@@ -261,7 +352,9 @@ export const ConsiderationsContextProvider = ({ children }) => {
                 }
               ],
           )        
-          console.log('err')
+          console.log(
+            'err: ', err
+          )
         }
       }
     }, [state.needsSetPriority]

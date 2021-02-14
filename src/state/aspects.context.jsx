@@ -245,7 +245,7 @@ export const AspectsContextProvider = ({ children }) => {
               }
             ],
         )        
-        console.log('err')
+        console.log('err: ', err)
       }
       return () => subscriber()
     }, [activeUser.id]

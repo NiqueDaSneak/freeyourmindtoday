@@ -28,6 +28,7 @@ import {
 import EditableInput from '../EditableInput'
 import { theme } from '../../assets/utils'
 import CreatorCard from '../CreatorCard'
+import { useReference } from '../../state/considerations.context'
 
 const ConsiderationDetails = ({
   visible, 
@@ -44,15 +45,20 @@ const ConsiderationDetails = ({
 
   const [considerationState, considerationDispatch] = useContext(ConsiderationsContext)
   const { considerations } = considerationState
-  const consideration = considerations.find(el => el.id === considerationId) || {}
+  const consideration = considerations?.find(el => el.id === considerationId) || {}
+  const refConsideration = useReference(consideration?.refId) || {}
+  // const refConsideration = considerations.find(el => el.id = consideration.refId)
+  console.log(
+    'refConsideration: ', refConsideration
+  )
   const [whyInputActive, setWhyInputActive] = useState(false)
 
   const [whyInput, setWhyInput] = useState('')
   const whyInputRef = useRef()
 
   const {
-    participants, admin, whys
-  } = consideration
+    participants, whys, adminId
+  } = refConsideration
 
   const selfParticipant = participants?.find(person => person.id === activeUser.id)
 
@@ -66,6 +72,8 @@ const ConsiderationDetails = ({
       }
     }, [whyInputActive]
   )
+
+  // {console.log('consideration: ', consideration)}
   return (
     <Modal
       animationType='slide'
@@ -137,7 +145,7 @@ const ConsiderationDetails = ({
                     <TouchableOpacity onPress={() => {
                       considerationDispatch({
                         type: 'UPDATE_SHARED_ADD_WHY',
-                        id: consideration?.id,
+                        id: consideration?.refId,
                         text: whyInput,
                         oldWhys: whys 
                       })
@@ -204,7 +212,7 @@ const ConsiderationDetails = ({
               showsVerticalScrollIndicator={false} 
               showsHorizontalScrollIndicator={false}
             >
-              {consideration?.whys?.map(el => (
+              {whys?.map(el => (
                 <View
                   key={el.text}
                   style={{
@@ -329,32 +337,38 @@ const ConsiderationDetails = ({
                 width: '100%',
                 marginBottom: 20,
                 flexDirection: 'row',
-                justifyContent: 'space-between',
+                justifyContent: 'space-evenly',
                 alignItems: 'center'
               }}>
                 <View style={{
                   backgroundColor: colorScheme === 'dark' ? theme.greyPalette[300] : theme.greyPalette[900], 
                   padding: 8,
                   alignItems: 'center',
-                  borderRadius: 10
+                  borderRadius: 10,
+                  marginRight: 12
                 }}>
                   <QRCode
                     logoSize={40}
                     logo={colorScheme === 'dark' ? require('../../assets/logo-dark.png') : require('../../assets/logo-light.png')}
                     color={colorScheme === 'dark' ? theme.greyPalette[900] : theme.greyPalette[100]}
-                    size={120}
-                    content='https://reactnative.com'
+                    size={200}
+                    content={JSON.stringify({
+                      adminId,
+                      refId: consideration?.refId,
+                      title: consideration?.title,
+                      inviter: activeUser.id
+                    })}
                   />
                 </View>
                 <Text style={{
                   color: colorScheme === 'dark' ? theme.greyPalette[200] : theme.greyPalette[800],
-                  width: '50%',
-                  fontSize: theme.fonts.sizes.small
+                  width: '40%',
+                  fontSize: theme.fonts.sizes.xsmall
                 }}>Morbi felis lorem, imperdiet a sem a, lacinia blandit turpis. Fusce tempor elit non imperdiet aliquam. Suspendisse potenti.</Text>
               </View>
             )}
             <View>
-              {consideration?.participants?.map((participant) => (
+              {participants?.map((participant) => (
                 <View
                   key={participant?.username}
                   style={{

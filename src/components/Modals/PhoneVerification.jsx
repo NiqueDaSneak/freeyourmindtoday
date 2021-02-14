@@ -229,6 +229,7 @@ const PhoneVerification = ({ visible }) => {
                   type: 'VERIFY_PHONE',
                   verifyCode
                 })
+                modalDispatch({ type: 'CLOSE' })
               }} />
             <Button
               title="Cancel"

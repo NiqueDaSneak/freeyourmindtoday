@@ -36,6 +36,7 @@ export const ModalContextProvider = ({ children }) => {
   const {
     isAuthenticated, activeUser 
   } = authState
+  console.log("isAuthenticated: ", isAuthenticated)
   useEffect(
     () => {
       if (isAuthenticated) {
