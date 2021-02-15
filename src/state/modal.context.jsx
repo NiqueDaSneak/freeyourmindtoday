@@ -1,5 +1,8 @@
 import React, {
-  useReducer, createContext, useContext, useEffect 
+  useReducer, 
+  createContext, 
+  useContext, 
+  useEffect 
 } from 'react'
 import { AuthContext } from './auth.context'
 
@@ -21,7 +24,7 @@ const reducer = (
       modalType: action.modalType,
       modalData: action.modalData
     }
-  case 'CLOSE_MODAL':
+  case 'CLOSE':
     return {modalVisible: false}
   default:
     throw new Error()
@@ -33,13 +36,27 @@ export const ModalContextProvider = ({ children }) => {
     reducer, initialState
   )
   const [authState, authDispatch] = useContext(AuthContext)
-  const { isAuthenticated } = authState
+  const {
+    isAuthenticated, activeUser 
+  } = authState
+
   useEffect(
     () => {
       if (isAuthenticated) {
-        dispatch({type: 'CLOSE_MODAL'})
+        dispatch({ type: 'CLOSE' })
       }
     }, [isAuthenticated]
+  )
+
+  useEffect(
+    () => {
+      if (isAuthenticated && !activeUser.username) {
+        dispatch({
+          type: 'OPEN',
+          modalType: 'GET_USERNAME'
+        })
+      }
+    }, [activeUser.username, isAuthenticated]
   )
   return (
     <ModalContext.Provider value={[state, dispatch]}>

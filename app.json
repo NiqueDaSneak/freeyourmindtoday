@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "Free Your Mind Today",
+    "name": "For",
     "description": "At my lowest, I wish I had a system to tap into; to get & keep my mind right, before reality catches up.\nPeople need support navigating the world. Our technology should help us in more than a directional sense.\nThe state of our culture has many people confused & disoriented. I belive to change the culture we all need to work and cultivate what is on the inside; if we can become better versions of ourselves, what we reflect out can create a better world.",
-    "slug": "fymt",
+    "slug": "For",
     "sdkVersion": "39.0.0",
     "platforms": [
       "ios",
@@ -13,7 +13,8 @@
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain"
+      "resizeMode": "cover",
+      "backgroundColor": "#222220"
     },
     "userInterfaceStyle": "automatic",
     "updates": {

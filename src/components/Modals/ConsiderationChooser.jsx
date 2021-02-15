@@ -1,5 +1,7 @@
 import React, {
-  useState, useRef, useContext, useEffect
+  useRef, 
+  useContext, 
+  useEffect
 } from 'react'
 import {
   Text, 
@@ -7,16 +9,24 @@ import {
   Animated, 
   Button, 
   Easing, 
-  Pressable
+  Image,
+  TouchableOpacity
 } from 'react-native'
 import { BlurView } from 'expo-blur'
-import SegmentedControl from '@react-native-community/segmented-control';
-import {theme} from '../../assets/utils'
-import { ModalContext, ThemeContext } from '../../state';
+import { theme } from '../../assets/utils'
+import {
+  ModalContext,
+  ThemeContext 
+} from '../../state'
 
-const ConsiderationChooser = ({visible}) => {
+const ConsiderationChooser = ({ visible }) => {
+  const [modalState, modalDispatch] = useContext(ModalContext)
 
-  const toggleSlide = useRef(new Animated.Value(-400)).current
+  const toggleSlide = useRef(new Animated.Value(-600)).current
+  const aspect = modalState.modalData
+  
+  const [themeState] = useContext(ThemeContext)
+  const { colorScheme } = themeState
 
   useEffect(
     () => {
@@ -34,7 +44,7 @@ const ConsiderationChooser = ({visible}) => {
       if (!visible) {
         Animated.timing(
           toggleSlide, {
-            toValue: -400,
+            toValue: -600,
             duration: 300,
             useNativeDriver: false,
             easing: Easing.ease,
@@ -44,11 +54,43 @@ const ConsiderationChooser = ({visible}) => {
     }, [toggleSlide, visible]
   )
 
-  const [segmentIndex, setSegmentIndex] = useState(0)
-  const [modalState, modalDispatch] = useContext(ModalContext)
-
-  const [themeState] = useContext(ThemeContext)
-  const {colorScheme} = themeState
+  const considerationTypes = {
+    types: ['Question',
+      'Mood Tracking',
+      'Reminders',
+      'Shared'],
+    'Question': {
+      icon: {
+        dark: require('../../assets/question-dark.png'),
+        light: require('../../assets/question-light.png')
+      }
+    },
+    'Mood Tracking': {
+      icon: {
+        dark: require('../../assets/mood-dark.png'),
+        light: require('../../assets/mood-light.png')
+      }
+    },
+    'Reminders': {
+      icon: {
+        dark: require('../../assets/bell-dark.png'),
+        light: require('../../assets/bell-light.png')
+      }
+    },
+    'Shared': {
+      onClick: () => {
+        modalDispatch({
+          type: 'OPEN',
+          modalType: 'CREATE_SHARED',
+          modalData: aspect
+        })
+      },
+      icon: {
+        dark: require('../../assets/share-dark.png'),
+        light: require('../../assets/share-light.png')
+      }
+    },
+  }
 
   return (
     <>
@@ -62,8 +104,6 @@ const ConsiderationChooser = ({visible}) => {
         }} />
       <Animated.View style={{
         position: 'absolute',
-        height: '45%',
-        justifyContent: 'space-between',
         width: '100%',
         backgroundColor: colorScheme === 'dark' ? theme.greyPalette[800] : theme.greyPalette[300],
         bottom: toggleSlide,
@@ -73,7 +113,6 @@ const ConsiderationChooser = ({visible}) => {
         paddingTop: 30,
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
-
       }}>
         <Text style={[{...theme.fonts.types.heading}, {
           color: colorScheme === 'dark' ? theme.greyPalette[300] : theme.greyPalette[800],
@@ -86,44 +125,47 @@ const ConsiderationChooser = ({visible}) => {
           width: '90%',
           marginLeft: '5%'
         }]}>Once we understand who we are, we can ask questions, and create goals against the backdrop of what we already know about ourselves.</Text>
-        <SegmentedControl
-          tintColor={colorScheme === 'dark' ? theme.greyPalette[400] : theme.greyPalette[100]}
-          values={['Long Term', 'Short Term']}
-          selectedIndex={segmentIndex}
-          onChange={(event) => {
-            setSegmentIndex(event.nativeEvent.selectedSegmentIndex)
-          }}
-        />
-        <View style={{height: 70,}}>
-          <Text style={{
-          color: colorScheme === 'dark' ? theme.greyPalette[300] : theme.greyPalette[900],
-            textAlign: 'center',
-            width: '90%',
-            marginLeft: '5%'
-          }}>
-            {segmentIndex === 0 && (
-              `Long term considerations should be questions we have; or answers to questions that have not revealed themselves.`
-            )}
-            {segmentIndex === 1 && (
-              `Short term considerations should be actionable. The short term is more concrete than the future. We can use that concrete to build whatever we need.`
-            )}
-          </Text>
+        <View style={{
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+        }}>
+          {considerationTypes.types.map(type => (
+            <TouchableOpacity
+              onPress={() => considerationTypes[type].onClick()}
+              style={{
+                width: '50%',
+                alignItems: 'center',
+                padding: '6%',
+                justifyContent: 'space-between'
+              }}
+              key={type}>
+              <Image
+                resizeMode="contain"
+                resizeMethod="resize"
+                style={{
+                  resizeMode: 'contain',
+                  height: 90,
+                  width: 90,
+                }}
+                source={considerationTypes[type].icon[colorScheme]} 
+              />
+              <Text style={[theme.fonts.types.subHeading, {
+                textAlign: 'center',
+                marginTop: 20,
+                color: colorScheme === 'dark' ? theme.greyPalette[300] : theme.greyPalette[600],
+              }]}>{type}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
         <Button
-          onPress={() => segmentIndex === 0 ? modalDispatch({
+          color="red"
+          title="Go Back"
+          onPress={() => modalDispatch({
             type: 'OPEN',
-            modalType: 'ADD_LONG_CONSIDERATION' 
-          }): modalDispatch({
-            type: 'OPEN',
-            modalType: 'ADD_SHORT_CONSIDERATION' 
-          })}
-          title={`Create ${segmentIndex === 0 ? 'Long Term' : 'Short Term'} Consideraton`} />
-        <Button
-          title='Cancel'
-          color='red'
-          onPress={() => {
-            modalDispatch({ type: 'CLOSE_MODAL' })
-          }} />
+            modalType: 'GET_ASPECT_DETAILS',
+            modalData: aspect
+          })} />
       </Animated.View>
     </>
   )

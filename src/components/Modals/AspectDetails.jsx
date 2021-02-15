@@ -8,9 +8,9 @@ import {
   Modal,
   ScrollView,
   Platform,
-  SafeAreaView
 } from 'react-native'
 import { BlurView } from 'expo-blur'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import EditableInput from '../EditableInput'
 import {
   theme, useKeyboard 
@@ -43,15 +43,13 @@ const AspectDetails = ({
           height: '100%',
           width: '100%', 
         }}>
-        <ScrollView
-          contentContainerStyle={[{
-            // paddingTop: 50,
-            paddingLeft: '4%',
-            paddingRight: '4%',
-            // backgroundColor: 'pink',
-            minHeight: '100%'
-          }, { backgroundColor: Platform.OS === 'android' ? colorScheme === 'dark' ? theme.greyPalette[900] : theme.greyPalette[100] : null }]}>
-          <SafeAreaView>
+        <SafeAreaView>
+          <ScrollView
+            contentContainerStyle={[{
+              paddingLeft: '4%',
+              paddingRight: '4%',
+              minHeight: '100%'
+            }, { backgroundColor: Platform.OS === 'android' ? colorScheme === 'dark' ? theme.greyPalette[900] : theme.greyPalette[100] : null }]}>
             {aspect === 'No Match' ? (
               <Text style={[theme.fonts.types.heading, {
                 fontSize: theme.fonts.sizes.medium,
@@ -72,8 +70,7 @@ const AspectDetails = ({
                       id: aspect?.id,
                       newTitle: val
                     })
-                  } 
-                  }                  
+                  }}                  
                 />
                 <EditableInput
                   label='Why is this important to you?'
@@ -88,17 +85,15 @@ const AspectDetails = ({
             )}
             <View style={{paddingTop: 10}}>
               <ConsiderationsContainer
-              // hideHelper 
-              // hideActions
-                singleAspectId={aspect?.id} />
+                singleAspect={aspect} />
             </View>
             <Button
               disabled={importanceEditable || titleEditable}
               color="red"
               title="Go Back"
               onPress={close} />
-          </SafeAreaView>
-        </ScrollView>
+          </ScrollView>
+        </SafeAreaView>
       </BlurView>
     </Modal>
   )

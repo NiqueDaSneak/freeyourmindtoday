@@ -4,7 +4,8 @@ import React, {
   useEffect, 
   useRef,
   useCallback, 
-  useState 
+  useState,
+  Alert
 } from 'react'
 import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha'
 import fb from 'firebase'
@@ -23,8 +24,16 @@ const initialState = {
   authenticating: false,
   newUserLogin: false,
   newUserData: null,
-  activeUser: { id: null },
+  activeUser: {
+    id: null,
+    phone: null,
+    username: null
+  },
   loggingOut: false,
+  needSaveUsername: {
+    value: false,
+    username: null
+  }
 }
 
 const reducer = (
@@ -40,10 +49,7 @@ const reducer = (
         phoneNumber: null,
         verificationCode: ''
       },
-      activeUser: {
-        id: action.id,
-        phone: action.phone
-      },
+      activeUser: action.user,
       isAuthenticated: true,
       newUserData: null,
       creatingNewUser: false
@@ -74,18 +80,42 @@ const reducer = (
       ...state,
       isAuthenticated: false,
       loggingOut: false,
-      activeUser: {id: null}
+      activeUser: {
+        id: null,
+        phone: null,
+        username: null
+      }
     }
   case 'NEW_USER_LOGIN':
     return {
       ...state,
       newUserLogin: true,
-      activeUser: {id: action.id,}
+      activeUser: {id: action.id}
     }
   case 'NEW_USER_LOGGED_IN':
     return {
       ...state,
       newUserLogin: false
+    }
+  case 'SAVE_USERNAME':
+    return {
+      ...state,
+      needSaveUsername: {
+        value: true,
+        username: action.username 
+      }
+    }
+  case 'SAVED_USERNAME':
+    return {
+      ...state,
+      activeUser: {
+        ...state.activeUser,
+        username: action.username
+      },
+      needSaveUsername: {
+        value: false,
+        username: null
+      }
     }
   default:
     throw new Error()
@@ -98,6 +128,7 @@ export const AuthContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(
     reducer, initialState
   )
+
   const recaptchaVerifier = useRef(null)
 
   const confirmCode = useCallback(
@@ -107,43 +138,71 @@ export const AuthContextProvider = ({ children }) => {
     ), [firebaseVerificationResponse, state.phoneLogin.verificationCode]
   )
 
-  const onAuthStateChange = () => firebase.auth().onAuthStateChanged(user => {
-    if (user) {
-      console.log(
-        'The user is logged in', user.phoneNumber
-      )
-      dispatch({
-        type: 'LOGIN_USER', 
-        id: user.uid,
-        phone: user.phoneNumber
-      })
-    } else {
-      console.log('The user is not logged in')
-      dispatch({
-        type: 'LOGGED_OUT', 
-        // id: user.uid
-      })
-    }
-  })
-
   useEffect(
     () => {
-      if (state.loggingOut) {
-        firebase.auth().signOut().then(() => {
-          console.log('inside log out')
-        })
-        // (firebase.auth().currentUser())
+      if (state.needSaveUsername.value) {
+        try {
+          db.collection('Users').doc(state.activeUser.id).update({ username: state.needSaveUsername.username }).then(() => {
+            dispatch({
+              type: 'SAVED_USERNAME',
+              username: state.needSaveUsername.username  
+            })
+          })
+        } catch (err) {
+          console.log(
+            'err: ', err
+          )
+        }
       }
-    }, [state.loggingOut]
+    }, [state.activeUser.id, state.needSaveUsername]
   )
   
   useEffect(
     () => {
-      const unsubscribe = onAuthStateChange()
-      return () => {
-        unsubscribe()
+      if (state.loggingOut) {
+        firebase.auth().signOut()
       }
-    }, []
+    }, [state.loggingOut]
+  )
+
+  const onAuthStateChange = useCallback(
+    () => {
+      firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+          console.log(
+            'The user is logged in', user.phoneNumber, user.uid
+          )
+          try {
+            db.collection('Users').where(
+              'firebaseId', '==', user.uid
+            ).get().then(snapshot => {
+              snapshot.forEach(userDoc => {
+                dispatch({
+                  type: 'LOGIN_USER', 
+                  user: userDoc.data()
+                })
+              })
+            })
+          } catch (err) {
+            console.log(
+              'err: ', err
+            )
+          }
+        } else {
+          console.log('The user is not logged in')
+          dispatch({type: 'LOGGED_OUT'})
+        }
+      })
+    },
+    []
+  )
+
+  useEffect(
+    () => {
+      onAuthStateChange()
+      return () => onAuthStateChange()
+
+    }, [onAuthStateChange]
   )
 
   useEffect(
@@ -169,11 +228,62 @@ export const AuthContextProvider = ({ children }) => {
           .signInWithCredential(credential)
           .then((result) => {
             if (result.additionalUserInfo.isNewUser) {
-              const newUser = {firebaseId: result.user.uid,}
-              db.collection('Users').add(newUser)
-              dispatch({
-                type: 'NEW_USER_LOGIN',
-                id: result.user.uid
+              const newUser = {
+                firebaseId: result.user.uid,
+                phone: result.user.phoneNumber,
+              }
+              db.collection('Users').add(newUser).then(docRef => {
+                db.collection('Users').doc(docRef.id).update({ id: docRef.id }).then(() => {
+                  try {
+                    [
+                      {
+                        importanceStatement: "",
+                        title: "Health",
+                        precreated: true,
+                      },
+                      {
+                        importanceStatement: "",
+                        title: "Career",
+                        precreated: true,
+                      },
+                      {
+                        importanceStatement: "",
+                        title: "Relationships",
+                        precreated: true,
+                      }
+                    ].forEach(aspect => {
+                      const precreatedAspect = {
+                        userId: docRef.id,
+                        createdAt: Date.now(),
+                        deleted: false,
+                        ...aspect
+                      }
+                      db.collection('Aspects').add(precreatedAspect)
+                    })  
+                  } catch (err) {
+                    console.log(err)
+                    Alert.alert(
+                      'Error saving aspect',
+                      `${err}`
+                        [
+                          {
+                            text: 'Go Back',
+                            style: 'destructive'
+                          }
+                        ],
+                    )        
+                  } finally {
+                    dispatch({
+                      type: 'LOGIN_USER', 
+                      user:                     
+                    {
+                      id: docRef.id,
+                      phone: result.user.phoneNumber,
+                      username: null
+                    }
+                    })
+                  }
+                })
               })
             }
           })

@@ -136,7 +136,7 @@ const Questionnaire = ({
       newConsideration,
       user: activeUser
     })   
-    modalDispatch({type: 'CLOSE_MODAL'})
+    modalDispatch({type: 'CLOSE'})
     resetForm()
   }
   
@@ -240,7 +240,7 @@ const Questionnaire = ({
             color="red"
             title="Cancel"
             onPress={() => {
-              modalDispatch({type: 'CLOSE_MODAL'})
+              modalDispatch({type: 'CLOSE'})
               resetForm()
             }} />
         </Animated.View>
@@ -287,7 +287,7 @@ const Questionnaire = ({
             color="red"
             title="Cancel"
             onPress={() => {
-              modalDispatch({type: 'CLOSE_MODAL'})
+              modalDispatch({type: 'CLOSE'})
               resetForm()
             }} />
         </Animated.View>

@@ -2,9 +2,9 @@ import React, {useContext} from 'react'
 import {
   View,
   Image, 
-  SafeAreaView, 
   Text
 } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import {
   theme, useKeyboard 
 } from '../assets/utils'
@@ -31,7 +31,9 @@ const Authentication = () => {
       <View style={{
         marginTop: '60%',
         height: 210,
-        justifyContent: 'space-evenly'
+        // width: '80%',
+        justifyContent: 'space-evenly',
+        // backgroundColor: 'pink'
       }}>
         <Image 
           resizeMode="contain"
@@ -44,14 +46,10 @@ const Authentication = () => {
           source={colorScheme === 'dark' ? require('../assets/logo-light.png') : require('../assets/logo-dark.png')}
         />
         <Text style={{
-          ...theme.fonts.types.heading,
-          color: 'white'
-        }}>Free Your Mind Today</Text>
-        <Text style={{
           fontSize: 16,
           color: 'white',
           fontStyle: 'italic'
-        }}>What are you here for?</Text>
+        }}>What are you here FOR?</Text>
       </View>
       <View style={{
         position: 'absolute',

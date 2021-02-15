@@ -119,7 +119,7 @@ const CreateLongTermConsideration = ({
       newConsideration,
       user: activeUser
     })   
-    modalDispatch({type: 'CLOSE_MODAL'})
+    modalDispatch({type: 'CLOSE'})
     resetForm()
   }
   
@@ -222,7 +222,7 @@ const CreateLongTermConsideration = ({
             color="red"
             title="Cancel"
             onPress={() => {
-              modalDispatch({type: 'CLOSE_MODAL'})
+              modalDispatch({type: 'CLOSE'})
               resetForm()
             }} />
         </Animated.View>

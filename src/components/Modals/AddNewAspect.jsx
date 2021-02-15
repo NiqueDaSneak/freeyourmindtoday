@@ -122,7 +122,7 @@ const AddNewAspect = ({visible}) => {
               color="red"
               title="Cancel"
               onPress={() => {
-                modalDispatch({type: 'CLOSE_MODAL'})
+                modalDispatch({type: 'CLOSE'})
                 resetForm()
               }} />
 
