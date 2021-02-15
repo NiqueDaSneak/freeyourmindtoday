@@ -1,5 +1,7 @@
 import React, {
-  useState, useRef, useContext, useEffect
+  useRef, 
+  useContext, 
+  useEffect
 } from 'react'
 import {
   Text, 
@@ -7,15 +9,14 @@ import {
   Animated, 
   Button, 
   Easing, 
-  Pressable,
   Image,
   TouchableOpacity
 } from 'react-native'
 import { BlurView } from 'expo-blur'
-import SegmentedControl from '@react-native-community/segmented-control';
-import {theme} from '../../assets/utils'
+import { theme } from '../../assets/utils'
 import {
-  ModalContext, ThemeContext 
+  ModalContext,
+  ThemeContext 
 } from '../../state'
 
 const ConsiderationChooser = ({ visible }) => {
@@ -146,10 +147,7 @@ const ConsiderationChooser = ({ visible }) => {
                   resizeMode: 'contain',
                   height: 90,
                   width: 90,
-                  // marginBottom: 4,
                 }}
-                // 
-                // source={require('../../assets/bell-dark.png')}
                 source={considerationTypes[type].icon[colorScheme]} 
               />
               <Text style={[theme.fonts.types.subHeading, {

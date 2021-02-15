@@ -3,9 +3,9 @@ import React, {
   createContext,
   useEffect,
   useContext, 
-  useState
+  useCallback
 } from 'react'
-import {Alert} from 'react-native'
+import { Alert } from 'react-native'
 import { ModalContext } from './modal.context'
 import { db } from '../../firebase'
 import { AuthContext } from './auth.context'
@@ -108,60 +108,8 @@ export const AspectsContextProvider = ({ children }) => {
   const [authState, authDispatch] = useContext(AuthContext)
   const [modalState, modalDispatch] = useContext(ModalContext)
 
-  const {
-    activeUser, newUserLogin 
-  } = authState
+  const { activeUser } = authState
   
-  const [precreatedAspects, setPrecreatedAspects] = useState([
-    {
-      importanceStatement: "",
-      title: "Health",
-      precreated: true,
-    },
-    {
-      importanceStatement: "",
-      title: "Career",
-      precreated: true,
-    },
-    {
-      importanceStatement: "",
-      title: "Relationships",
-      precreated: true,
-    }
-  ])
-  
-  useEffect(
-    () => {
-      if (newUserLogin) {
-        try {
-          precreatedAspects.forEach(aspect => {
-            const precreatedAspect = {
-              userId: activeUser.id,
-              createdAt: Date.now(),
-              deleted: false,
-              ...aspect
-            }
-            db.collection('Aspects').add(precreatedAspect)
-          })  
-        } catch (err) {
-          console.log(err)
-          Alert.alert(
-            'Error saving aspect',
-            `${err}`
-              [
-                {
-                  text: 'Go Back',
-                  style: 'destructive'
-                }
-              ],
-          )        
-        } finally {
-          authDispatch({type: 'NEW_USER_LOGGED_IN'})
-        }
-      }
-    }, [activeUser.id, authDispatch, newUserLogin, precreatedAspects]
-  )
-
   useEffect(
     () => {
       if (state.needsUpdatedTitle.value) { 
@@ -213,12 +161,11 @@ export const AspectsContextProvider = ({ children }) => {
       }
     }, [state.needsUpdatedImportance]
   )
-  
-  useEffect(
+
+  const getAspects = useCallback(
     () => {
-      let subscriber 
       try {
-        subscriber = db.collection('Aspects').where(
+        db.collection('Aspects').where(
           'userId', '==', activeUser.id
         ).onSnapshot(querySnapshot => {
           const aspectData = []
@@ -247,8 +194,16 @@ export const AspectsContextProvider = ({ children }) => {
         )        
         console.log('err: ', err)
       }
-      return () => subscriber()
-    }, [activeUser.id]
+
+    },
+    [activeUser.id],
+  )
+  
+  useEffect(
+    () => {
+      getAspects()
+      return () => getAspects()
+    }, [getAspects]
   )
 
   useEffect(

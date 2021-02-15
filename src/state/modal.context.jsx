@@ -1,5 +1,8 @@
 import React, {
-  useReducer, createContext, useContext, useEffect 
+  useReducer, 
+  createContext, 
+  useContext, 
+  useEffect 
 } from 'react'
 import { AuthContext } from './auth.context'
 
@@ -36,7 +39,7 @@ export const ModalContextProvider = ({ children }) => {
   const {
     isAuthenticated, activeUser 
   } = authState
-  console.log("isAuthenticated: ", isAuthenticated)
+
   useEffect(
     () => {
       if (isAuthenticated) {

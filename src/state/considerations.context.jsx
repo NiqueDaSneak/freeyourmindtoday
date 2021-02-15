@@ -3,7 +3,8 @@ import React, {
   createContext,
   useEffect,
   useContext,
-  useState
+  useState,
+  useCallback
 } from 'react'
 import {Alert} from 'react-native'
 import { AuthContext } from './auth.context'
@@ -129,29 +130,6 @@ export const useReference = (referenceId) => {
   return reference
 }
 
-// useEffect(
-//   () => {
-//     const subscriber = db.collection('Considerations').where(
-//       'userId', '==', activeUser?.id
-//     ).onSnapshot(querySnapshot => {
-//       const considerationData = []
-//       querySnapshot.forEach((doc) => {
-//         const withId = {
-//           id: doc.id,
-//           ...doc.data()
-//         }
-//         considerationData.push(withId)
-//       })
-//       dispatch({
-//         type: 'SET_CONSIDERATIONS',
-//         considerationData
-//       })
-//     })
-//     return () => subscriber()
-//   }, [activeUser.id, isAuthenticated]
-// )
-
-
 export const ConsiderationsContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(
     reducer, initialState
@@ -188,78 +166,48 @@ export const ConsiderationsContextProvider = ({ children }) => {
       }
     }
   })
+  const getConsiderations = useCallback(
+    () => {
+      if (isAuthenticated) {
+        try {
+          db.collection('Considerations').where(
+            'userId', '==', activeUser?.id
+          ).onSnapshot(querySnapshot => {
+            const considerationData = []
+            querySnapshot.forEach((doc) => {
+              const withId = {
+                id: doc.id,
+                ...doc.data()
+              }
+              considerationData.push(withId)
+            })
+            dispatch({
+              type: 'SET_CONSIDERATIONS',
+              considerationData
+            })
+          })
+        } catch (err) {
+          console.log('err: ', err)
+        }
+      }
+    },
+    [activeUser?.id, isAuthenticated],
+  )
 
   useEffect(
     () => {
-      const subscriber = db.collection('Considerations').where(
-        'userId', '==', activeUser?.id
-      ).onSnapshot(querySnapshot => {
-        const considerationData = []
-        querySnapshot.forEach((doc) => {
-          const withId = {
-            id: doc.id,
-            ...doc.data()
-          }
-          considerationData.push(withId)
-        })
-        dispatch({
-          type: 'SET_CONSIDERATIONS',
-          considerationData
-        })
-      })
-      return () => subscriber()
-    }, [activeUser.id, isAuthenticated]
+      const unsubscribe = getConsiderations()
+      return () => unsubscribe
+    }, [getConsiderations]
   )
 
-  const handleShared = (
-    considerationData, refId
-  ) => {
-    if (refId) { 
-      const newConsideration = {
-        refId,
-        userId: activeUser.id,
-        createdAt: Date.now(),
-        completed: false,
-        completedAt: null,
-        deleted: false,
-        deletedAt: null,
-        ...considerationData
-      }
-
-      db.collection('Considerations').add(newConsideration).then(() => {
-        db.collection('Considerations').doc(refId).update({
-          participants: firebase.firestore.FieldValue.arrayUnion({
-            username: activeUser?.username,
-            id: activeUser?.id,
-            count: 0,
-            weeklyAvg: 0,
-          }) 
-        }).then(() => {
-          dispatch({type: 'SAVED_NEW'})
-        })
-      })
-    } else {
-      const referenceShared = {
-        type: 'reference',
-        subType: 'shared',
-        adminId: activeUser?.id,
-        createdAt: Date.now(),
-        deleted: false,
-        deletedAt: null,
-        whys: [],
-        participants: [
-          {
-            username: activeUser?.username,
-            id: activeUser?.id,
-            count: 0,
-            weeklyAvg: 0,
-          }
-        ]
-      }
-  
-      db.collection('Considerations').add(referenceShared).then(docRef => {
+  const handleShared = useCallback(
+    (
+      considerationData, refId
+    ) => {
+      if (refId) { 
         const newConsideration = {
-          refId: docRef.id,
+          refId,
           userId: activeUser.id,
           createdAt: Date.now(),
           completed: false,
@@ -268,19 +216,61 @@ export const ConsiderationsContextProvider = ({ children }) => {
           deletedAt: null,
           ...considerationData
         }
+  
         db.collection('Considerations').add(newConsideration).then(() => {
-          dispatch({type: 'SAVED_NEW'})
+          db.collection('Considerations').doc(refId).update({
+            participants: firebase.firestore.FieldValue.arrayUnion({
+              username: activeUser?.username,
+              id: activeUser?.id,
+              count: 0,
+              weeklyAvg: 0,
+            }) 
+          }).then(() => {
+            dispatch({type: 'SAVED_NEW'})
+          })
         })
-      })
-    }
+      } else {
+        const referenceShared = {
+          type: 'reference',
+          subType: 'shared',
+          adminId: activeUser?.id,
+          createdAt: Date.now(),
+          deleted: false,
+          deletedAt: null,
+          whys: [],
+          participants: [
+            {
+              username: activeUser?.username,
+              id: activeUser?.id,
+              count: 0,
+              weeklyAvg: 0,
+            }
+          ]
+        }
     
-  }
+        db.collection('Considerations').add(referenceShared).then(docRef => {
+          const newConsideration = {
+            refId: docRef.id,
+            userId: activeUser.id,
+            createdAt: Date.now(),
+            completed: false,
+            completedAt: null,
+            deleted: false,
+            deletedAt: null,
+            ...considerationData
+          }
+          db.collection('Considerations').add(newConsideration).then(() => {
+            dispatch({type: 'SAVED_NEW'})
+          })
+        })
+      }
+    },
+    [activeUser]
+  )
 
   useEffect(
     () => {
       if (state.needsSaved.value) {
-        // HERE I NEED TO CHECK IF IT IS SHARED AND CREATE A REFERENCE CONSIDERATION AS WELL AS THE ONE TIED TO THE USER
-
         const { considerationData } = state.needsSaved 
         try {
           if (considerationData.type === 'shared') {
@@ -305,7 +295,7 @@ export const ConsiderationsContextProvider = ({ children }) => {
           )
         }
       }
-    }, [activeUser.id, state.needsSaved]
+    }, [activeUser.id, handleShared, state.needsSaved]
   )
 
   useEffect(

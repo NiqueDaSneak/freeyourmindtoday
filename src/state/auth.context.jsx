@@ -80,7 +80,11 @@ const reducer = (
       ...state,
       isAuthenticated: false,
       loggingOut: false,
-      activeUser: {id: null}
+      activeUser: {
+        id: null,
+        phone: null,
+        username: null
+      }
     }
   case 'NEW_USER_LOGIN':
     return {
@@ -104,6 +108,10 @@ const reducer = (
   case 'SAVED_USERNAME':
     return {
       ...state,
+      activeUser: {
+        ...state.activeUser,
+        username: action.username
+      },
       needSaveUsername: {
         value: false,
         username: null
@@ -120,6 +128,7 @@ export const AuthContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(
     reducer, initialState
   )
+
   const recaptchaVerifier = useRef(null)
 
   const confirmCode = useCallback(
@@ -129,36 +138,20 @@ export const AuthContextProvider = ({ children }) => {
     ), [firebaseVerificationResponse, state.phoneLogin.verificationCode]
   )
 
-  const onAuthStateChange = () => firebase.auth().onAuthStateChanged(user => {
-    if (user) {
-      console.log(
-        'The user is logged in', user.phoneNumber
-      )
-      db.collection('Users').where(
-        'firebaseId', '==', user.uid
-      ).get().then(snapshot => {
-        snapshot.forEach(userDoc => {
-          dispatch({
-            type: 'LOGIN_USER', 
-            user: userDoc.data()
-          })
-        })
-      })
-    } else {
-      console.log('The user is not logged in')
-      dispatch({type: 'LOGGED_OUT'})
-    }
-  })
-
   useEffect(
     () => {
       if (state.needSaveUsername.value) {
         try {
           db.collection('Users').doc(state.activeUser.id).update({ username: state.needSaveUsername.username }).then(() => {
-            dispatch({ type: 'SAVED_USERNAME' })
+            dispatch({
+              type: 'SAVED_USERNAME',
+              username: state.needSaveUsername.username  
+            })
           })
         } catch (err) {
-          console.log('err: ', err)
+          console.log(
+            'err: ', err
+          )
         }
       }
     }, [state.activeUser.id, state.needSaveUsername]
@@ -171,14 +164,45 @@ export const AuthContextProvider = ({ children }) => {
       }
     }, [state.loggingOut]
   )
-  
+
+  const onAuthStateChange = useCallback(
+    () => {
+      firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+          console.log(
+            'The user is logged in', user.phoneNumber, user.uid
+          )
+          try {
+            db.collection('Users').where(
+              'firebaseId', '==', user.uid
+            ).get().then(snapshot => {
+              snapshot.forEach(userDoc => {
+                dispatch({
+                  type: 'LOGIN_USER', 
+                  user: userDoc.data()
+                })
+              })
+            })
+          } catch (err) {
+            console.log(
+              'err: ', err
+            )
+          }
+        } else {
+          console.log('The user is not logged in')
+          dispatch({type: 'LOGGED_OUT'})
+        }
+      })
+    },
+    []
+  )
+
   useEffect(
     () => {
-      const unsubscribe = onAuthStateChange()
-      return () => {
-        unsubscribe()
-      }
-    }, []
+      onAuthStateChange()
+      return () => onAuthStateChange()
+
+    }, [onAuthStateChange]
   )
 
   useEffect(
@@ -209,11 +233,56 @@ export const AuthContextProvider = ({ children }) => {
                 phone: result.user.phoneNumber,
               }
               db.collection('Users').add(newUser).then(docRef => {
-                db.collection('Users').doc(docRef.id).update({id: docRef.id}).then(() => {
-                  dispatch({
-                    type: 'NEW_USER_LOGIN',
-                    id: docRef.id
-                  })
+                db.collection('Users').doc(docRef.id).update({ id: docRef.id }).then(() => {
+                  try {
+                    [
+                      {
+                        importanceStatement: "",
+                        title: "Health",
+                        precreated: true,
+                      },
+                      {
+                        importanceStatement: "",
+                        title: "Career",
+                        precreated: true,
+                      },
+                      {
+                        importanceStatement: "",
+                        title: "Relationships",
+                        precreated: true,
+                      }
+                    ].forEach(aspect => {
+                      const precreatedAspect = {
+                        userId: docRef.id,
+                        createdAt: Date.now(),
+                        deleted: false,
+                        ...aspect
+                      }
+                      db.collection('Aspects').add(precreatedAspect)
+                    })  
+                  } catch (err) {
+                    console.log(err)
+                    Alert.alert(
+                      'Error saving aspect',
+                      `${err}`
+                        [
+                          {
+                            text: 'Go Back',
+                            style: 'destructive'
+                          }
+                        ],
+                    )        
+                  } finally {
+                    dispatch({
+                      type: 'LOGIN_USER', 
+                      user:                     
+                    {
+                      id: docRef.id,
+                      phone: result.user.phoneNumber,
+                      username: null
+                    }
+                    })
+                  }
                 })
               })
             }

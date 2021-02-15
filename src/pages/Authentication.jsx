@@ -46,14 +46,10 @@ const Authentication = () => {
           source={colorScheme === 'dark' ? require('../assets/logo-light.png') : require('../assets/logo-dark.png')}
         />
         <Text style={{
-          ...theme.fonts.types.heading,
-          color: 'white'
-        }}>For</Text>
-        <Text style={{
           fontSize: 16,
           color: 'white',
           fontStyle: 'italic'
-        }}>Why are you here?</Text>
+        }}>What are you here FOR?</Text>
       </View>
       <View style={{
         position: 'absolute',
