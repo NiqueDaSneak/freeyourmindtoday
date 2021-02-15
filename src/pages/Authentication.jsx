@@ -49,7 +49,7 @@ const Authentication = () => {
           fontSize: 16,
           color: 'white',
           fontStyle: 'italic'
-        }}>What are you here FOR?</Text>
+        }}>What are you here for?</Text>
       </View>
       <View style={{
         position: 'absolute',
