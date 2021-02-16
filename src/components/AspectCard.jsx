@@ -34,11 +34,13 @@ const AspectCard = ({
   
   return (
     <TouchableOpacity
-      onPress={() => modalDispatch({
-        type: 'OPEN',
-        modalType: 'GET_ASPECT_DETAILS',
-        modalData: noMatch ? 'No Match' : aspect
-      })}
+      onPress={() => {
+        modalDispatch({
+          type: 'OPEN',
+          modalType: 'GET_ASPECT_DETAILS',
+          modalData: noMatch ? 'No Match' : aspect
+        })
+      }}
       style={{
         marginRight: 10,
         marginBottom: 20,

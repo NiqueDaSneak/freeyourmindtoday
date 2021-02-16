@@ -87,15 +87,16 @@ const Consideration = ({
   )
   return (
     <TouchableOpacity
-      onPress={() => modalDispatch({
-        type: 'OPEN',
-        modalType: 'CONSIDERATION_DETAILS',
-        modalData: {
-          considerationId: data?.id,
-          aspect: parent
-        }
-      })
-      }
+      onPress={() => {
+        modalDispatch({
+          type: 'OPEN',
+          modalType: 'CONSIDERATION_DETAILS',
+          modalData: {
+            considerationId: data?.id,
+            aspect: parent
+          }
+        })
+      }}
       style={{
         backgroundColor: colorScheme === 'dark' ? 'grey' : theme.greyPalette[200],
         marginRight: 10,

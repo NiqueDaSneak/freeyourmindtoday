@@ -343,10 +343,11 @@ const ConsiderationDetails = ({
                 marginRight: 12
               }}>
                 <QRCode
-                  logoSize={40}
-                  logo={colorScheme === 'dark' ? require('../../assets/logo-dark.png') : require('../../assets/logo-light.png')}
+                  ecl='M'
+                  // logoSize={80}
+                  // logo={colorScheme === 'dark' ? require('../../assets/logo-dark.png') : require('../../assets/logo-light.png')}
                   color={colorScheme === 'dark' ? theme.greyPalette[900] : theme.greyPalette[100]}
-                  size={200}
+                  size={120}
                   content={JSON.stringify({
                     adminId,
                     refId: consideration?.refId,
